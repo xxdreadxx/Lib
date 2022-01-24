@@ -72,9 +72,9 @@ namespace Models.Dao.DaoAdmin
             return item;
         }
 
-        public sNhanVienView getAllDataView(int IDDV, string search)
+        public List<sNhanVienView> getAllDataView(int IDDV, string search)
         {
-            sNhanVienView item = new sNhanVienView();
+            List<sNhanVienView> item = new List<sNhanVienView>();
             if (search == "")
             {
                 item = (from ds in db.sNhanViens
@@ -95,7 +95,7 @@ namespace Models.Dao.DaoAdmin
                             Quyen = ds.Quyen,
                             SDT = ds.SDT,
                             Username = ds.Username
-                        }).FirstOrDefault();
+                        }).ToList();
             }
             else
             {
@@ -117,13 +117,13 @@ namespace Models.Dao.DaoAdmin
                             Quyen = ds.Quyen,
                             SDT = ds.SDT,
                             Username = ds.Username
-                        }).FirstOrDefault();
+                        }).ToList();
             }
             
             return item;
         }
 
-        public bool InsertNhanVien(sNhanVien nv)
+        public bool Insert(sNhanVien nv)
         {
             try
             {
@@ -137,7 +137,7 @@ namespace Models.Dao.DaoAdmin
             }
         }
 
-        public bool UpdateNhanVien(sNhanVien nv, long IDNV)
+        public bool Update(sNhanVien nv, long IDNV)
         {
             try
             {
@@ -160,7 +160,7 @@ namespace Models.Dao.DaoAdmin
             }
         }
 
-        public bool DeleteNhanVien(long ID, long IDNV)
+        public bool Delete(long ID, long IDNV)
         {
             try
             {

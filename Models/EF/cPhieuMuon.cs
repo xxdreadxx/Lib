@@ -35,5 +35,6 @@ namespace Models.EF
         public DateTime? NgaySua { get; set; }
 
         public long? NguoiSua { get; set; }
+        public int IDDonVi { get; set; }
     }
 }
