@@ -25,3 +25,26 @@
         }
     });
 }
+function LogOut() {
+    $.ajax({
+        url: '/Login/LogOut',
+        type: 'GET',
+        dataType: 'json',
+        success: function (response) {
+            if (response.status == true) {
+                window.location = '/Login/Index';
+            }
+        },
+        error: function (err) {
+            console.log(err);
+        }
+    });
+}
+
+function updatePass() {
+
+}
+
+function updateInfo() {
+
+}

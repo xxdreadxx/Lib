@@ -22,8 +22,13 @@ namespace LibDemo.Areas.Admin.Controllers
             }
             long IDNV = long.Parse(Session["IDNV"].ToString());
             int IDDV = int.Parse(Session["IDDonVi"].ToString());
-            ViewBag.UserInfo = nv.getDataByID(IDNV);
-            ViewBag.DonViInfo = dv.getDataByID(IDDV);
+            var nhanvien = nv.getDataByID(IDNV);
+            var donvi = dv.getDataByID(IDDV);
+            Session["User_Ten"] = nhanvien.HoTen;
+            Session["User_Quyen"] = nhanvien.Quyen;
+            Session["User_NgayTao"] = nhanvien.NgayTao.GetValueOrDefault().ToString("dd/MM/yyyy");
+            Session["User_Avatar"] = nhanvien.AnhDaiDien;
+            Session["Portal_Ten"] = donvi.TenDonVi;
             return View();
         }
     }

@@ -1,0 +1,196 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content-header">
+    <h1>
+        Thông tin nhân viên
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/Admin/Index"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Thông tin nhân viên</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="box box-primary">
+                <div class="box-body box-profile">
+                    @{
+                        string strChucVu = "";
+                        if (Session["User_Quyen"].ToString() == "0")
+                        {
+                            strChucVu = "Quản trị viên";
+                        }
+                        else if (Session["User_Quyen"].ToString() == "1")
+                        {
+                            strChucVu = "Thủ thư cao cấp";
+                        }
+                        else
+                        {
+                            strChucVu = "Thủ thư";
+                        }
+                    }
+                    @if (ViewBag.UserInfo.AnhDaiDien != null && ViewBag.UserInfo.AnhDaiDien != "")
+                    {
+                        <img class="profile-user-img img-responsive img-circle" src="@ViewBag.UserInfo.AnhDaiDien" alt="User profile picture">
+                    }
+                    else
+                    {
+                        <img class="profile-user-img img-responsive img-circle" src="~/assets/admin/dist/img/user2-160x160.jpg" alt="User profile picture">
+                    }
+                    <h3 class="profile-username text-center">@ViewBag.UserInfo.HoTen</h3>
+                    <p class="text-muted text-center">Ngày bắt đầu làm việc: @ViewBag.UserInfo.NgayTao.ToString("dd/MM/yyyy")</p>
+
+                    <ul class="list-group list-group-unbordered">
+                        <li class="list-group-item">
+                            <b>Đơn vị công tác</b> <a class="pull-right">@Session["Portal_Ten"]</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Username</b> <a class="pull-right">@ViewBag.UserInfo.Username</a>
+                        </li>
+                        <li class="list-group-item">
+                            <b>Chức vụ</b> <a class="pull-right">@strChucVu</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#activity" data-toggle="tab">Thông tin chung</a></li>
+                    <li><a href="#timeline" data-toggle="tab">Đổi mật khẩu</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="active tab-pane" id="activity">
+                        <div class="row">
+                            <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                                <div class="row">
+                                    <div class="col-md-3" style="padding-top:5px">
+                                        Họ tên:*
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input type="text" id="txtHoTen" class="form-control" value="@ViewBag.UserInfo.HoTen" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                                <div class="row">
+                                    <div class="col-md-3" style="padding-top:5px">
+                                        Ngày sinh:*
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input type="text" id="txtNgaySinh" class="form-control" value="@ViewBag.UserInfo.NgaySinh" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-top:10px; margin-left:20px; margin-right:20px">
+                                <div class="row">
+                                    <div class="col-md-3" style="padding-top:5px">
+                                        Ảnh đại diện:
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input type="file" id="fImage" accept="*/image" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                                <div class="row">
+                                    <div class="col-md-3" style="padding-top:5px">
+                                        Số CMTND:
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input type="text" id="txtCMT" class="form-control" value="@ViewBag.UserInfo.CMTND" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                                <div class="row">
+                                    <div class="col-md-3" style="padding-top:5px">
+                                        Địa chỉ:
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input type="text" id="txtDiaChi" class="form-control" value="@ViewBag.UserInfo.DiaChi" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                                <div class="row">
+                                    <div class="col-md-3" style="padding-top:5px">
+                                        Số điện thoại:* (+84)
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input type="text" id="txtSDT" class="form-control" value="@ViewBag.UserInfo.SDT" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                                <div class="row">
+                                    <div class="col-md-3" style="padding-top:5px">
+                                        Email:
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input type="text" id="txtEmail" class="form-control" value="@ViewBag.UserInfo.Email" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                                <div class="row">
+                                    <div class="col-md-9"></div>
+                                    <div class="col-md-3" style="text-align:right">
+                                        <a onclick="UpdateInfo()" class="btn btn-primary btn-block"><b>Cập nhật</b></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="timeline">
+                        <div class="row">
+                            <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                                <div class="row">
+                                    <div class="col-md-3" style="padding-top:5px">
+                                        Mật khẩu cũ:*
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input type="text" id="txtOldPass" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                                <div class="row">
+                                    <div class="col-md-3" style="padding-top:5px">
+                                        Mật khẩu mới:*
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input type="text" id="txtNewPass" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                                <div class="row">
+                                    <div class="col-md-3" style="padding-top:5px">
+                                        Nhập lại mật khẩu:
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input type="text" id="txtPassConfirm" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                                <div class="row">
+                                    <div class="col-md-9"></div>
+                                    <div class="col-md-3" style="text-align:right">
+                                        <a class="btn btn-primary btn-block" onclick="updatePass()"><b>Cập nhật</b></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

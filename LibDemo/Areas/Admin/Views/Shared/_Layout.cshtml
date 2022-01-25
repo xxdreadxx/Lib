@@ -45,37 +45,45 @@
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <img src="~/assets/admin/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                                <span class="hidden-xs">@ViewBag.UserInfo.HoTen</span>
+                                <span class="hidden-xs">@Session["User_Ten"]</span>
                             </a>
                             <ul class="dropdown-menu">
                                 <li class="user-header">
-                                    <img src="~/assets/admin/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                                    @if (Session["User_Avatar"] != null && Session["User_Avatar"].ToString() != "")
+                                    {
+                                        <img src="@Session["User_Avatar"]" class="img-circle" alt="User Image">
+                                    }
+                                    else
+                                    {
+                                        <img src="~/assets/admin/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                                    }
+
                                     <p style="color:#000">
                                         @{
                                             string strChucVu = "";
-                                            if (ViewBag.UserInfo.Quyen == 0)
+                                            if (Session["User_Quyen"].ToString() == "0")
                                             {
                                                 strChucVu = "Admin tại ";
                                             }
-                                            else if (ViewBag.UserInfo.Quyen == 1)
+                                            else if (Session["User_Quyen"].ToString() == "1")
                                             {
-                                                strChucVu = "Thu thư cao cấp tại ";
+                                                strChucVu = "Thủ thư cao cấp tại ";
                                             }
                                             else
                                             {
-                                                strChucVu = "Thu thư tại ";
+                                                strChucVu = "Thủ thư tại ";
                                             }
                                         }
-                                        @strChucVu @ViewBag.DonViInfo.TenDonVi
-                                        <small>Ngày bắt đầu làm việc: @ViewBag.UserInfo.NgayTao.ToString("dd/MM/yyyy")</small>
+                                        @strChucVu @Session["Portal_Ten"]
+                                        <small>Ngày bắt đầu làm việc: @Session["User_NgayTao"]</small>
                                     </p>
                                 </li>
                                 <li class="user-footer">
                                     <div class="pull-left">
-                                        <a href="#" class="btn btn-default btn-flat">Chỉnh sửa thông tin</a>
+                                        <a href="/Admin/User/Index" class="btn btn-default btn-flat">Chỉnh sửa thông tin</a>
                                     </div>
                                     <div class="pull-right">
-                                        <a href="#" class="btn btn-default btn-flat">Đăng xuất</a>
+                                        <a onclick="LogOut()" class="btn btn-default btn-flat">Đăng xuất</a>
                                     </div>
                                 </li>
                             </ul>
@@ -88,9 +96,9 @@
             <section class="sidebar">
                 <div class="user-panel">
                     <div class="pull-left image">
-                        @if (ViewBag.UserInfo.AnhDaiDien != null && ViewBag.UserInfo.AnhDaiDien != "")
+                        @if (Session["User_Avatar"] != null && Session["User_Avatar"].ToString() != "")
                         {
-                            <img src="@ViewBag.UserInfo.AnhDaiDien" class="img-circle" alt="User Image">
+                            <img src="@Session["User_Avatar"]" class="img-circle" alt="User Image">
                         }
                         else
                         {
@@ -98,7 +106,7 @@
                         }
                     </div>
                     <div class="pull-left info">
-                        <p>@ViewBag.UserInfo.HoTen</p>
+                        <p>@Session["User_Ten"]</p>
                         <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                     </div>
                 </div>
@@ -108,10 +116,10 @@
                         <a href="#">
                             <i class="fa fa-dashboard"></i> <span>Hệ thống</span> <i class="fa fa-angle-left pull-right"></i>
                         </a>
-                        @if (ViewBag.UserInfo.Quyen < 2)
+                        @if (Session["User_Quyen"].ToString() == "1" || Session["User_Quyen"].ToString() == "0")
                         {
                             <ul class="treeview-menu">
-                                @if (ViewBag.UserInfo.Quyen == 0)
+                                @if (Session["User_Quyen"].ToString() == "0")
                                 {
                                     <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i> Quản lý đơn vị thư viện</a></li>
                                 }
@@ -207,5 +215,6 @@
     <!-- AdminLTE for demo purposes -->
     <script src="~/assets/admin/dist/js/demo.js"></script>
     <script src="~/Scripts/toastr.min.js"></script>
+    <script src="~/assets/admin/js/Login.js"></script>
 </body>
 </html>

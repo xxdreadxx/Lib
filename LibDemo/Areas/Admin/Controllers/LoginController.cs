@@ -37,7 +37,7 @@ namespace LibDemo.Areas.Admin.Controllers
                             message = "Tên đăng nhập không tồn tại trong hệ thống hoặc không thuộc đơn vị này, đăng nhập thất bại!"
                         }, JsonRequestBehavior.AllowGet);
                     }
-                    else if(tk==-2)
+                    else if (tk == -2)
                     {
                         return Json(new
                         {
@@ -88,6 +88,15 @@ namespace LibDemo.Areas.Admin.Controllers
                     message = "Xảy ra lỗi khi duyệt đơn vị, đăng nhập thất bại!"
                 }, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        public JsonResult LogOut()
+        {
+            Session["IDNV"] = null;
+            return Json(new
+            {
+                status = true
+            }, JsonRequestBehavior.AllowGet);
         }
     }
 }
