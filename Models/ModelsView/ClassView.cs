@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,16 +13,19 @@ namespace Models.ModelsView
 
     }
 
+    [NotMapped]
     public class sNhanVienView : sNhanVien
     {
         public string DonViThuVien { get; set; }
     }
 
+    [NotMapped]
     public class cBanDocView : cBanDoc
     {
         public string DonViThuVien { get; set; }
     }
 
+    [NotMapped]
     public class cAnPhamView : cAnPham
     {
         public string NXB { get; set; }
@@ -30,6 +34,7 @@ namespace Models.ModelsView
         public string KieuAP { get; set; }
     }
 
+    [NotMapped]
     public class cMCBView : cMCB
     {
         public string NhanDe { get; set; }
@@ -37,6 +42,7 @@ namespace Models.ModelsView
         public string DonViHienTai { get; set; }
     }
 
+    [NotMapped]
     public class cPhieuMuonView : cPhieuMuon
     {
         public string MCB { get; set; }

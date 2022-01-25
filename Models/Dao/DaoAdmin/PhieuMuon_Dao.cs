@@ -81,7 +81,7 @@ namespace Models.Dao.DaoAdmin
                         NgayHenTra = ds.NgayHenTra,
                         NgayMuon = ds.NgayMuon,
                         NgayTra = ds.NgayTra,
-                        DonVi = dv.TenDonVi
+                        DonVi = dv.TenDonVi,
                         TrangThai = ds.TrangThai
                     }).ToList();
             return item;

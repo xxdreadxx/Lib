@@ -18,30 +18,30 @@ namespace Models.Dao.DaoAdmin
         }
 
         //0: đăng nhập thành công/ 1: username ko tồn tại/ 2: sai password/ 3: tài khoản bị dừng sử dụng hoặc chưa kích hoạt
-        public byte getDataByUsername(string username, string password, int IDDonVi)
+        public long getDataByUsername(string username, string password, int IDDonVi)
         {
             sNhanVien item = new sNhanVien();
             item = db.sNhanViens.FirstOrDefault(x => x.Username == username && x.IDDonVi == IDDonVi && x.TrangThai != 10);
             if (item == null)
             {
-                return 1;
+                return -1;
             }
             else
             {
                 item = db.sNhanViens.FirstOrDefault(x => x.Username == username && x.Password == password && x.IDDonVi == IDDonVi && x.TrangThai != 10);
                 if (item == null)
                 {
-                    return 2;
+                    return -2;
                 }
                 else
                 {
                     if (item.TrangThai != 1)
                     {
-                        return 3;
+                        return -3;
                     }
                     else
                     {
-                        return 0;
+                        return item.ID;
                     }
                 }
             }

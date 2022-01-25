@@ -11,6 +11,10 @@ namespace LibDemo.Areas.Admin.Controllers
         // GET: Admin/Home
         public ActionResult Index()
         {
+            if (Session["IDNV"] == null)
+            {
+                return RedirectToAction("Index", "Login");
+            }
             return View();
         }
     }

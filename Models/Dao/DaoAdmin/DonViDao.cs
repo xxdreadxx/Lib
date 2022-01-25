@@ -16,6 +16,11 @@ namespace Models.Dao.DaoAdmin
             return db.sDonVis.FirstOrDefault(x => x.ID == ID);
         }
 
+        public sDonVi getDataByHost(string host)
+        {
+            return db.sDonVis.FirstOrDefault(x => x.Url == host);
+        }
+
         public List<sDonVi> getAllDataView(string search)
         {
             List<sDonVi> lst = new List<sDonVi>();
