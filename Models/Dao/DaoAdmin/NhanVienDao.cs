@@ -160,6 +160,30 @@ namespace Models.Dao.DaoAdmin
             }
         }
 
+        public byte UpdatePass(string pass, long IDNV)
+        {
+            try
+            {
+                sNhanVien item = db.sNhanViens.FirstOrDefault(x => x.ID == IDNV);
+                if (item.Password == pass)
+                {
+                    return 1;
+                }
+                else
+                {
+                    item.Password = pass;
+                    item.NgaySua = DateTime.Now;
+                    item.NguoiSua = IDNV;
+                    db.SaveChanges();
+                    return 0;
+                }
+            }
+            catch
+            {
+                return 2;
+            }
+        }
+
         public bool Delete(long ID, long IDNV)
         {
             try

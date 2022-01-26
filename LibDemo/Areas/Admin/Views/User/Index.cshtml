@@ -1,9 +1,12 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
-
+<style>
+    .a_hover:hover {
+        cursor: pointer
+    }
+</style>
 <section class="content-header">
     <h1>
         Thông tin nhân viên
@@ -67,6 +70,7 @@
                 <div class="tab-content">
                     <div class="active tab-pane" id="activity">
                         <div class="row">
+                            <input type="hidden" id="hdIDNV" value="@Session["IDNV"]" />
                             <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
                                 <div class="row">
                                     <div class="col-md-3" style="padding-top:5px">
@@ -93,7 +97,18 @@
                                         Ảnh đại diện:
                                     </div>
                                     <div class="col-md-9">
-                                        <input type="file" id="fImage" accept="*/image" />
+                                        @if (ViewBag.UserInfo.AnhDaiDien == null || ViewBag.UserInfo.AnhDaiDien.Trim() == "")
+                                        {
+                                            <img id="imgAvatar" src="~/assets/admin/images/no-image.jpg" width="200" height="150" />
+                                        }
+                                        else
+                                        {
+                                            <img id="imgAvatar" src="@ViewBag.UserInfo.AnhDaiDien" width="200" height="150" />
+                                        }
+                                        <label for="fImage" class="a_hover">
+                                            <i class="fa fa-camera" for="imageUpload" style="position:relative; top:-50px; right:40px; font-size:30px; color:#12111175"></i>
+                                        </label>
+                                        <input type="file" id="fImage" onchange="changeIMG()" name="fImage" accept="*/image" style="display:none" />
                                     </div>
                                 </div>
                             </div>
@@ -103,7 +118,7 @@
                                         Số CMTND:
                                     </div>
                                     <div class="col-md-9">
-                                        <input type="text" id="txtCMT" class="form-control" value="@ViewBag.UserInfo.CMTND" />
+                                        <input type="number" id="txtCMT" class="form-control" value="@ViewBag.UserInfo.CMTND" />
                                     </div>
                                 </div>
                             </div>
@@ -123,7 +138,7 @@
                                         Số điện thoại:* (+84)
                                     </div>
                                     <div class="col-md-9">
-                                        <input type="text" id="txtSDT" class="form-control" value="@ViewBag.UserInfo.SDT" />
+                                        <input type="number" id="txtSDT" class="form-control" value="@ViewBag.UserInfo.SDT" />
                                     </div>
                                 </div>
                             </div>
@@ -155,7 +170,7 @@
                                         Mật khẩu cũ:*
                                     </div>
                                     <div class="col-md-9">
-                                        <input type="text" id="txtOldPass" class="form-control" />
+                                        <input type="password" id="txtOldPass" disabled value="@ViewBag.UserInfo.Password" class="form-control" />
                                     </div>
                                 </div>
                             </div>
@@ -165,17 +180,17 @@
                                         Mật khẩu mới:*
                                     </div>
                                     <div class="col-md-9">
-                                        <input type="text" id="txtNewPass" class="form-control" />
+                                        <input type="password" id="txtNewPass" class="form-control" />
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
                                 <div class="row">
                                     <div class="col-md-3" style="padding-top:5px">
-                                        Nhập lại mật khẩu:
+                                        Nhập lại mật khẩu:*
                                     </div>
                                     <div class="col-md-9">
-                                        <input type="text" id="txtPassConfirm" class="form-control" />
+                                        <input type="password" id="txtPassConfirm" class="form-control" />
                                     </div>
                                 </div>
                             </div>
@@ -194,3 +209,6 @@
         </div>
     </div>
 </section>
+@section scripts{
+    <script src="~/assets/admin/js/Login.js"></script>
+}

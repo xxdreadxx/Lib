@@ -44,7 +44,14 @@
                     <ul class="nav navbar-nav">
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <img src="~/assets/admin/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                                @if (Session["User_Avatar"] != null && Session["User_Avatar"].ToString() != "")
+                                {
+                                    <img src="@Session["User_Avatar"]" class="user-image" alt="User Image">
+                                }
+                                else
+                                {
+                                    <img src="~/assets/admin/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                                }
                                 <span class="hidden-xs">@Session["User_Ten"]</span>
                             </a>
                             <ul class="dropdown-menu">
@@ -215,6 +222,6 @@
     <!-- AdminLTE for demo purposes -->
     <script src="~/assets/admin/dist/js/demo.js"></script>
     <script src="~/Scripts/toastr.min.js"></script>
-    <script src="~/assets/admin/js/Login.js"></script>
+    @RenderSection("scripts", required: false)
 </body>
 </html>

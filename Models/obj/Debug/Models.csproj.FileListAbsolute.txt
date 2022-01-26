@@ -1,0 +1,12 @@
+D:\Projects\Another\lib\Models\obj\Debug\Models.csproj.CoreCompileInputs.cache
+D:\Projects\Another\lib\Models\bin\Debug\Models.dll.config
+D:\Projects\Another\lib\Models\bin\Debug\Models.dll
+D:\Projects\Another\lib\Models\bin\Debug\Models.pdb
+D:\Projects\Another\lib\Models\bin\Debug\EntityFramework.dll
+D:\Projects\Another\lib\Models\bin\Debug\EntityFramework.SqlServer.dll
+D:\Projects\Another\lib\Models\bin\Debug\EntityFramework.xml
+D:\Projects\Another\lib\Models\bin\Debug\EntityFramework.SqlServer.xml
+D:\Projects\Another\lib\Models\obj\Debug\Models.csproj.CopyComplete
+D:\Projects\Another\lib\Models\obj\Debug\Models.dll
+D:\Projects\Another\lib\Models\obj\Debug\Models.pdb
+D:\Projects\Another\lib\Models\obj\Debug\Models.csproj.AssemblyReference.cache
