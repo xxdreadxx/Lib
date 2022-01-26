@@ -1,5 +1,4 @@
-﻿<!DOCTYPE html>
-<html lang="zxx">
+﻿<html lang="zxx">
 
 <head>
     <title>Chronicle Education Category Bootstrap Responsive website Template | Home :: w3layouts</title>
@@ -8,14 +7,14 @@
     <meta name="keywords" content="Chronicle Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template,
 	SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony Ericsson, Motorola web design" />
     @*<script>
-        addEventListener("load", function () {
-            setTimeout(hideURLbar, 0);
-        }, false);
+            addEventListener("load", function () {
+                setTimeout(hideURLbar, 0);
+            }, false);
 
-        function hideURLbar() {
-            window.scrollTo(0, 1);
-        }
-    </script>*@
+            function hideURLbar() {
+                window.scrollTo(0, 1);
+            }
+        </script>*@
     <!-- Custom Theme files -->
     <link href="~/assets/client/css/bootstrap.css" rel="stylesheet" />
     <!-- shop css -->
@@ -32,6 +31,7 @@
     <!-- body -->
     @*<link href="//fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">*@
     <!-- //online-fonts -->
+    @RenderSection("Styles", required: false)
 </head>
 
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
@@ -53,14 +53,14 @@
                         </h1>
                     </div>
                     <!-- Collect the nav links, forms, and other content for toggling -->
-                    <div class="collapse navbar-collapse navbar-ex1-collapse nav-right">
+                    <div class="collapse navbar-collapse navbar-ex1-collapse nav-right menuhead">
                         <ul class="nav navbar-nav navbar-left cl-effect-15">
                             <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
                             <li class="hidden">
                                 <a class="page-scroll" href="#page-top"></a>
                             </li>
                             <li>
-                                <a href="index.html">Trang chủ</a>
+                                <a href="/">Trang chủ</a>
                             </li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle effect-3" data-toggle="dropdown">
@@ -69,24 +69,24 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="shop.html">Sách</a>
+                                        <a href="/Book/Index">Sách</a>
                                     </li>
                                     <li>
-                                        <a href="single_product.html">Báo</a>
+                                        <a href="/Newspaper/Index">Báo</a>
                                     </li>
                                     <li>
-                                        <a href="checkout.html">Tạp chí</a>
+                                        <a href="/Magazine/Index">Tạp chí</a>
                                     </li>
                                 </ul>
                             </li>
                             <li>
-                                <a href="about.html">Danh sách đơn vị</a>
+                                <a href="/LibraryList/Index">Danh sách đơn vị</a>
                             </li>
-                            <li>
+                            @*<li>
                                 <a href="contact.html">Góp ý</a>
-                            </li>
+                            </li>*@
                             <li>
-                                <a href="login.html" title="SignIn & SignUp">
+                                <a href="/User/Login" title="SignIn & SignUp">
                                     <span class="fa fa-user nav-icon" aria-hidden="true"></span>
                                 </a>
                             </li>
@@ -170,7 +170,7 @@
                 <!-- //footer-grids -->
                 <!-- footer social -->
                 <div class="footer-social text-center">
-                    <h4>stay connected</h4>
+                    <h4>liên kết với chúng tôi</h4>
                     <ul>
                         <li>
                             <a href="#">
@@ -290,5 +290,6 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="~/assets/client/js/bootstrap.js"></script>
+    @RenderSection("Scripts", required: false)
 </body>
 </html>
