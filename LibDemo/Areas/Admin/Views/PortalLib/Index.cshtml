@@ -1,0 +1,179 @@
+﻿@using Models.EF;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    List<sDonVi> lst = ViewBag.lsttData;
+}
+<style>
+    td a:hover {
+        cursor: pointer;
+    }
+</style>
+<section class="content-header">
+    <h1>
+        Danh sách
+        <small>đơn vị thư viện</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/Admin/Home/Index"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Hệ thống</a></li>
+        <li class="active">Danh sách đơn vị thư viện</li>
+    </ol>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <div class="row" style="padding-right:10px; padding-left:10px">
+                        <div class="col-md-3">
+                            <a onclick="AddData()" class="btn btn-primary btn-flat">Thêm mới</a>
+                        </div>
+                        <div class="col-md-4">
+                        </div>
+                        <div class="col-md-5">
+                            <div class="input-group">
+                                <input type="text" placeholder="Nhập nội dung tìm kiếm ..." class="form-control" />
+                                <span class="input-group-btn">
+                                    <a class="btn btn-primary btn-flat">Tìm kiếm</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Mã đơn vị</th>
+                                <th>Tên đơn vị</th>
+                                <th>Đường dẫn</th>
+                                <th>Trạng thái</th>
+                                <th>Chức năng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int stt = 0;
+
+                                foreach (var item in lst)
+                                {
+                                    stt++;
+                                    <tr>
+                                        <td>@stt</td>
+                                        <td>
+                                            @item.MaDonVi
+                                        </td>
+                                        <td>@item.TenDonVi</td>
+                                        <td><a href="@item.Url" target="_blank">@item.Url</a></td>
+                                        @if (item.TrangThai == 1)
+                                        {
+                                            <td><span class="text-aqua">Đang sử dụng</span></td>
+                                        }
+                                        else
+                                        {
+                                            <td><span class="text-red">Dừng sử dụng</span></td>
+                                        }
+                                        <td>
+                                            <a onclick="Edit(@item.ID)" style="padding-right:5px" title="Sửa"><i class="fa fa-pencil"></i></a>
+                                            <a onclick="Change(@item.ID)" style="padding-right:5px" title="Đổi trạng thái"><i class="fa fa-check-circle"></i></a>
+                                            <a onclick="Delete(@item.ID)" style="padding-right:5px" title="Xóa"><i class="fa fa-recycle"></i></a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="mdAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="h5Name">Thêm mới</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <input type="hidden" id="hdID" value="0" />
+                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                        <div class="row">
+                            <div class="col-md-3" style="padding-top:5px">
+                                Mã đơn vị:*
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" id="txtMaDonVi" class="form-control" value="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                        <div class="row">
+                            <div class="col-md-3" style="padding-top:5px">
+                                Tên đơn vị:*
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" id="txtTenDonVi" class="form-control" value="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                        <div class="row">
+                            <div class="col-md-3" style="padding-top:5px">
+                                Cổng:*
+                            </div>
+                            <div class="col-md-9">
+                                <input type="number" id="txtUrl" class="form-control" value="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                        <div class="row">
+                            <div class="col-md-3" style="padding-top:5px">
+                                Trang thái:
+                            </div>
+                            <div class="col-md-9">
+                                <label>
+                                    <input type="radio" name="r2" id="chkSD" class="minimal-red" checked> Sử dụng
+                                </label>
+                                <label>
+                                    <input type="radio" name="r2" id="chkKSD" class="minimal-red"> Không sử dụng
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                        <div class="row">
+                            <div class="col-md-9"></div>
+                            <div class="col-md-3" style="text-align:right">
+                                <a onclick="Edit()" class="btn btn-primary btn-block"><b>Cập nhật</b></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/assets/admin/js/portal.js"></script>
+    <script>
+        $(function () {
+            $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+                checkboxClass: 'icheckbox_minimal-red',
+                radioClass: 'iradio_minimal-red'
+            });
+        })
+    </script>
+}
