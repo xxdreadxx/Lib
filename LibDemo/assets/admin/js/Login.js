@@ -1,6 +1,4 @@
-﻿const { trim } = require("jquery");
-
-function DangNhap() {
+﻿function DangNhap() {
     var username = $('#txtUsername').val();
     var pass = $('#txtPassword').val();
     $.ajax({
@@ -80,7 +78,7 @@ function updatePass() {
         formData.append("ID", IDNV);
         formData.append("NewPass", NewPass);
         $.ajax({
-            url: '/User/UpdatePass',
+            url: '/Admin/User/UpdatePass',
             data: formData,
             cache: false,
             contentType: false,
@@ -156,7 +154,7 @@ function UpdateInfo() {
         formData.append("Email", Email);
         formData.append("Image", Image);
         $.ajax({
-            url: '/User/UpdateInfo',
+            url: '/Admin/User/UpdateInfo',
             data: formData,
             cache: false,
             contentType: false,

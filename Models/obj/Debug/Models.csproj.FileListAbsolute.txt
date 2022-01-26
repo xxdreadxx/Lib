@@ -10,3 +10,15 @@ D:\Projects\Another\lib\Models\obj\Debug\Models.csproj.CopyComplete
 D:\Projects\Another\lib\Models\obj\Debug\Models.dll
 D:\Projects\Another\lib\Models\obj\Debug\Models.pdb
 D:\Projects\Another\lib\Models\obj\Debug\Models.csproj.AssemblyReference.cache
+D:\DevApp\NewPjs\Models\bin\Debug\Models.dll.config
+D:\DevApp\NewPjs\Models\bin\Debug\Models.dll
+D:\DevApp\NewPjs\Models\bin\Debug\Models.pdb
+D:\DevApp\NewPjs\Models\bin\Debug\EntityFramework.dll
+D:\DevApp\NewPjs\Models\bin\Debug\EntityFramework.SqlServer.dll
+D:\DevApp\NewPjs\Models\bin\Debug\EntityFramework.xml
+D:\DevApp\NewPjs\Models\bin\Debug\EntityFramework.SqlServer.xml
+D:\DevApp\NewPjs\Models\obj\Debug\Models.csproj.AssemblyReference.cache
+D:\DevApp\NewPjs\Models\obj\Debug\Models.csproj.CoreCompileInputs.cache
+D:\DevApp\NewPjs\Models\obj\Debug\Models.csproj.CopyComplete
+D:\DevApp\NewPjs\Models\obj\Debug\Models.dll
+D:\DevApp\NewPjs\Models\obj\Debug\Models.pdb

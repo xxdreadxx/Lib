@@ -40,7 +40,7 @@ namespace LibDemo.Areas.Admin.Controllers
             item.DiaChi = f["DiaChi"].ToString();
             item.SDT = int.Parse(f["SDT"].ToString());
             item.Email = f["Email"].ToString();
-            if (file != null)
+            if (file.Count > 0)
             {
                 if (file[0].ContentLength > 0)
                 {

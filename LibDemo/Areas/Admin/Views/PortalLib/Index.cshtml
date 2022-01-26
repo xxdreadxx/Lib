@@ -78,8 +78,8 @@
                                         }
                                         <td>
                                             <a onclick="Edit(@item.ID)" style="padding-right:5px" title="Sửa"><i class="fa fa-pencil"></i></a>
-                                            <a onclick="Change(@item.ID)" style="padding-right:5px" title="Đổi trạng thái"><i class="fa fa-check-circle"></i></a>
-                                            <a onclick="Delete(@item.ID)" style="padding-right:5px" title="Xóa"><i class="fa fa-recycle"></i></a>
+                                            <a onclick="Change(@item.ID, @item.TrangThai)" style="padding-right:5px" title="Đổi trạng thái"><i class="fa fa-check-circle"></i></a>
+                                            <a onclick="DelData(@item.ID)" style="padding-right:5px" title="Xóa"><i class="fa fa-recycle"></i></a>
                                         </td>
                                     </tr>
                                 }
@@ -129,7 +129,7 @@
                                 Cổng:*
                             </div>
                             <div class="col-md-9">
-                                <input type="number" id="txtUrl" class="form-control" value="" />
+                                <input type="text" id="txtUrl" class="form-control" value="" />
                             </div>
                         </div>
                     </div>
@@ -140,32 +140,46 @@
                             </div>
                             <div class="col-md-9">
                                 <label>
-                                    <input type="radio" name="r2" id="chkSD" class="minimal-red" checked> Sử dụng
+                                    <input type="radio" name="r2" id="chkSD" value="1" class="minimal-red" checked> Sử dụng
                                 </label>
                                 <label>
-                                    <input type="radio" name="r2" id="chkKSD" class="minimal-red"> Không sử dụng
+                                    <input type="radio" name="r2" id="chkKSD" value="2" class="minimal-red"> Không sử dụng
                                 </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
-                        <div class="row">
-                            <div class="col-md-9"></div>
-                            <div class="col-md-3" style="text-align:right">
-                                <a onclick="Edit()" class="btn btn-primary btn-block"><b>Cập nhật</b></a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Lưu</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" onclick="SaveData()" class="btn btn-primary">Lưu</button>
             </div>
         </div>
     </div>
 </div>
 
+<div class="modal fade" id="mdDel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Xóa đơn vị</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <input type="hidden" id="hdID_Del" value="0" />
+                    Bạn có chắc chắn muốn xóa đơn vị hay không?
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" onclick="Delete()" class="btn btn-primary">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
 @section scripts{
     <script src="~/assets/admin/js/portal.js"></script>
     <script>
