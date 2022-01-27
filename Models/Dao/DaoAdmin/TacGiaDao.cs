@@ -30,10 +30,12 @@ namespace Models.Dao.DaoAdmin
             return lst;
         }
 
-        public bool Insert(aTacGia result)
+        public bool Insert(aTacGia result, long IDNV)
         {
             try
             {
+                result.NguoiTao = IDNV;
+                result.NgayTao = DateTime.Now;
                 db.aTacGias.Add(result);
                 db.SaveChanges();
                 return true;

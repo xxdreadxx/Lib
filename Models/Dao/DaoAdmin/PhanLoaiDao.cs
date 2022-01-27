@@ -30,10 +30,12 @@ namespace Models.Dao.DaoAdmin
             return lst;
         }
 
-        public bool Insert(aPhanLoaiAP result)
+        public bool Insert(aPhanLoaiAP result, long IDNV)
         {
             try
             {
+                result.NguoiTao = IDNV;
+                result.NgayTao = DateTime.Now;
                 db.aPhanLoaiAPs.Add(result);
                 db.SaveChanges();
                 return true;
