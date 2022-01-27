@@ -1,0 +1,287 @@
+﻿@using Models.EF;
+@using Models.ModelsView;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    List<sNhanVienView> lst = ViewBag.lsttData;
+}
+
+<style>
+    td a:hover {
+        cursor: pointer;
+    }
+</style>
+<section class="content-header">
+    <h1>
+        Danh sách
+        <small>thủ thư</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/Admin/Home/Index"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Hệ thống</a></li>
+        <li class="active">Danh sách thủ thư</li>
+    </ol>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <div class="row" style="padding-right:10px; padding-left:10px">
+                        <div class="col-md-3">
+                            <a onclick="AddData()" class="btn btn-primary btn-flat">Thêm mới</a>
+                        </div>
+                        <div class="col-md-4">
+                        </div>
+                        <div class="col-md-5">
+                            <div class="input-group">
+                                <input type="text" id="txtSearch" placeholder="Nhập nội dung tìm kiếm ..." class="form-control" value="@ViewBag.Search" />
+                                <span class="input-group-btn">
+                                    <a class="btn btn-primary btn-flat" onclick="Search()">Tìm kiếm</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Họ tên</th>
+                                <th>Địa chỉ</th>
+                                <th>Số điện thoại</th>
+                                <th>Quyền</th>
+                                <th>Trạng thái</th>
+                                <th>Chức năng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int stt = 0;
+
+                                foreach (var item in lst)
+                                {
+                                    stt++;
+                                    <tr>
+                                        <td>@stt</td>
+                                        <td>@item.HoTen</td>
+                                        <td>
+                                            @item.DiaChi
+                                        </td>
+                                        <td>(+84) @item.SDT</td>
+                                        @if (item.Quyen == 0)
+                                        {
+                                            <td><span class="label label-danger">Quản trị viên</span></td>
+                                        }
+                                        else if (item.Quyen == 1)
+                                        {
+                                            <td><span class="label label-success">Thủ thư cao cấp</span></td>
+                                        }
+                                        else
+                                        {
+                                            <td><span class="label label-primary">Thủ thư</span></td>
+                                        }
+                                        @if (item.TrangThai == 1)
+                                        {
+                                            <td><span class="text-aqua">Đang sử dụng</span></td>
+                                        }
+                                        else if (item.TrangThai == 2)
+                                        {
+                                            <td><span class="text-yellow">Khóa</span></td>
+                                        }
+                                    <td>
+                                        <a onclick="Edit(@item.ID)" style="padding-right:5px" title="Sửa"><i class="fa fa-pencil"></i></a>
+                                        @if (item.TrangThai == 1)
+                                        {
+                                            <a onclick="Change(@item.ID, @item.TrangThai)" style="padding-right:5px" title="Khóa sử dụng"><i class="fa fa-lock"></i></a>
+                                        }
+                                        else
+                                        {
+                                            <a onclick="Change(@item.ID, @item.TrangThai)" style="padding-right:5px" title="Mở khóa sử dụng"><i class="fa fa-key"></i></a>
+                                        }
+                                        <a onclick="DelData(@item.ID)" style="padding-right:5px" title="Xóa"><i class="fa fa-recycle"></i></a>
+                                    </td>
+                                    </tr>
+                                }
+                            }
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="mdAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="h5Name">Thêm mới</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <input type="hidden" id="hdID" value="0" />
+                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                        <div class="row">
+                            <div class="col-md-3" style="padding-top:5px">
+                                Họ tên:*
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" id="txtHoTen" class="form-control" value="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                        <div class="row">
+                            <div class="col-md-3" style="padding-top:5px">
+                                Ngày sinh:
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" id="txtNgaySinh" class="form-control" value="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                        <div class="row">
+                            <div class="col-md-3" style="padding-top:5px">
+                                Địa chỉ:
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" id="txtDiaChi" class="form-control" value="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                        <div class="row">
+                            <div class="col-md-3" style="padding-top:5px">
+                                CMTND:*
+                            </div>
+                            <div class="col-md-9">
+                                <input type="number" id="txtCMT" class="form-control" value="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                        <div class="row">
+                            <div class="col-md-3" style="padding-top:5px">
+                                Số điện thoại:*
+                            </div>
+                            <div class="col-md-9">
+                                <input type="number" id="txtSDT" class="form-control" value="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                        <div class="row">
+                            <div class="col-md-3" style="padding-top:5px">
+                                Email:
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" id="txtEmail" class="form-control" value="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                        <div class="row">
+                            <div class="col-md-3" style="padding-top:5px">
+                                Tên đăng nhập:*
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" id="txtUsername" class="form-control" value="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                        <div class="row">
+                            <div class="col-md-3" style="padding-top:5px">
+                                Ảnh đại diện:
+                            </div>
+                            <div class="col-md-9">
+                                <img id="imgAvatar" src="~/assets/admin/images/no-image.jpg" width="200" height="150" />
+                                <label for="fImage" class="a_hover">
+                                    <i class="fa fa-camera" for="imageUpload" style="position:relative; top:-50px; right:40px; font-size:30px; color:#12111175"></i>
+                                </label>
+                                <input type="file" id="fImage" onchange="changeIMG()" name="fImage" accept="*/image" style="display:none" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                        <div class="row">
+                            <div class="col-md-3" style="padding-top:5px">
+                                Loại quyền:
+                            </div>
+                            <div class="col-md-9">
+                                <label style="padding-right:10px">
+                                    <input type="radio" name="r1" id="chkAdmin" value="1" class="minimal-red" checked> Quản trị viên
+                                </label>
+                                <label style="padding-right:10px">
+                                    <input type="radio" name="r1" id="chkQL" value="2" class="minimal-red"> Thủ thư cao cấp
+                                </label>
+                                <label style="padding-right:10px">
+                                    <input type="radio" name="r1" id="chkNV" value="2" class="minimal-red"> Thủ thư
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                        <div class="row">
+                            <div class="col-md-3" style="padding-top:5px">
+                                Trang thái:
+                            </div>
+                            <div class="col-md-9">
+                                <label style="padding-right:10px">
+                                    <input type="radio" name="r2" id="chkSD" value="1" class="minimal-red" checked> Sử dụng
+                                </label>
+                                <label style="padding-right:10px">
+                                    <input type="radio" name="r2" id="chkK" value="2" class="minimal-red"> Khóa
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" onclick="SaveData()" class="btn btn-primary">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="mdDel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Xóa thủ thư</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="padding-left:15px">
+                    <input type="hidden" id="hdID_Del" value="0" />
+                    Bạn có chắc chắn muốn xóa tài khoản này hay không?
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" onclick="Delete()" class="btn btn-primary">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/assets/admin/js/librarian.js"></script>
+    <script>
+        $(function () {
+            $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+                checkboxClass: 'icheckbox_minimal-red',
+                radioClass: 'iradio_minimal-red'
+            });
+        })
+    </script>
+}

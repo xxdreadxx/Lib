@@ -79,7 +79,7 @@ namespace Models.Dao.DaoAdmin
             {
                 item = (from ds in db.sNhanViens
                         join dv in db.sDonVis on ds.IDDonVi equals dv.ID
-                        where ds.IDDonVi == IDDV
+                        where ds.IDDonVi == IDDV && ds.TrangThai != 10
                         select new sNhanVienView
                         {
                             ID = ds.ID,
@@ -94,6 +94,7 @@ namespace Models.Dao.DaoAdmin
                             Password = ds.Password,
                             Quyen = ds.Quyen,
                             SDT = ds.SDT,
+                            TrangThai = ds.TrangThai,
                             Username = ds.Username
                         }).ToList();
             }
@@ -101,7 +102,7 @@ namespace Models.Dao.DaoAdmin
             {
                 item = (from ds in db.sNhanViens
                         join dv in db.sDonVis on ds.IDDonVi equals dv.ID
-                        where ds.IDDonVi == IDDV && ds.HoTen.Contains(search)
+                        where ds.IDDonVi == IDDV && ds.HoTen.Contains(search) && ds.TrangThai != 10
                         select new sNhanVienView
                         {
                             ID = ds.ID,
@@ -116,6 +117,7 @@ namespace Models.Dao.DaoAdmin
                             Password = ds.Password,
                             Quyen = ds.Quyen,
                             SDT = ds.SDT,
+                            TrangThai = ds.TrangThai,
                             Username = ds.Username
                         }).ToList();
             }
@@ -123,10 +125,13 @@ namespace Models.Dao.DaoAdmin
             return item;
         }
 
-        public bool Insert(sNhanVien nv)
+        public bool Insert(sNhanVien nv, long IDNV)
         {
             try
             {
+                nv.Password = "123456";
+                nv.NgayTao = DateTime.Now;
+                nv.NguoiTao = IDNV;
                 db.sNhanViens.Add(nv);
                 db.SaveChanges();
                 return true;

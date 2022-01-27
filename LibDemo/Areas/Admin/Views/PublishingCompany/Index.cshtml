@@ -2,8 +2,9 @@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
-    List<sDonVi> lst = ViewBag.lsttData;
+    List<aNXB> lst = ViewBag.lsttData;
 }
+
 <style>
     td a:hover {
         cursor: pointer;
@@ -12,12 +13,12 @@
 <section class="content-header">
     <h1>
         Danh sách
-        <small>đơn vị thư viện</small>
+        <small>nhà xuất bản</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="/Admin/Home/Index"><i class="fa fa-dashboard"></i> Home</a></li>
         <li><a href="#">Hệ thống</a></li>
-        <li class="active">Danh sách đơn vị thư viện</li>
+        <li class="active">Danh sách nhà xuất bản</li>
     </ol>
 </section>
 
@@ -47,9 +48,7 @@
                         <thead>
                             <tr>
                                 <th>STT</th>
-                                <th>Mã đơn vị</th>
-                                <th>Tên đơn vị</th>
-                                <th>Đường dẫn</th>
+                                <th>Tên nhà xuất bản</th>
                                 <th>Trạng thái</th>
                                 <th>Chức năng</th>
                             </tr>
@@ -63,22 +62,25 @@
                                     stt++;
                                     <tr>
                                         <td>@stt</td>
-                                        <td>
-                                            @item.MaDonVi
-                                        </td>
-                                        <td>@item.TenDonVi</td>
-                                        <td><a href="@item.Url" target="_blank">@item.Url</a></td>
+                                        <td>@item.TenNXB</td>
                                         @if (item.TrangThai == 1)
                                         {
                                             <td><span class="text-aqua">Đang sử dụng</span></td>
                                         }
-                                        else
+                                        else if (item.TrangThai == 2)
                                         {
-                                            <td><span class="text-red">Dừng sử dụng</span></td>
+                                            <td><span class="text-yellow">Khóa</span></td>
                                         }
                                         <td>
                                             <a onclick="Edit(@item.ID)" style="padding-right:5px" title="Sửa"><i class="fa fa-pencil"></i></a>
-                                            <a onclick="Change(@item.ID, @item.TrangThai)" style="padding-right:5px" title="Đổi trạng thái"><i class="fa fa-check-circle"></i></a>
+                                            @if (item.TrangThai == 1)
+                                            {
+                                                <a onclick="Change(@item.ID, @item.TrangThai)" style="padding-right:5px" title="Khóa sử dụng"><i class="fa fa-lock"></i></a>
+                                            }
+                                            else
+                                            {
+                                                <a onclick="Change(@item.ID, @item.TrangThai)" style="padding-right:5px" title="Mở khóa sử dụng"><i class="fa fa-key"></i></a>
+                                            }
                                             <a onclick="DelData(@item.ID)" style="padding-right:5px" title="Xóa"><i class="fa fa-recycle"></i></a>
                                         </td>
                                     </tr>
@@ -106,30 +108,10 @@
                     <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
                         <div class="row">
                             <div class="col-md-3" style="padding-top:5px">
-                                Mã đơn vị:*
+                                Tên nhà xuất bản:*
                             </div>
                             <div class="col-md-9">
-                                <input type="text" id="txtMaDonVi" class="form-control" value="" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
-                        <div class="row">
-                            <div class="col-md-3" style="padding-top:5px">
-                                Tên đơn vị:*
-                            </div>
-                            <div class="col-md-9">
-                                <input type="text" id="txtTenDonVi" class="form-control" value="" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
-                        <div class="row">
-                            <div class="col-md-3" style="padding-top:5px">
-                                Cổng:*
-                            </div>
-                            <div class="col-md-9">
-                                <input type="text" id="txtUrl" class="form-control" value="" />
+                                <input type="text" id="txtNXB" class="form-control" value="" />
                             </div>
                         </div>
                     </div>
@@ -143,7 +125,7 @@
                                     <input type="radio" name="r2" id="chkSD" value="1" class="minimal-red" checked> Sử dụng
                                 </label>
                                 <label style="padding-right:10px">
-                                    <input type="radio" name="r2" id="chkKSD" value="2" class="minimal-red"> Không sử dụng
+                                    <input type="radio" name="r2" id="chkK" value="2" class="minimal-red"> Khóa
                                 </label>
                             </div>
                         </div>
@@ -170,7 +152,7 @@
             <div class="modal-body">
                 <div class="row" style="padding-left:15px">
                     <input type="hidden" id="hdID_Del" value="0" />
-                    Bạn có chắc chắn muốn xóa đơn vị hay không?
+                    Bạn có chắc chắn muốn xóa nà xuất bản hay không?
                 </div>
             </div>
             <div class="modal-footer">
@@ -181,8 +163,12 @@
     </div>
 </div>
 @section scripts{
-    <script src="~/assets/admin/js/portal.js"></script>
+    <script src="~/assets/admin/js/nxb.js"></script>
     <script>
+        $(document).ready(function () {
+            $('.treeview').removeClass('active');
+            $('#liDanhMuc').addClass('active');
+        });
         $(function () {
             $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
                 checkboxClass: 'icheckbox_minimal-red',

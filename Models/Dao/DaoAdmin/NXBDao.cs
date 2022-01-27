@@ -30,10 +30,12 @@ namespace Models.Dao.DaoAdmin
             return lst;
         }
 
-        public bool Insert(aNXB result)
+        public bool Insert(aNXB result, long IDNV)
         {
             try
             {
+                result.NgayTao = DateTime.Now;
+                result.NguoiTao = IDNV;
                 db.aNXBs.Add(result);
                 db.SaveChanges();
                 return true;
@@ -93,6 +95,18 @@ namespace Models.Dao.DaoAdmin
             {
                 return false;
             }
+        }
+
+        public long getCountMCB(int id)
+        {
+            long sl = 0;
+            var lstAP = db.cAnPhams.Where(x => x.TrangThai != 10 && x.IDNXB == id).ToList();
+            foreach(var item in lstAP)
+            {
+                var slmcb = db.cMCBs.Where(x => x.TrangThai != 10 && x.IDAnPam == item.ID).ToList().Count();
+                sl += slmcb;
+            }
+            return sl;
         }
     }
 }

@@ -21,18 +21,18 @@ namespace Models.Dao.DaoAdmin
             return db.sDonVis.FirstOrDefault(x => x.Url == host);
         }
 
-        public List<sDonVi> getAllDataView()
+        public List<sDonVi> getAllDataView(string search)
         {
             List<sDonVi> lst = new List<sDonVi>();
-            lst = db.sDonVis.Where(x => x.TrangThai != 10).ToList();
-            //if (search == "")
-            //{
-            //    lst = db.sDonVis.Where(x => x.TrangThai != 10).ToList();
-            //}
-            //else
-            //{
-            //    lst = db.sDonVis.Where(x => x.TrangThai != 10 && x.TenDonVi.Contains(search)).ToList();
-            //}
+            //lst = db.sDonVis.Where(x => x.TrangThai != 10).ToList();
+            if (search == "")
+            {
+                lst = db.sDonVis.Where(x => x.TrangThai != 10).ToList();
+            }
+            else
+            {
+                lst = db.sDonVis.Where(x => x.TrangThai != 10 && x.TenDonVi.Contains(search)).ToList();
+            }
             return lst;
         }
 
