@@ -107,10 +107,12 @@ namespace Models.Dao.DaoAdmin
             return item;
         }
 
-        public bool Insert(cAnPham result)
+        public bool Insert(cAnPham result, long IDNV)
         {
             try
             {
+                result.NguoiTao = IDNV;
+                result.NgayTao = DateTime.Now;
                 db.cAnPhams.Add(result);
                 db.SaveChanges();
                 return true;
@@ -180,6 +182,11 @@ namespace Models.Dao.DaoAdmin
             {
                 return false;
             }
+        }
+
+        public long GetCountMCB(long ID)
+        {
+            return db.cMCBs.Where(x => x.IDAnPam == ID && x.TrangThai != 10).ToList().Count();
         }
     }
 }

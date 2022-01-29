@@ -17,7 +17,7 @@ function Edit(id) {
         success: function (response) {
             if (response.status == true) {
                 $('#hdID').val(response.data.ID);
-                $('#txtPL').val(response.data.TenNXB);
+                $('#txtPL').val(response.data.TenPhanLoaiAP);
                 $("input[name=r2]").prop("checked", false);
                 $("input[name=r2][value='" + response.data.TrangThai + "']").prop("checked", true);
             }

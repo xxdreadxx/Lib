@@ -37,10 +37,10 @@ function Edit(id) {
             if (response.status == true) {
                 $('#hdID').val(response.data.ID);
                 $('#txtHoTen').val(response.data.HoTen);
-                $('#txtMaTG').val(response.data.CMTND);
-                $('#txtGioiThieu').val(response.data.SDT);
+                $('#txtMaTG').val(response.data.MaTG);
+                $('#txtGioiThieu').val(response.data.GioiThieu);
                 $('#txtDiaChi').val(response.data.DiaChi);
-                $('#txtNgayMat').val(response.data.Email);
+                $('#txtNgayMat').val(response.data.NgayMat);
                 $('#txtNgaySinh').val(response.data.NgaySinh);
                 document.getElementById("imgAvatar").src = "/assets/admin/images/no-image.jpg";
                 if (response.data.AnhDaiDien != null && response.data.AnhDaiDien != '') {
@@ -76,14 +76,9 @@ function SaveData() {
         $('#txtHoTen').focus();
         kt = false;
     }
-    else if (SDT.trim() == '') {
+    else if (MaTG.trim() == '') {
         toastr.warning('Chưa nhập mã tác giả!', '', { timeOut: 1000 });
         $('#txtSDT').focus();
-        kt = false;
-    }
-    else if (CMTND.trim() == '') {
-        toastr.warning('Chưa nhập cổng!', '', { timeOut: 1000 });
-        $('#txtMaTG').focus();
         kt = false;
     }
     if (kt == true) {

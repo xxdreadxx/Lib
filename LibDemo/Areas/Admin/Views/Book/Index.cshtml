@@ -1,0 +1,315 @@
+﻿@using Models.EF;
+@using Models.ModelsView;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    List<cAnPhamView> lst = ViewBag.lstData;
+    List<aTacGia> lstTG = ViewBag.lstTG;
+    List<aPhanLoaiAP> lstPLAP = ViewBag.lstPLAP;
+    List<aNXB> lstNXB = ViewBag.lstNXB;
+}
+
+<style>
+    td a:hover {
+        cursor: pointer;
+    }
+</style>
+<section class="content-header">
+    <h1>
+        Danh sách
+        <small>ấn phẩm</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/Admin/Home/Index"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Chức năng</a></li>
+        <li class="active">Danh sách ấn phẩm</li>
+    </ol>
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <div class="row" style="padding-right:10px; padding-left:10px">
+                        <div class="col-md-3">
+                            <a onclick="AddData()" class="btn btn-primary btn-flat">Thêm mới</a>
+                        </div>
+                        <div class="col-md-4">
+                        </div>
+                        <div class="col-md-5">
+                            <div class="input-group">
+                                <input type="text" id="txtSearch" placeholder="Nhập nội dung tìm kiếm ..." class="form-control" value="@ViewBag.Search" />
+                                <span class="input-group-btn">
+                                    <a class="btn btn-primary btn-flat" onclick="Search()">Tìm kiếm</a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Nhan đề</th>
+                                <th>Tác giả</th>
+                                <th>Nhà xuất bản</th>
+                                <th>Loại ấn phẩm</th>
+                                <th>Trang thái</th>
+                                <th>Chức năng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int stt = 0;
+
+                                foreach (var item in lst)
+                                {
+                                    stt++;
+                                    <tr>
+                                        <td>@stt</td>
+                                        <td>@item.NhanDe</td>
+                                        <td>@item.TacGia</td>
+                                        <td>@item.NXB</td>
+                                        <td>@item.PhanLoai</td>
+                                        @if (item.TrangThai == 1)
+                                        {
+                                            <td><span class="text-aqua">Đang sử dụng</span></td>
+                                        }
+                                        else if (item.TrangThai == 2)
+                                        {
+                                            <td><span class="text-yellow">Khóa</span></td>
+                                        }
+                                        <td>
+                                            <a onclick="Edit(@item.ID)" style="padding-right:5px" title="Sửa"><i class="fa fa-pencil"></i></a>
+                                            @if (item.TrangThai == 1)
+                                            {
+                                                <a onclick="Change(@item.ID, @item.TrangThai)" style="padding-right:5px" title="Khóa sử dụng"><i class="fa fa-lock"></i></a>
+                                            }
+                                            else
+                                            {
+                                                <a onclick="Change(@item.ID, @item.TrangThai)" style="padding-right:5px" title="Mở khóa sử dụng"><i class="fa fa-key"></i></a>
+                                            }
+                                            <a onclick="DelData(@item.ID)" style="padding-right:5px" title="Xóa"><i class="fa fa-recycle"></i></a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="mdAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="h5Name">Thêm mới</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <input type="hidden" id="hdID" value="0" />
+                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                        <div class="row">
+                            <div class="col-md-3" style="padding-top:5px">
+                                Mã ấn phẩm:*
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" id="txtMaAP" class="form-control" value="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                        <div class="row">
+                            <div class="col-md-3" style="padding-top:5px">
+                                Nhan đề:*
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" id="txtNhanDe" class="form-control" value="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                        <div class="row">
+                            <div class="col-md-3" style="padding-top:5px">
+                                Kiểu ấn phẩm:*
+                            </div>
+                            <div class="col-md-9">
+                                <select id="ddlKieuAP" class="form-control">
+                                    <option value="1"> Sách</option>
+                                    <option value="2"> Báo</option>
+                                    <option value="3"> Tạp chí</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                        <div class="row">
+                            <div class="col-md-3" style="padding-top:5px">
+                                Tác giả:
+                            </div>
+                            <div class="col-md-9">
+                                <select id="ddlTG" class="form-control">
+                                    <option value="0">--Chọn tác giả--</option>
+                                    @foreach (var item in lstTG)
+                                    {
+                                        <option value="@item.ID">@item.HoTen</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                        <div class="row">
+                            <div class="col-md-3" style="padding-top:5px">
+                                Đồng tác giả:
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" id="txtDongTG" class="form-control" value="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                        <div class="row">
+                            <div class="col-md-3" style="padding-top:5px">
+                                Phân loại ấn phẩm:
+                            </div>
+                            <div class="col-md-9">
+                                <select id="ddlPLAP" class="form-control">
+                                    <option value="0">--Chọn phân loại--</option>
+                                    @foreach (var item in lstPLAP)
+                                    {
+                                        <option value="@item.ID">@item.TenPhanLoaiAP</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                        <div class="row">
+                            <div class="col-md-3" style="padding-top:5px">
+                                Nhà xuất bản:
+                            </div>
+                            <div class="col-md-9">
+                                <select id="ddlNXB" class="form-control">
+                                    <option value="0">--Chọn nhà xuất bản--</option>
+                                    @foreach (var item in lstNXB)
+                                    {
+                                        <option value="@item.ID">@item.TenNXB</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                        <div class="row">
+                            <div class="col-md-3" style="padding-top:5px">
+                                Số:
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" id="txtSo" class="form-control" value="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                        <div class="row">
+                            <div class="col-md-3" style="padding-top:5px">
+                                Ngày xuất bản:
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" id="txtNgayXuatBan" class="form-control" value="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                        <div class="row">
+                            <div class="col-md-3" style="padding-top:5px">
+                                Giới  thiệu:
+                            </div>
+                            <div class="col-md-9">
+                                <textarea class="form-control" rows="3" id="txtGioiThieu"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                        <div class="row">
+                            <div class="col-md-3" style="padding-top:5px">
+                                Hình ảnh:
+                            </div>
+                            <div class="col-md-9">
+                                <img id="imgAvatar" src="~/assets/admin/images/no-image.jpg" width="200" height="150" />
+                                <label for="fImage" class="a_hover">
+                                    <i class="fa fa-camera" for="imageUpload" style="position:relative; top:-50px; right:40px; font-size:30px; color:#12111175"></i>
+                                </label>
+                                <input type="file" id="fImage" onchange="changeIMG()" name="fImage" accept="*/image" style="display:none" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                        <div class="row">
+                            <div class="col-md-3" style="padding-top:5px">
+                                Trang thái:
+                            </div>
+                            <div class="col-md-9">
+                                <label style="padding-right:10px">
+                                    <input type="radio" name="r2" id="chkSD" value="1" class="minimal-red" checked> Sử dụng
+                                </label>
+                                <label style="padding-right:10px">
+                                    <input type="radio" name="r2" id="chkK" value="2" class="minimal-red"> Khóa
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" onclick="SaveData()" class="btn btn-primary">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="mdDel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Xóa ấn phẩm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="padding-left:15px">
+                    <input type="hidden" id="hdID_Del" value="0" />
+                    Bạn có chắc chắn muốn xóa ấn phẩm này hay không?
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" onclick="Delete()" class="btn btn-primary">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/assets/admin/js/author.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.treeview').removeClass('active');
+            $('#liDanhMuc').addClass('active');
+        });
+        $(function () {
+            $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+                checkboxClass: 'icheckbox_minimal-red',
+                radioClass: 'iradio_minimal-red'
+            });
+        })
+    </script>
+}

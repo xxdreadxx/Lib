@@ -1,21 +1,20 @@
-﻿$(document).ready(function () {
-    $('.treeview').removeClass('active');
-    $('#liHeThong').addClass('active');
-});
-function AddData() {
-    $('#h5Name').text('Thêm mới thủ thư');
+﻿function AddData() {
+    $('#h5Name').text('Thêm mới ấn phẩm');
     $('#mdAdd').modal("show");
-    $('#hdID').val(0);
-    $('#txtHoTen').val('');
-    $('#txtCMT').val('');
-    $('#txtSDT').val('');
-    $('#txtDiaChi').val('');
-    $('#txtEmail').val('');
-    $('#txtNgaySinh').val('');
-    $('#txtUsername').val('');
-    $("input[name=r2][value=1]").prop("checked", true);
-    $("input[name=r1][value=1]").prop("checked", true);
+    $('#hdID').val(response.data.ID);
+    $('#txtNhanDe').val('');
+    $('#txtMaAP').val('');
+    $('#txtGioiThieu').val('');
+    $('#txtDongTG').val('');
+    $('#ddlKieuAP').val(1);
+    $('#txtSo').val('');
+    $('#txtNgayXB').val('');
+    $('#ddlTG').val(0);
+    $('#ddlNXB').val(0);
+    $('#ddlPLAP').val(0);
     document.getElementById("imgAvatar").src = "/assets/admin/images/no-image.jpg";
+    $("input[name=r2]").prop("checked", false);
+    $("input[name=r2][value='" + response.data.TrangThai + "']").prop("checked", true);
 }
 
 function changeIMG() {
@@ -32,9 +31,9 @@ function changeIMG() {
 };
 
 function Edit(id) {
-    $('#h5Name').text('Chỉnh sửa thông tin thủ thư');
+    $('#h5Name').text('Chỉnh sửa thông tin ấn phẩm');
     $.ajax({
-        url: '/Admin/Librarian/GetData',
+        url: '/Admin/Book/GetData',
         data: { id: id },
         cache: false,
         type: 'GET',
@@ -42,19 +41,20 @@ function Edit(id) {
         success: function (response) {
             if (response.status == true) {
                 $('#hdID').val(response.data.ID);
-                $('#txtHoTen').val(response.data.HoTen);
-                $('#txtCMT').val(response.data.CMTND);
-                $('#txtSDT').val(response.data.SDT);
-                $('#txtDiaChi').val(response.data.DiaChi);
-                $('#txtEmail').val(response.data.Email);
-                $('#txtNgaySinh').val(response.data.NgaySinh);
-                $('#txtUsername').val(response.data.Username);
+                $('#txtNhanDe').val(response.data.NhanDe);
+                $('#txtMaAP').val(response.data.MaAnPham);
+                $('#txtGioiThieu').val(response.data.GioIThieu);
+                $('#txtDongTG').val(response.data.DongTacGia);
+                $('#ddlKieuAP').val(response.data.LKieuAP);
+                $('#txtSo').val(response.data.So);
+                $('#txtNgayXB').val(response.data.NgayXuatBan);
+                $('#ddlTG').val(response.data.IDTacGia);
+                $('#ddlNXB').val(response.data.IDNXB);
+                $('#ddlPLAP').val(response.data.IDPLAP);
                 document.getElementById("imgAvatar").src = "/assets/admin/images/no-image.jpg";
-                if (response.data.AnhDaiDien != null && response.data.AnhDaiDien != '') {
-                    document.getElementById("imgAvatar").src = response.data.AnhDaiDien;
+                if (response.data.HinhAnh != null && response.data.HinhAnh != '') {
+                    document.getElementById("imgAvatar").src = response.data.HinhAnh;
                 }
-                $("input[name=r1]").prop("checked", false);
-                $("input[name=r1][value='" + response.data.Quyen + "']").prop("checked", true);
                 $("input[name=r2]").prop("checked", false);
                 $("input[name=r2][value='" + response.data.TrangThai + "']").prop("checked", true);
             }
@@ -72,51 +72,50 @@ function Edit(id) {
 function SaveData() {
     var kt = true;
     var ID = $('#hdID').val();
-    var HoTen = $('#txtHoTen').val();
-    var CMTND = $('#txtCMT').val();
-    var SDT = $('#txtSDT').val();
-    var DiaChi = $('#txtDiaChi').val();
-    var Email = $('#txtEmail').val();
-    var NgaySinh = $('#txtNgaySinh').val();
-    var Quyen = $('input[name=r1]:checked').val();
-    var Username = $('#txtUsername').val();
+    var NhanDe = $('#txtNhanDe').val();
+    var MaAP = $('#txtMaAP').val();
+    var GioiThieu = $('#txtGioiThieu').val();
+    var DongTG = $('#txtDongTG').val();
+    var KieuAP = $('#ddlKieuAP').val();
+    var So = $('#txtSo').val();
+    var NgayXB = $('#txtNgayXB').val();
+    var TG = $('#ddlTG').val();
+    var NXB = $('#ddlNXB').val();
+    var PLAP = $('#ddlPLAP').val();
     var TrangThai = $('input[name=r2]:checked').val();
     var Image = document.getElementById("fImage").files[0];
-    if (HoTen.trim() == '') {
-        toastr.warning('Chưa nhập họ tên!', '', { timeOut: 1000 });
-        $('#txtHoTen').focus();
+    if (NhanDe.trim() == '') {
+        toastr.warning('Chưa nhập nhan đề!', '', { timeOut: 1000 });
+        $('#txtNhanDe').focus();
         kt = false;
     }
-    else if (SDT.trim() == '') {
-        toastr.warning('Chưa nhập số điện thoại!', '', { timeOut: 1000 });
-        $('#txtSDT').focus();
+    else if (MaAP.trim() == '') {
+        toastr.warning('Chưa nhập mã ấn phẩm!', '', { timeOut: 1000 });
+        $('#txtMaAP').focus();
         kt = false;
     }
     else if (CMTND.trim() == '') {
-        toastr.warning('Chưa nhập chứng minh thư!', '', { timeOut: 1000 });
-        $('#txtCMT').focus();
-        kt = false;
-    }
-    else if (Username.trim() == '') {
-        toastr.warning('Chưa nhập tên đăng nhập!', '', { timeOut: 1000 });
-        $('#txtUsername').focus();
+        toastr.warning('Chưa nhập cổng!', '', { timeOut: 1000 });
+        $('#txtMaTG').focus();
         kt = false;
     }
     if (kt == true) {
         var formData = new FormData();
         formData.append("ID", ID);
-        formData.append("HoTen", HoTen);
-        formData.append("CMT", CMTND);
-        formData.append("DiaChi", DiaChi);
-        formData.append("Email", Email);
-        formData.append("NgaySinh", NgaySinh);
-        formData.append("Quyen", Quyen);
-        formData.append("Username", Username);
+        formData.append("NhanDe", NhanDe);
+        formData.append("MaAP", MaAP);
+        formData.append("GioiThieu", GioiThieu);
+        formData.append("DongTG", DongTG);
+        formData.append("KieuAP", KieuAP);
+        formData.append("So", So);
+        formData.append("NgayXB", NgayXB);
+        formData.append("TG", TG);
+        formData.append("NXB", NXB);
+        formData.append("PLAP", PLAP);
         formData.append("TrangThai", TrangThai);
-        formData.append("SDT", SDT);
         formData.append("Image", Image);
         $.ajax({
-            url: '/Admin/Librarian/SaveData',
+            url: '/Admin/Book/SaveData',
             data: formData,
             cache: false,
             contentType: false,
@@ -154,16 +153,37 @@ function DelData(id) {
 function Delete() {
     var id = $('#hdID_Del').val();
     $.ajax({
-        url: '/Admin/Librarian/Delete',
+        url: '/Admin/Book/GetCount',
         data: { id: id },
         type: 'GET',
         dataType: 'json',
         success: function (response) {
             if (response.status == true) {
-                toastr.success('Xóa thành công', '', { timeOut: 1000 });
-                setTimeout(function () {
-                    location.reload();
-                }, 1000);
+                if (response.data > 0) {
+                    toastr.warning('Có mã cá biệt, không thể xóa!', '', { timeOut: 1000 });
+                }
+                else {
+                    $.ajax({
+                        url: '/Admin/Book/Delete',
+                        data: { id: id },
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function (response) {
+                            if (response.status == true) {
+                                toastr.success('Xóa thành công', '', { timeOut: 1000 });
+                                setTimeout(function () {
+                                    location.reload();
+                                }, 1000);
+                            }
+                            else {
+                                toastr.error('Có lỗi xảy ra', '', { timeOut: 2000 });
+                            }
+                        },
+                        error: function (err) {
+                            console.log(err);
+                        }
+                    });
+                }
             }
             else {
                 toastr.error('Có lỗi xảy ra', '', { timeOut: 2000 });
@@ -177,7 +197,7 @@ function Delete() {
 
 function Change(id, status) {
     $.ajax({
-        url: '/Admin/Librarian/Change',
+        url: '/Admin/Book/Change',
         data: {
             id: id,
             status: status
@@ -205,9 +225,9 @@ function Change(id, status) {
 function Search() {
     var search = $('#txtSearch').val();
     if (search.trim() != '') {
-        location.href = '/Admin/Librarian/Index?search=' + search;
+        location.href = '/Admin/Book/Index?search=' + search;
     }
     else {
-        location.href = '/Admin/Librarian/Index';
+        location.href = '/Admin/Book/Index';
     }
 }
