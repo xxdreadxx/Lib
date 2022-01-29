@@ -1,8 +1,9 @@
 ﻿@using Models.EF;
+@using Models.ModelsView;
 @{
     ViewBag.Title = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
-    List<aNXB> lst = ViewBag.lsttData;
+    List<cBanDocView> lst = ViewBag.lsttData;
 }
 
 <style>
@@ -13,12 +14,12 @@
 <section class="content-header">
     <h1>
         Danh sách
-        <small>nhà xuất bản</small>
+        <small>bạn đọc</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="/Admin/Home/Index"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Danh mục</a></li>
-        <li class="active">Danh sách nhà xuất bản</li>
+        <li><a href="#">Chức năng</a></li>
+        <li class="active">Danh sách bạn đọc</li>
     </ol>
 </section>
 
@@ -29,7 +30,7 @@
                 <div class="box-header">
                     <div class="row" style="padding-right:10px; padding-left:10px">
                         <div class="col-md-3">
-                            <a onclick="AddData()" class="btn btn-primary btn-flat">Thêm mới</a>
+                            @*<a onclick="AddData()" class="btn btn-primary btn-flat">Thêm mới</a>*@
                         </div>
                         <div class="col-md-4">
                         </div>
@@ -48,7 +49,9 @@
                         <thead>
                             <tr>
                                 <th>STT</th>
-                                <th>Tên nhà xuất bản</th>
+                                <th>Tên bạn đọc</th>
+                                <th>Ngày tạo</th>
+                                <th>Ngày hết hạn</th>
                                 <th>Trạng thái</th>
                                 <th>Chức năng</th>
                             </tr>
@@ -62,7 +65,7 @@
                                     stt++;
                                     <tr>
                                         <td>@stt</td>
-                                        <td>@item.TenNXB</td>
+                                        <td>@item.HoTen</td>
                                         @if (item.TrangThai == 1)
                                         {
                                             <td><span class="text-aqua">Đang sử dụng</span></td>
@@ -71,15 +74,23 @@
                                         {
                                             <td><span class="text-yellow">Khóa</span></td>
                                         }
+                                        else if (item.TrangThai == 3)
+                                        {
+                                            <td><span class="text-red">Hết hạn</span></td>
+                                        }
                                         <td>
                                             <a onclick="Edit(@item.ID)" style="padding-right:5px" title="Sửa"><i class="fa fa-pencil"></i></a>
                                             @if (item.TrangThai == 1)
                                             {
                                                 <a onclick="Change(@item.ID, @item.TrangThai)" style="padding-right:5px" title="Khóa sử dụng"><i class="fa fa-lock"></i></a>
                                             }
-                                            else
+                                            else if (item.TrangThai == 2)
                                             {
                                                 <a onclick="Change(@item.ID, @item.TrangThai)" style="padding-right:5px" title="Mở khóa sử dụng"><i class="fa fa-key"></i></a>
+                                            }
+                                            else if (item.TrangThai == 3)
+                                            {
+                                                <a onclick="AddDate(@item.ID)" style="padding-right:5px" title="Gia hạn thêm 1 năm"><i class="fa fa-alarm"></i></a>
                                             }
                                             <a onclick="DelData(@item.ID)" style="padding-right:5px" title="Xóa"><i class="fa fa-recycle"></i></a>
                                         </td>
@@ -108,10 +119,74 @@
                     <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
                         <div class="row">
                             <div class="col-md-3" style="padding-top:5px">
-                                Tên nhà xuất bản:*
+                                Tên bạn đọc:*
                             </div>
                             <div class="col-md-9">
-                                <input type="text" id="txtNXB" class="form-control" value="" />
+                                <input type="text" id="txtMaTG" class="form-control" value="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                        <div class="row">
+                            <div class="col-md-3" style="padding-top:5px">
+                                Tên tác giả:*
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" id="txtHoTen" class="form-control" value="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                        <div class="row">
+                            <div class="col-md-3" style="padding-top:5px">
+                                Ngày sinh:
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" id="txtNgaySinh" class="form-control" value="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                        <div class="row">
+                            <div class="col-md-3" style="padding-top:5px">
+                                Ngày mất (nếu có):
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" id="txtNgayMat" class="form-control" value="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                        <div class="row">
+                            <div class="col-md-3" style="padding-top:5px">
+                                Địa chỉ:
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" id="txtDiaChi" class="form-control" value="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                        <div class="row">
+                            <div class="col-md-3" style="padding-top:5px">
+                                Giới  thiệu:
+                            </div>
+                            <div class="col-md-9">
+                                <textarea class="form-control" rows="3" id="txtGioiThieu"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                        <div class="row">
+                            <div class="col-md-3" style="padding-top:5px">
+                                Ảnh đại diện:
+                            </div>
+                            <div class="col-md-9">
+                                <img id="imgAvatar" src="~/assets/admin/images/no-image.jpg" width="200" height="150" />
+                                <label for="fImage" class="a_hover">
+                                    <i class="fa fa-camera" for="imageUpload" style="position:relative; top:-50px; right:40px; font-size:30px; color:#12111175"></i>
+                                </label>
+                                <input type="file" id="fImage" onchange="changeIMG()" name="fImage" accept="*/image" style="display:none" />
                             </div>
                         </div>
                     </div>
@@ -152,7 +227,7 @@
             <div class="modal-body">
                 <div class="row" style="padding-left:15px">
                     <input type="hidden" id="hdID_Del" value="0" />
-                    Bạn có chắc chắn muốn xóa nà xuất bản hay không?
+                    Bạn có chắc chắn muốn xóa bạn đọc này hay không?
                 </div>
             </div>
             <div class="modal-footer">
@@ -163,7 +238,7 @@
     </div>
 </div>
 @section scripts{
-    <script src="~/assets/admin/js/nxb.js"></script>
+    <script src="~/assets/admin/js/reader.js"></script>
     <script>
         $(document).ready(function () {
             $('.treeview').removeClass('active');

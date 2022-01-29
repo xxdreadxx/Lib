@@ -160,5 +160,24 @@ namespace Models.Dao.DaoAdmin
                 return false;
             }
         }
+
+        public bool UpdateDate(long ID, long IDNV)
+        {
+            try
+            {
+                var item = db.cBanDocs.FirstOrDefault(x => x.ID == ID);
+                DateTime tghethan = item.NgayHetHan.GetValueOrDefault();
+
+                item.NgayHetHan = tghethan.AddYears(1);
+                item.NgaySua = DateTime.Now;
+                item.NguoiSua = IDNV;
+                db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }
