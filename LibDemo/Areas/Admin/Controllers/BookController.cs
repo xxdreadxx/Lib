@@ -17,6 +17,9 @@ namespace LibDemo.Areas.Admin.Controllers
         TacGiaDao tg = new TacGiaDao();
         NXBDao nxb = new NXBDao();
         PhanLoaiDao plap = new PhanLoaiDao();
+        MCBDao mcb = new MCBDao();
+
+        private static List<cMCB> excel = new List<cMCB>();
         // GET: Admin/Author
         public ActionResult Index(string search)
         {
@@ -40,14 +43,17 @@ namespace LibDemo.Areas.Admin.Controllers
             long IDNV = long.Parse(Session["IDNV"].ToString());
             cAnPham item = new cAnPham();
             item.ID = int.Parse(f["ID"].ToString());
-            item.DongTacGia = f["DongTacGia"].ToString();
+            item.DongTacGia = f["DongTG"].ToString();
             item.IDNXB = int.Parse(f["NXB"].ToString());
             item.GioiThieu = f["GioiThieu"].ToString();
             item.IDPLAP = int.Parse(f["PLAP"].ToString());
             item.IDTacGia = int.Parse(f["TG"].ToString());
             item.LKieuAP = byte.Parse(f["KieuAP"].ToString());
             item.MaAnPham = f["MaAP"].ToString();
-            item.NgayXuatBan = DateTime.ParseExact(f["NgayXB"].ToString(),"dd/MM/yyyy", CultureInfo.InvariantCulture);
+            if(f["NgayXB"].ToString().Trim() != "")
+            {
+                item.NgayXuatBan = DateTime.ParseExact(f["NgayXB"].ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            }
             item.So =f["So"].ToString();
             item.NhanDe = f["NhanDe"].ToString();
             if (file.Count > 0)
@@ -125,6 +131,30 @@ namespace LibDemo.Areas.Admin.Controllers
                     status = kt
                 }, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        public JsonResult GetMCB(long id)
+        {
+            int IDDonVi = int.Parse(Session["IDDonVi"].ToString());
+            var lst = mcb.getAllDataView(id, "");
+            lst = lst.Where(x => x.IDDonVi == IDDonVi || x.IDDonVi_HienTai == IDDonVi).ToList();
+            return Json(new
+            {
+                status = true,
+                data = lst
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult AddMCB(long id, int sl)
+        {
+            int IDDonVi = int.Parse(Session["IDDonVi"].ToString());
+            long IDNV = long.Parse(Session["IDNV"].ToString());
+            bool kt = mcb.Insert(id, IDNV, IDDonVi, sl);
+            return Json(new
+            {
+                status = kt
+            }, JsonRequestBehavior.AllowGet);
         }
     }
 }

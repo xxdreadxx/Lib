@@ -26,7 +26,6 @@ namespace LibDemo.Areas.Admin.Controllers
             return View();
         }
 
-        [HttpPost]
         public JsonResult UpdateDate(long id)
         {
             long IDNV = long.Parse(Session["IDNV"].ToString());

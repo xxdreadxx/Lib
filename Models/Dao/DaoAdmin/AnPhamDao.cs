@@ -75,6 +75,7 @@ namespace Models.Dao.DaoAdmin
                             NhanDe = ds.NhanDe,
                             NXB = nxb.TenNXB,
                             PhanLoai = pl.TenPhanLoaiAP,
+                            TrangThai = ds.TrangThai
                         }).ToList();
             }
             else
@@ -102,6 +103,7 @@ namespace Models.Dao.DaoAdmin
                             NhanDe = ds.NhanDe,
                             NXB = nxb.TenNXB,
                             PhanLoai = pl.TenPhanLoaiAP,
+                            TrangThai = ds.TrangThai
                         }).ToList();
             }
             return item;
@@ -129,7 +131,10 @@ namespace Models.Dao.DaoAdmin
             {
                 cAnPham item = db.cAnPhams.FirstOrDefault(x => x.ID == result.ID);
                 item.NhanDe = result.NhanDe;
-                item.HinhAnh = result.HinhAnh;
+                if (result.HinhAnh != null)
+                {
+                    item.HinhAnh = result.HinhAnh;
+                }
                 item.DongTacGia = result.DongTacGia;
                 item.GioiThieu = result.GioiThieu;
                 item.IDNXB = result.IDNXB;

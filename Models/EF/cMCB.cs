@@ -15,14 +15,13 @@ namespace Models.EF
 
         [StringLength(50)]
         public string MCB { get; set; }
+        public int MCBIndex { get; set; }
 
         public int? IDDonVi { get; set; }
 
         public int? IDDonVi_HienTai { get; set; }
 
         public byte? KieuAP { get; set; }
-
-        public int? IDPortal_Now { get; set; }
 
         public byte? TrangThai { get; set; }
 

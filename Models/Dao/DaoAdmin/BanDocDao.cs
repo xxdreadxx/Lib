@@ -43,12 +43,19 @@ namespace Models.Dao.DaoAdmin
 
         public List<cBanDocView> getAllDataView(int IDDV, string search)
         {
+            var itemall = db.cBanDocs.Where(x => x.NgayHetHan < DateTime.Now && x.TrangThai != 10).ToList();
+            foreach(var it in itemall)
+            {
+                it.TrangThai = 3;
+            }
+            db.SaveChanges();
+
             List<cBanDocView> item = new List<cBanDocView>();
             if (search == "")
             {
-                item = (from ds in db.sNhanViens
+                item = (from ds in db.cBanDocs
                         join dv in db.sDonVis on ds.IDDonVi equals dv.ID
-                        where ds.IDDonVi == IDDV
+                        where ds.IDDonVi == IDDV && ds.TrangThai!=10
                         select new cBanDocView
                         {
                             ID = ds.ID,
@@ -60,16 +67,18 @@ namespace Models.Dao.DaoAdmin
                             DiaChi = ds.DiaChi,
                             Email = ds.Email,
                             NgaySinh = ds.NgaySinh,
-                            Password = ds.Password,
                             SDT = ds.SDT,
-                            Username = ds.Username
+                            NgayTao = ds.NgayTao,
+                            NgayHetHan = ds.NgayHetHan,
+                            Username = ds.Username,
+                            TrangThai = ds.TrangThai
                         }).ToList();
             }
             else
             {
                 item = (from ds in db.cBanDocs
                         join dv in db.sDonVis on ds.IDDonVi equals dv.ID
-                        where ds.IDDonVi == IDDV && ds.HoTen.Contains(search)
+                        where ds.IDDonVi == IDDV && ds.HoTen.Contains(search) && ds.TrangThai != 10
                         select new cBanDocView
                         {
                             ID = ds.ID,
@@ -81,9 +90,11 @@ namespace Models.Dao.DaoAdmin
                             DiaChi = ds.DiaChi,
                             Email = ds.Email,
                             NgaySinh = ds.NgaySinh,
-                            Password = ds.Password,
                             SDT = ds.SDT,
-                            Username = ds.Username
+                            NgayTao = ds.NgayTao,
+                            NgayHetHan = ds.NgayHetHan,
+                            Username = ds.Username,
+                            TrangThai = ds.TrangThai
                         }).ToList();
             }
 
@@ -167,7 +178,10 @@ namespace Models.Dao.DaoAdmin
             {
                 var item = db.cBanDocs.FirstOrDefault(x => x.ID == ID);
                 DateTime tghethan = item.NgayHetHan.GetValueOrDefault();
-
+                if (item.TrangThai == 3)
+                {
+                    item.TrangThai = 1;
+                }
                 item.NgayHetHan = tghethan.AddYears(1);
                 item.NgaySua = DateTime.Now;
                 item.NguoiSua = IDNV;

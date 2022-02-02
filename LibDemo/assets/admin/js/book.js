@@ -1,7 +1,7 @@
 ﻿function AddData() {
     $('#h5Name').text('Thêm mới ấn phẩm');
     $('#mdAdd').modal("show");
-    $('#hdID').val(response.data.ID);
+    $('#hdID').val(0);
     $('#txtNhanDe').val('');
     $('#txtMaAP').val('');
     $('#txtGioiThieu').val('');
@@ -14,7 +14,7 @@
     $('#ddlPLAP').val(0);
     document.getElementById("imgAvatar").src = "/assets/admin/images/no-image.jpg";
     $("input[name=r2]").prop("checked", false);
-    $("input[name=r2][value='" + response.data.TrangThai + "']").prop("checked", true);
+    $("input[name=r2][value=1]").prop("checked", true);
 }
 
 function changeIMG() {
@@ -47,7 +47,7 @@ function Edit(id) {
                 $('#txtDongTG').val(response.data.DongTacGia);
                 $('#ddlKieuAP').val(response.data.LKieuAP);
                 $('#txtSo').val(response.data.So);
-                $('#txtNgayXB').val(response.data.NgayXuatBan);
+                $('#txtNgayXuatBan').val(response.data.NgayXuatBan);
                 $('#ddlTG').val(response.data.IDTacGia);
                 $('#ddlNXB').val(response.data.IDNXB);
                 $('#ddlPLAP').val(response.data.IDPLAP);
@@ -78,7 +78,7 @@ function SaveData() {
     var DongTG = $('#txtDongTG').val();
     var KieuAP = $('#ddlKieuAP').val();
     var So = $('#txtSo').val();
-    var NgayXB = $('#txtNgayXB').val();
+    var NgayXB = $('#txtNgayXuatBan').val();
     var TG = $('#ddlTG').val();
     var NXB = $('#ddlNXB').val();
     var PLAP = $('#ddlPLAP').val();
@@ -92,11 +92,6 @@ function SaveData() {
     else if (MaAP.trim() == '') {
         toastr.warning('Chưa nhập mã ấn phẩm!', '', { timeOut: 1000 });
         $('#txtMaAP').focus();
-        kt = false;
-    }
-    else if (CMTND.trim() == '') {
-        toastr.warning('Chưa nhập cổng!', '', { timeOut: 1000 });
-        $('#txtMaTG').focus();
         kt = false;
     }
     if (kt == true) {
@@ -230,4 +225,65 @@ function Search() {
     else {
         location.href = '/Admin/Book/Index';
     }
+}
+
+function MCB(id) {
+    $('#hdIDAP').val(id);
+    $.ajax({
+        type: 'GET',
+        url: "/Admin/Book/GetMCB",
+        data: { id: id },
+        cache: false,
+        dataType:'json',
+        success: function (response) {
+            if (response.status == true) {
+                $('#mdData').modal("show");
+                var html = '';
+                $.each(response.data, function (i, item) {
+                    html += "<tr id='tr_" + item.ID + "'><td>" + item.MCB + "</td><td>" + item.DonViHienTai + "</td><td><a onclick=\"DelMCB(" + item.ID + ")\" style=\"padding-right:5px\" title=\"Xóa\"><i class=\"fa fa-recycle\"></i></a></td></tr>";
+                });
+                $('#btlData').html(html);
+            }
+            else {
+                return false
+            }
+        },
+        error: function (err) {
+            console.log(err)
+        }
+    })
+}
+
+function AddMCB() {
+    $('#mdAddMCB').modal("show");
+}
+
+function SaveDataSLMCB() {
+    var idAP = $('#hdIDAP').val();
+    var sl = $('#txtSLMCB').val();
+    $.ajax({
+        url: '/Admin/Book/AddMCB',
+        data: {
+            id: idAP,
+            sl: sl
+        },
+        cache: false,
+        type: 'POST',
+        dataType: 'json',
+        success: function (response) {
+            if (response.status == true) {
+                $('#mdAddMCB').modal("hide");
+                toastr.success('Thêm mới thành công', '', { timeOut: 1000 });
+                setTimeout(function () {
+                    MCB(idAP);
+                }, 1000);
+            }
+            else {
+                toastr.error('Có lỗi xảy ra, thao tác không thành công', '', { timeOut: 2000 });
+            }
+        },
+        error: function (err) {
+            console.log(err);
+        }
+    });
 }

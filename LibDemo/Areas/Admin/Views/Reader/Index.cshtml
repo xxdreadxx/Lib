@@ -66,6 +66,8 @@
                                     <tr>
                                         <td>@stt</td>
                                         <td>@item.HoTen</td>
+                                        <td>@item.NgayTao.Value.ToString("dd/MM/yyyy")</td>
+                                        <td>@item.NgayHetHan.Value.ToString("dd/MM/yyyy")</td>
                                         @if (item.TrangThai == 1)
                                         {
                                             <td><span class="text-aqua">Đang sử dụng</span></td>
@@ -90,7 +92,7 @@
                                             }
                                             else if (item.TrangThai == 3)
                                             {
-                                                <a onclick="AddDate(@item.ID)" style="padding-right:5px" title="Gia hạn thêm 1 năm"><i class="fa fa-alarm"></i></a>
+                                                <a onclick="AddDate(@item.ID)" style="padding-right:5px" title="Gia hạn thêm 1 năm"><i class="fa fa-clock-o"></i></a>
                                             }
                                             <a onclick="DelData(@item.ID)" style="padding-right:5px" title="Xóa"><i class="fa fa-recycle"></i></a>
                                         </td>
