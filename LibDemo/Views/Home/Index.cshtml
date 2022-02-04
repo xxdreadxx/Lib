@@ -1,6 +1,11 @@
-﻿@{
+﻿@using Models.EF;
+@using Models.ModelsView;
+@{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    List<sDonVi> lstDonVi = ViewBag.lstLib;
+    List<cAnPhamView> lstAp = ViewBag.lstAP8;
+    List<aTacGia> lstTG = ViewBag.lstTG4;
 }
 
 <!-- banner -->
@@ -22,79 +27,28 @@
     <!-- //banner-text -->
 </div>
 <!-- //banner -->
-<!-- about -->
 <div class="about-sec section" id="about">
     <div class="container">
-        <!-- about-left-grid -->
         <div class="col-md-7 about-left-grid">
             <div class="inner-about2">
                 <h4>Thư viện trung tâm thành phố</h4>
                 <p>Được giới thiệu là lớn nhất thành phố, và bộ sưu tập của thư viện chứa hơn 3 triệu ấn phẩm.</p>
                 <h5>Danh sách đơn vị thuộc thư viện</h5>
                 <ul class="about-list">
-                    <li>
-                        <i class="fa fa-play-circle-o" aria-hidden="true"></i>Thư viện 1
-                    </li>
-                    <li>
-                        <i class="fa fa-play-circle-o" aria-hidden="true"></i>Thư viện 2
-                    </li>
-                    <li>
-                        <i class="fa fa-play-circle-o" aria-hidden="true"></i>Thư viện 3
-                    </li>
-                    <li>
-                        <i class="fa fa-play-circle-o" aria-hidden="true"></i>Thư viện 4
-                    </li>
-                    <li>
-                        <i class="fa fa-play-circle-o" aria-hidden="true"></i>Thư viện 5
-                    </li>
-                    <li>
-                        <i class="fa fa-play-circle-o" aria-hidden="true"></i>Thư viện 6
-                    </li>
-                    <li>
-                        <i class="fa fa-play-circle-o" aria-hidden="true"></i>Thư viện 7
-                    </li>
+                    @foreach (var item in lstDonVi)
+                    {
+                        <li>
+                            <a href="/LibraryList/Detail/@item.ID"><i class="fa fa-play-circle-o" aria-hidden="true"></i>@item.TenDonVi</a>
+                        </li>
+                    }
                 </ul>
-                <a href="#">Xem thêm</a>
+                <a href="/LibraryList/Index">Xem thêm</a>
             </div>
-            <!-- about left bottom - services -->
-            @*<div class="principles-grids principles-grids1">
-                <div class="abt-btm agileits w3layouts aos-init aos-animate">
-                    <div class="col-md-6 col-sm-6 agileits elite-services1 w3layouts bottom-gds" data-aos="fade-up">
-                        <div class="bott-img agileits w3layouts">
-                            <div class="icon-holder agileits w3layouts">
-                                <span class="fa fa-book agileits w3layouts service-icon" aria-hidden="true"></span>
-                            </div>
-                            <h4 class="mission agileits w3layouts">law library</h4>
-                            <div class="description agileits w3layouts">
-                                <a href="#">Read More</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-sm-6 agileits elite-services2 w3layouts bottom-gds" data-aos="fade-down">
-                        <div class="bott-img bott-img1 agileits w3layouts">
-                            <div class="icon-holder agileits w3layouts">
-                                <span class="fa fa-book agileits w3layouts service-icon" aria-hidden="true"></span>
-                            </div>
-                            <h4 class="mission agileits w3layouts">asian materials</h4>
-                            <div class="description agileits w3layouts">
-                                <a href="#">Read More</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-            </div>*@
-            <!-- //about left bottom - services ends here -->
         </div>
-        <!-- //about-left-grid ends here-->
-        <!-- about-right-grid -->
         <div class="col-md-5 about-right-grid"></div>
-        <!-- //about-right-grid ends here -->
         <div class="clearfix"></div>
     </div>
 </div>
-<!-- //about ends here -->
-
 <!-- about bottom -->
 <div class="about-bottom section">
     <div class="container-fluid">
@@ -104,82 +58,23 @@
         </h4>
         <!-- about-bottom grid1 -->
         <div class="col-md-6 about-bottom-right">
-            <div class="col-md-6 col-sm-6 col-xs-6 services-w3ls">
-                <div class="ab1">
-                    <div class="col-md-3 col-sm-3 col-xs-3 ab1-icon">
-                        <span class="fa fa-book" aria-hidden="true"></span>
-                    </div>
-                    <div class="col-md-9 col-sm-9 col-xs-9 ab1-text">
-                        <h5>Đọc Vị Bất Kỳ Ai</h5>
-                    </div>
-                    <div class="clearfix"></div>
+            @foreach (var item in lstAp)
+            {
+                <div class="col-md-6 col-sm-6 col-xs-6 services-w3ls">
+                    <a href="/AnPham/@item.ID">
+                        <div class="ab1">
+                            <div class="col-md-3 col-sm-3 col-xs-3 ab1-icon" style="padding-left:0px">
+                                @*<span class="fa fa-book" aria-hidden="true"></span>*@
+                                <img src="@item.HinhAnh" style="width:49px; height:49px" />
+                            </div>
+                            <div class="col-md-9 col-sm-9 col-xs-9 ab1-text">
+                                <h5>@item.NhanDe</h5>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
                 </div>
-                <div class="ab1">
-                    <div class="col-md-3 col-sm-3 col-xs-3 ab1-icon">
-                        <span class="fa fa-book" aria-hidden="true"></span>
-                    </div>
-                    <div class="col-md-9 col-sm-9 col-xs-9 ab1-text">
-                        <h5>Tư Duy Nhanh Và Chậm</h5>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="ab1">
-                    <div class="col-md-3 col-sm-3 col-xs-3 ab1-icon">
-                        <span class="fa fa-book" aria-hidden="true"></span>
-                    </div>
-                    <div class="col-md-9 col-sm-9 col-xs-9 ab1-text">
-                        <h5>Cỗ Máy Bán Hàng Tối Ưu</h5>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="ab1">
-                    <div class="col-md-3 col-sm-3 col-xs-3 ab1-icon">
-                        <span class="fa fa-book" aria-hidden="true"></span>
-                    </div>
-                    <div class="col-md-9 col-sm-9 col-xs-9 ab1-text">
-                        <h5>Những Nguyên Tắc Thành Công</h5>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-            </div>
-            <div class="col-md-6 col-sm-6 col-xs-6 services-w3ls service2">
-                <div class="ab1">
-                    <div class="col-md-3 col-sm-3 col-xs-3 ab1-icon">
-                        <span class="fa fa-book" aria-hidden="true"></span>
-                    </div>
-                    <div class="col-md-9 col-sm-9 col-xs-9 ab1-text">
-                        <h5>Cổ Phiếu Thường Lợi Nhuận Phi Thường</h5>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="ab1">
-                    <div class="col-md-3 col-sm-3 col-xs-3 ab1-icon">
-                        <span class="fa fa-book" aria-hidden="true"></span>
-                    </div>
-                    <div class="col-md-9 col-sm-9 col-xs-9 ab1-text">
-                        <h5>SEO Master</h5>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="ab1">
-                    <div class="col-md-3 col-sm-3 col-xs-3 ab1-icon">
-                        <span class="fa fa-book" aria-hidden="true"></span>
-                    </div>
-                    <div class="col-md-9 col-sm-9 col-xs-9 ab1-text">
-                        <h5>Tiếp Thị Số Từ A Đến Z</h5>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="ab1">
-                    <div class="col-md-3 col-sm-3 col-xs-3 ab1-icon">
-                        <span class="fa fa-book" aria-hidden="true"></span>
-                    </div>
-                    <div class="col-md-9 col-sm-9 col-xs-9 ab1-text">
-                        <h5>Điểm Bùng Phát</h5>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-            </div>
+            }
             <div class="clearfix"></div>
         </div>
         <!-- //about-bottom grid1 ends here -->
@@ -196,7 +91,7 @@
                         </div>
                         <div class="stats-right">
                             <h6>số ấn phẩm</h6>
-                            <div class='numscroller numscroller-big-bottom' data-slno='1' data-min='0' data-max='221073' data-delay='.5' data-increment="300">221073</div>
+                            <div class='numscroller numscroller-big-bottom' data-slno='1' data-delay='.5' data-increment="300">@ViewBag.LSAP</div>
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -205,8 +100,8 @@
                             <span class="fa fa-university" aria-hidden="true"></span>
                         </div>
                         <div class="stats-right">
-                            <h6>Đơn vị</h6>
-                            <div class='numscroller numscroller-big-bottom' data-slno='1' data-min='0' data-max='780' data-delay='.5' data-increment="50">980</div>
+                            <h6>Thư viện</h6>
+                            <div class='numscroller numscroller-big-bottom' data-slno='1' data-delay='.5' data-increment="50">@lstDonVi.Count</div>
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -216,7 +111,7 @@
                         </div>
                         <div class="stats-right">
                             <h6>lượt mượn</h6>
-                            <div class='numscroller numscroller-big-bottom' data-slno='1' data-min='0' data-max='9800' data-delay='.5' data-increment="50">9800</div>
+                            <div class='numscroller numscroller-big-bottom' data-slno='1' data-delay='.5' data-increment="50">@ViewBag.SLPM</div>
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -225,8 +120,8 @@
                             <span class="fa fa-users" aria-hidden="true"></span>
                         </div>
                         <div class="stats-right">
-                            <h6>gười dùng</h6>
-                            <div class='numscroller numscroller-big-bottom' data-slno='1' data-min='0' data-max='123623' data-delay='.5' data-increment="300">123623</div>
+                            <h6>Người dùng</h6>
+                            <div class='numscroller numscroller-big-bottom' data-slno='1' data-delay='.5' data-increment="300">@ViewBag.SLBD</div>
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -242,7 +137,6 @@
     <!-- //about container ends here-->
 </div>
 <!--//about bottom ends here-->
-
 <!-- team -->
 <div id="team" class="team section">
     <div class="team-container">
@@ -252,9 +146,9 @@
                 <!-- team individual grid -->
                 <div class="col-md-6 col-sm-6 col-xs-6 team-grids">
                     <div class="team-effect">
-                        <img src="~/assets/client/images/t3.jpg" alt="img" class="img-responsive">
+                        <img src="@lstTG[0].AnhDaiDien" alt="img" class="img-responsive">
                         <div class="social-icon">
-                            <a href="#" class="social-button twitter">
+                            @*<a href="#" class="social-button twitter">
                                 <i class="fa fa-twitter"></i>
                             </a>
                             <a href="#" class="social-button facebook">
@@ -262,25 +156,25 @@
                             </a>
                             <a href="#" class="social-button google">
                                 <i class="fa fa-google-plus"></i>
-                            </a>
+                            </a>*@
                         </div>
                     </div>
                     <div class="team-text">
-                        <h4>David J. Liebermen</h4>
-                        <p>vallis molestie arcu morbi dapibus suscipit ante sit efficitur eu ante vesti.</p>
+                        <h4>@lstTG[0].HoTen</h4>
+                        <p>@lstTG[0].GoiThieu</p>
                     </div>
                 </div>
                 <!-- //team individual grid -->
                 <!-- team individual grid -->
                 <div class="col-md-6 col-sm-6 col-xs-6 team-grids">
                     <div class="team-text">
-                        <h4>J. K. Rowling</h4>
-                        <p>vallis molestie arcu morbi dapibus suscipit ante sit efficitur eu ante vesti.</p>
+                        <h4>@lstTG[1].HoTen</h4>
+                        <p>@lstTG[1].GoiThieu</p>
                     </div>
                     <div class="team-effect">
-                        <img src="~/assets/client/images/t1.jpg" alt="img" class="img-responsive">
+                        <img src="@lstTG[1].AnhDaiDien" alt="img" class="img-responsive">
                         <div class="social-icon">
-                            <a href="#" class="social-button twitter">
+                            @*<a href="#" class="social-button twitter">
                                 <i class="fa fa-twitter"></i>
                             </a>
                             <a href="#" class="social-button facebook">
@@ -288,7 +182,7 @@
                             </a>
                             <a href="#" class="social-button google">
                                 <i class="fa fa-google-plus"></i>
-                            </a>
+                            </a>*@
                         </div>
                     </div>
                     <!-- //team individual grid -->
@@ -307,13 +201,13 @@
             <div class="col-md-5 team-grid-right">
                 <div class="col-md-6 col-sm-6 col-xs-6 team-grids">
                     <div class="team-text">
-                        <h4>Smith Kevin</h4>
-                        <p>vallis molestie arcu morbi dapibus suscipit ante sit efficitur eu ante vesti.</p>
+                        <h4>@lstTG[2].HoTen</h4>
+                        <p>@lstTG[2].GoiThieu</p>
                     </div>
                     <div class="team-effect">
-                        <img src="~/assets/client/images/t2.jpg" alt="img" class="img-responsive">
+                        <img src="@lstTG[2].AnhDaiDien" alt="img" class="img-responsive">
                         <div class="social-icon">
-                            <a href="#" class="social-button twitter">
+                            @*<a href="#" class="social-button twitter">
                                 <i class="fa fa-twitter"></i>
                             </a>
                             <a href="#" class="social-button facebook">
@@ -321,7 +215,7 @@
                             </a>
                             <a href="#" class="social-button google">
                                 <i class="fa fa-google-plus"></i>
-                            </a>
+                            </a>*@
                         </div>
                     </div>
                 </div>
@@ -329,9 +223,9 @@
                 <!-- team individual grid -->
                 <div class="col-md-6 col-sm-6 col-xs-6 team-grids">
                     <div class="team-effect">
-                        <img src="~/assets/client/images/t4.jpg" alt="img" class="img-responsive">
+                        <img src="@lstTG[3].AnhDaiDien" alt="img" class="img-responsive">
                         <div class="social-icon">
-                            <a href="#" class="social-button twitter">
+                            @*<a href="#" class="social-button twitter">
                                 <i class="fa fa-twitter"></i>
                             </a>
                             <a href="#" class="social-button facebook">
@@ -339,12 +233,12 @@
                             </a>
                             <a href="#" class="social-button google">
                                 <i class="fa fa-google-plus"></i>
-                            </a>
+                            </a>*@
                         </div>
                     </div>
                     <div class="team-text">
-                        <h4>Laura Hill</h4>
-                        <p>vallis molestie arcu morbi dapibus suscipit ante sit efficitur eu ante vesti.</p>
+                        <h4>@lstTG[3].HoTen</h4>
+                        <p>@lstTG[3].GoiThieu.</p>
                     </div>
                 </div>
                 <!-- //team individual grid -->

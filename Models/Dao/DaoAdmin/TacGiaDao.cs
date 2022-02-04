@@ -102,5 +102,10 @@ namespace Models.Dao.DaoAdmin
                 return false;
             }
         }
+
+        public List<aTacGia> get4TacGia()
+        {
+            return db.aTacGias.Where(x => x.TrangThai == 1).OrderByDescending(x => x.ID).ToList();
+        }
     }
 }

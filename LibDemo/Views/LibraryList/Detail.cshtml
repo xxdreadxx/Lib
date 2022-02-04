@@ -1,0 +1,106 @@
+﻿@using Models.EF;
+@using Models.ModelsView;
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<cAnPhamView> lstAp = ViewBag.lstAP;
+}
+
+<div class="banner-bg-inner">
+    <div class="banner-text-inner">
+        <div class="container">
+            <h2 class="title-inner">
+                world of reading
+            </h2>
+        </div>
+    </div>
+</div>
+<div class="crumbs text-center">
+    <div class="container">
+        <div class="row">
+            <ul class="btn-group btn-breadcrumb bc-list">
+                <li class="btn btn1">
+                    <a href="/">
+                        <i class="glyphicon glyphicon-home"></i>
+                    </a>
+                </li>
+                <li class="btn btn2">
+                    <a href="/Book/Index">Thư viện sách</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="innerf-pages section">
+    <div class="container-cart">
+        <div class="left-ads-display col-md-12">
+            <div class="wrapper_top_shop">
+                <div class="product-sec1">
+                    @foreach (var item in lstAp)
+                    {
+                        <div class="col-md-3 product-men">
+                            <div class="product-chr-info chr">
+                                <div class="thumbnail">
+                                    <a href="single_product.html">
+                                        <img src="@item.HinhAnh" alt="" style="width:244px; height:340px;">
+                                    </a>
+                                </div>
+                                <div class="caption">
+                                    @if (item.NhanDe.Length > 25)
+                                    {
+                                        <h4>@item.NhanDe.Substring(0, 25) ...</h4>
+                                    }
+                                    else
+                                    {
+                                        <h4>@item.NhanDe</h4>
+                                    }
+                                    <p>@item.TacGia</p>
+                                    <form action="#" method="post">
+                                        <input type="hidden" name="cmd" value="_cart">
+                                        <input type="hidden" name="add" value="1">
+                                        <input type="hidden" name="chr_item" value="Book1">
+                                        <input type="hidden" name="amount" value="100.00">
+                                        <button type="submit" class="chr-cart pchr-cart">
+                                            Mượn sách
+                                            <i class="fa fa-cart-plus" aria-hidden="true"></i>
+                                        </button>
+                                        <a href="#" data-toggle="modal" data-target="#myModal1"></a>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="text-center">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<!--// Shop -->

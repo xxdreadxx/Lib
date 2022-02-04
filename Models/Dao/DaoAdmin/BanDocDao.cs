@@ -193,5 +193,10 @@ namespace Models.Dao.DaoAdmin
                 return false;
             }
         }
+
+        public long SLBanDoc()
+        {
+            return db.cBanDocs.Where(x => x.TrangThai != 10).ToList().Count;
+        }
     }
 }

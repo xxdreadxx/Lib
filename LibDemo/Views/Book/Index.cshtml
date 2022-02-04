@@ -1,6 +1,13 @@
-﻿@{
+﻿@using Models.EF;
+@using Models.ModelsView;
+@{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    List<aTacGia> lstTG = ViewBag.lstTG;
+    List<aPhanLoaiAP> lstPL = ViewBag.lstPL;
+    List<cAnPhamView> lstAP = ViewBag.lstAP;
+    int page = int.Parse(Session["page"].ToString());
+    int pageCount = int.Parse(Session["pageCount"].ToString());
 }
 
 @section Styles{
@@ -45,8 +52,7 @@
             <!-- // preference -->
             <div class="search-hotel">
                 <form action="#" method="post">
-                    <input type="search" placeholder="Tìm kiếm theo nhan đề" name="search" required="">
-                    <input type="submit" value="Tìm kiếm">
+                    <input type="search" placeholder="Tìm kiếm theo nhan đề" name="search" id="txtsearch" value="@Session["search"]" required="">
                 </form>
             </div>
             <!--preference -->
@@ -54,25 +60,23 @@
                 <h3 class="shopf-sear-headits-sear-head">
                     Danh mục
                 </h3>
-                <ul>
-                    <li>
-                        <label style="font-weight:normal">
-                            <input type="checkbox" class="checked">
-                            <span class="span">sách giáo khoa</span>
-                        </label>
-                    </li>
-                    <li>
-                        <input type="checkbox" class="checked">
-                        <span class="span">Fiction</span>
-                    </li>
-                    <li>
-                        <input type="checkbox" class="checked">
-                        <span class="span">Management</span>
-                    </li>
-                    <li>
-                        <input type="checkbox" class="checked">
-                        <span class="span">Business</span>
-                    </li>
+                <ul id="checkPL">
+                    @foreach (var item in lstPL)
+                    {
+                        <li>
+                            <label style="font-weight:normal">
+                                @if (Session["IDPL"].ToString() == item.ID.ToString())
+                                {
+                                    <input type="radio" value="@item.ID" name="r1" checked />
+                                }
+                                else
+                                {
+                                    <input type="radio" value="@item.ID" name="r1" />
+                                }
+                                <span class="span">@item.TenPhanLoaiAP</span>
+                            </label>
+                        </li>
+                    }
                 </ul>
             </div>
             <!-- //price range -->
@@ -81,13 +85,23 @@
                 <h3 class="shopf-sear-headits-sear-head">
                     <span>Tác</span> giả
                 </h3>
-                <select class="form-control select2">
-                    <option value="1">test</option>
-                    <option value="2">supper test</option>
-                    <option value="3">nomarl test</option>
-                    <option value="4">demo test</option>
-                    <option value="5">test ok</option>
+                <select class="form-control select2" id="ddlTG">
+                    <option value="0">--Chọn tác giả--</option>
+                    @foreach (var item in lstTG)
+                    {
+                        if (item.ID.ToString() == Session["IDTG"].ToString())
+                        {
+                            <option value="@item.ID" selected>@item.HoTen</option>
+                        }
+                        else
+                        {
+                            <option value="@item.ID">@item.HoTen</option>
+                        }
+                    }
                 </select>
+            </div>
+            <div class="row" style="padding-top: 10px; float: right; margin-right: 0px">
+                <a class="btn btn-default" style="width:100%; border-radius:0px; " onclick="Search()">Tìm kiếm</a>
             </div>
             <!-- // preference -->
         </div>
@@ -98,302 +112,43 @@
                 <!-- product-sec1 -->
                 <div class="product-sec1">
                     <!-- row1-->
-                    <div class="col-md-3 product-men">
-                        <div class="product-chr-info chr">
-                            <div class="thumbnail">
-                                <a href="single_product.html">
-                                    <img src="~/assets/client/images/lib8.jpg" alt="">
-                                </a>
-                            </div>
-                            <div class="caption">
-                                <h4>be creative</h4>
-                                <p>Clayton Barton</p>
-                                <form action="#" method="post">
-                                    <input type="hidden" name="cmd" value="_cart">
-                                    <input type="hidden" name="add" value="1">
-                                    <input type="hidden" name="chr_item" value="Book1">
-                                    <input type="hidden" name="amount" value="100.00">
-                                    <button type="submit" class="chr-cart pchr-cart">
-                                        Mượn sách
-                                        <i class="fa fa-cart-plus" aria-hidden="true"></i>
-                                    </button>
-                                    <a href="#" data-toggle="modal" data-target="#myModal1"></a>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 product-men">
-                        <div class="product-chr-info chr">
-                            <div class="thumbnail">
-                                <a href="single_product.html">
-                                    <img src="~/assets/client/images/lib7.jpg" alt="">
-                                </a>
-                            </div>
-                            <div class="caption">
-                                <h4>marketing</h4>
-                                <p>Niel Fontine</p>
-                                <form action="#" method="post">
-                                    <input type="hidden" name="cmd" value="_cart">
-                                    <input type="hidden" name="add" value="1">
-                                    <input type="hidden" name="chr_item" value="Book2">
-                                    <input type="hidden" name="amount" value="200.00">
-                                    <button type="submit" class="chr-cart pchr-cart">
-                                        Mượn sách
-                                        <i class="fa fa-cart-plus" aria-hidden="true"></i>
-                                    </button>
-                                    <a href="#" data-toggle="modal" data-target="#myModal1"></a>
-                                </form>
+                    @foreach (var item in lstAP)
+                    {
+                        <div class="col-md-3 product-men">
+                            <div class="product-chr-info chr">
+                                <div class="thumbnail">
+                                    <a href="single_product.html">
+                                        <img src="@item.HinhAnh" alt="" style="width: 168px; height:250px">
+                                    </a>
+                                </div>
+                                <div class="caption">
+                                    @if (item.NhanDe.Length > 33)
+                                    {
+                                        <h4>@item.NhanDe.Substring(0, 33) ...</h4>
+                                    }
+                                    else
+                                    {
+                                        <h4>@item.NhanDe</h4>
+                                    }
+                                    <p>@item.TacGia</p>
+                                    <form action="#" method="post">
+                                        <input type="hidden" name="cmd" value="_cart">
+                                        <input type="hidden" name="add" value="1">
+                                        <input type="hidden" name="chr_item" value="Book1">
+                                        <input type="hidden" name="amount" value="100.00">
+                                        <button type="submit" class="chr-cart pchr-cart">
+                                            Mượn sách
+                                            <i class="fa fa-cart-plus" aria-hidden="true"></i>
+                                        </button>
+                                        <a href="#" data-toggle="modal" data-target="#myModal1"></a>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-3 product-men">
-                        <div class="product-chr-info chr">
-                            <div class="thumbnail">
-                                <a href="single_product.html">
-                                    <img src="~/assets/client/images/lib3.jpg" alt="">
-                                </a>
-                            </div>
-                            <div class="caption">
-                                <h4>work from home</h4>
-                                <p>Jose portilla</p>
-                                <form action="#" method="post">
-                                    <input type="hidden" name="cmd" value="_cart">
-                                    <input type="hidden" name="add" value="1">
-                                    <input type="hidden" name="chr_item" value="Book3">
-                                    <input type="hidden" name="amount" value="80.00">
-                                    <button type="submit" class="chr-cart pchr-cart">
-                                        Mượn sách
-                                        <i class="fa fa-cart-plus" aria-hidden="true"></i>
-                                    </button>
-                                    <a href="#" data-toggle="modal" data-target="#myModal1"></a>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 product-men">
-                        <div class="product-chr-info chr">
-                            <div class="thumbnail">
-                                <a href="single_product.html">
-                                    <img src="~/assets/client/images/lib6.jpg" alt="">
-                                </a>
-                            </div>
-                            <div class="caption">
-                                <h4>online business</h4>
-                                <p>Clayton Barton</p>
-                                <form action="#" method="post">
-                                    <input type="hidden" name="cmd" value="_cart">
-                                    <input type="hidden" name="add" value="1">
-                                    <input type="hidden" name="chr_item" value="Book4">
-                                    <input type="hidden" name="amount" value="120.00">
-                                    <button type="submit" class="chr-cart pchr-cart">
-                                        Mượn sách
-                                        <i class="fa fa-cart-plus" aria-hidden="true"></i>
-                                    </button>
-                                    <a href="#" data-toggle="modal" data-target="#myModal1"></a>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- //row1 -->
-                    <!-- row2 -->
-                    <div class="col-md-3 product-men women_two">
-                        <div class="product-chr-info chr">
-                            <div class="thumbnail">
-                                <a href="single_product.html">
-                                    <img src="~/assets/client/images/lib6.jpg" alt="">
-                                </a>
-                            </div>
-                            <div class="caption">
-                                <h4>e-commerce</h4>
-                                <p>Chris Haroun</p>
-                                <form action="#" method="post">
-                                    <input type="hidden" name="cmd" value="_cart">
-                                    <input type="hidden" name="add" value="1">
-                                    <input type="hidden" name="chr_item" value="Book5">
-                                    <input type="hidden" name="amount" value="125.00">
-                                    <button type="submit" class="chr-cart pchr-cart">
-                                        Mượn sách
-                                        <i class="fa fa-cart-plus" aria-hidden="true"></i>
-                                    </button>
-                                    <a href="#" data-toggle="modal" data-target="#myModal1"></a>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 product-men women_two">
-                        <div class="product-chr-info chr">
-                            <div class="thumbnail">
-                                <a href="single_product.html">
-                                    <img src="~/assets/client/images/lib2.jpg" alt="">
-                                </a>
-                            </div>
-                            <div class="caption">
-                                <h4>kids</h4>
-                                <p>Alex Even</p>
-                                <form action="#" method="post">
-                                    <input type="hidden" name="cmd" value="_cart">
-                                    <input type="hidden" name="add" value="1">
-                                    <input type="hidden" name="chr_item" value="Book6">
-                                    <input type="hidden" name="amount" value="70.00">
-                                    <button type="submit" class="chr-cart pchr-cart">
-                                        Mượn sách
-                                        <i class="fa fa-cart-plus" aria-hidden="true"></i>
-                                    </button>
-                                    <a href="#" data-toggle="modal" data-target="#myModal1"></a>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 product-men women_two">
-                        <div class="product-chr-info chr">
-                            <div class="thumbnail">
-                                <a href="single_product.html">
-                                    <img src="~/assets/client/images/lib5.jpg" alt="">
-                                </a>
-                            </div>
-                            <div class="caption">
-                                <h4>media</h4>
-                                <p>Alex Even</p>
-                                <form action="#" method="post">
-                                    <input type="hidden" name="cmd" value="_cart">
-                                    <input type="hidden" name="add" value="1">
-                                    <input type="hidden" name="chr_item" value="Book7">
-                                    <input type="hidden" name="amount" value="220.00">
-                                    <button type="submit" class="chr-cart pchr-cart">
-                                        Mượn sách
-                                        <i class="fa fa-cart-plus" aria-hidden="true"></i>
-                                    </button>
-                                    <a href="#" data-toggle="modal" data-target="#myModal1"></a>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 product-men women_two">
-                        <div class="product-chr-info chr">
-                            <div class="thumbnail">
-                                <a href="single_product.html">
-                                    <img src="~/assets/client/images/lib4.jpg" alt="">
-                                </a>
-                            </div>
-                            <div class="caption">
-                                <h4>membership</h4>
-                                <p>Hadilen de</p>
-                                <form action="#" method="post">
-                                    <input type="hidden" name="cmd" value="_cart">
-                                    <input type="hidden" name="add" value="1">
-                                    <input type="hidden" name="chr_item" value="Book8">
-                                    <input type="hidden" name="amount" value="210.00">
-                                    <button type="submit" class="chr-cart pchr-cart">
-                                        Mượn sách
-                                        <i class="fa fa-cart-plus" aria-hidden="true"></i>
-                                    </button>
-                                    <a href="#" data-toggle="modal" data-target="#myModal1"></a>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- //row2 -->
-                    <!-- row3 -->
-                    <div class="col-md-3 product-men">
-                        <div class="product-chr-info chr">
-                            <div class="thumbnail">
-                                <a href="single_product.html">
-                                    <img src="~/assets/client/images/lib7.jpg" alt="">
-                                </a>
-                            </div>
-                            <div class="caption">
-                                <h4>marketing</h4>
-                                <p>Scott Harris</p>
-                                <form action="#" method="post">
-                                    <input type="hidden" name="cmd" value="_cart">
-                                    <input type="hidden" name="add" value="1">
-                                    <input type="hidden" name="chr_item" value="Book9">
-                                    <input type="hidden" name="amount" value="180.00">
-                                    <button type="submit" class="chr-cart pchr-cart">
-                                        Mượn sách
-                                        <i class="fa fa-cart-plus" aria-hidden="true"></i>
-                                    </button>
-                                    <a href="#" data-toggle="modal" data-target="#myModal1"></a>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 product-men">
-                        <div class="product-chr-info chr">
-                            <div class="thumbnail">
-                                <a href="single_product.html">
-                                    <img src="~/assets/client/images/lib1.jpg" alt="">
-                                </a>
-                            </div>
-                            <div class="caption">
-                                <h4>online business</h4>
-                                <p>Scott Harris</p>
-                                <form action="#" method="post">
-                                    <input type="hidden" name="cmd" value="_cart">
-                                    <input type="hidden" name="add" value="1">
-                                    <input type="hidden" name="chr_item" value="Book10">
-                                    <input type="hidden" name="amount" value="330.00">
-                                    <button type="submit" class="chr-cart pchr-cart">
-                                        Mượn sách
-                                        <i class="fa fa-cart-plus" aria-hidden="true"></i>
-                                    </button>
-                                    <a href="#" data-toggle="modal" data-target="#myModal1"></a>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 product-men">
-                        <div class="product-chr-info chr">
-                            <div class="thumbnail">
-                                <a href="single_product.html">
-                                    <img src="~/assets/client/images/lib2.jpg" alt="">
-                                </a>
-                            </div>
-                            <div class="caption">
-                                <h4>kids</h4>
-                                <p>Cordebard</p>
-                                <form action="#" method="post">
-                                    <input type="hidden" name="cmd" value="_cart">
-                                    <input type="hidden" name="add" value="1">
-                                    <input type="hidden" name="chr_item" value="Book11">
-                                    <input type="hidden" name="amount" value="280.00">
-                                    <button type="submit" class="chr-cart pchr-cart">
-                                        Mượn sách
-                                        <i class="fa fa-cart-plus" aria-hidden="true"></i>
-                                    </button>
-                                    <a href="#" data-toggle="modal" data-target="#myModal1"></a>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 product-men">
-                        <div class="product-chr-info chr">
-                            <div class="thumbnail">
-                                <a href="single_product.html">
-                                    <img src="~/assets/client/images/lib3.jpg" alt="">
-                                </a>
-                            </div>
-                            <div class="caption">
-                                <h4>work from home</h4>
-                                <p>Cordebard</p>
-                                <form action="#" method="post">
-                                    <input type="hidden" name="cmd" value="_cart">
-                                    <input type="hidden" name="add" value="1">
-                                    <input type="hidden" name="chr_item" value="Book12">
-                                    <input type="hidden" name="amount" value="140.00">
-                                    <button type="submit" class="chr-cart pchr-cart">
-                                        Mượn sách
-                                        <i class="fa fa-cart-plus" aria-hidden="true"></i>
-                                    </button>
-                                    <a href="#" data-toggle="modal" data-target="#myModal1"></a>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+                    }
                     <!-- //row3 -->
                     <div class="clearfix"></div>
                 </div>
-
                 <!-- //product-sec1 -->
                 <div class="clearfix"></div>
             </div>
@@ -401,21 +156,35 @@
             <div class="text-center">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                                <span class="sr-only">Previous</span>
-                            </a>
-                        </li>
-                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                                <span class="sr-only">Next</span>
-                            </a>
-                        </li>
+                        @if (page != 1)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="/Book/Index?page=@(page-1)&IDTG=@Session["IDTG"]&IDPL=@Session["IDPL"]" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                            </li>
+                        }
+                        @for (int i = 1; i <= pageCount; i++)
+                        {
+                            if (i == page)
+                            {
+                                <li class="page-item active"><a class="page-link" href="/Book/Index?page=@i&IDTG=@Session["IDTG"]&IDPL=@Session["IDPL"]">@i</a></li>
+                            }
+                            else
+                            {
+                                <li class="page-item"><a class="page-link" href="/Book/Index?page=@i&IDTG=@Session["IDTG"]&IDPL=@Session["IDPL"]">@i</a></li>
+                            }
+                        }
+                        @if (page != pageCount)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="/Book/Index?page=@(page+1)&IDTG=@Session["IDTG"]&IDPL=@Session["IDPL"]" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </li>
+                        }
                     </ul>
                 </nav>
             </div>
@@ -430,5 +199,11 @@
     <script>
         $('.select2').select2({
         });
+        function Search() {
+            var search = $('#txtsearch').val();
+            var pl = $('input[name=r1]:checked').val();
+            var tg = $('#ddlTG').val();
+            location.href = '/Book/Index?search=' + search + '&IDTG=' + tg + '&IDPL=' + pl;
+        }
     </script>
 }

@@ -155,5 +155,10 @@ namespace Models.Dao.DaoAdmin
                 return false;
             }
         }
+
+        public long SLPhieuMuon()
+        {
+            return db.cPhieuMuons.Where(x => x.TrangThai != 10).ToList().Count;
+        }
     }
 }
