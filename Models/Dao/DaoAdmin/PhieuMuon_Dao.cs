@@ -65,6 +65,13 @@ namespace Models.Dao.DaoAdmin
 
         public List<cPhieuMuonView> getAllDataView(int IDDV, string search)
         {
+            var itemall = db.cPhieuMuons.Where(x => x.NgayHenTra < DateTime.Now && x.TrangThai != 1 && x.TrangThai != 10).ToList();
+            foreach (var it in itemall)
+            {
+                it.TrangThai = 3;
+            }
+            db.SaveChanges();
+
             List<cPhieuMuonView> item = new List<cPhieuMuonView>();
             item = (from ds in db.cPhieuMuons
                     join bd in db.cBanDocs on ds.IDBanDoc equals bd.ID
@@ -159,6 +166,28 @@ namespace Models.Dao.DaoAdmin
         public long SLPhieuMuon()
         {
             return db.cPhieuMuons.Where(x => x.TrangThai != 10).ToList().Count;
+        }
+
+        public bool UpdateDate(long ID, long IDNV)
+        {
+            try
+            {
+                var item = db.cPhieuMuons.FirstOrDefault(x => x.ID == ID);
+                DateTime tghethan = item.NgayHenTra.GetValueOrDefault();
+                if (item.TrangThai == 3)
+                {
+                    item.TrangThai = 2;
+                }
+                item.NgayHenTra = tghethan.AddDays(5);
+                item.NgaySua = DateTime.Now;
+                item.NguoiSua = IDNV;
+                db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
