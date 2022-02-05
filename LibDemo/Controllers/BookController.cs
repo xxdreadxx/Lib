@@ -17,6 +17,7 @@ namespace LibDemo.Controllers
         DonViDao dv = new DonViDao();
         PhanLoaiDao pl = new PhanLoaiDao();
         TacGiaDao tg = new TacGiaDao();
+        MCBDao mcb = new MCBDao();
         // GET: Book
         public ActionResult Index(string search, int page = 1, long IDTG = 0, int IDPL=0)
         {
@@ -40,6 +41,8 @@ namespace LibDemo.Controllers
 
         public ActionResult Detail(long id)
         {
+            ViewBag.Item = ap.getDataViewByID(id);
+            ViewBag.LstMCB = mcb.getAllDataViewClient(id).OrderByDescending(x=>x.DonVi).ToList();
             return View();
         }
     }

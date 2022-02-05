@@ -11,6 +11,7 @@
 
 @section Styles{
     <link href="~/assets/client/plugin/select2/css/select2.min.css" rel="stylesheet" />
+    <link href="~/assets/client/plugin/datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" />
 }
 <!-- banner -->
 <div class="banner-bg-inner">
@@ -79,7 +80,7 @@
                 <h3 class="shopf-sear-headits-sear-head">
                     <span>nhà</span> xuất bản
                 </h3>
-                <select class="form-control select2">
+                <select class="form-control select2" id="ddlNXB">
                     <option value="0">--Chọn nhà xuất bản--</option>
                     @foreach (var item in lstNXB)
                     {
@@ -125,28 +126,15 @@
                                         <h4>@item.NhanDe</h4>
                                     }
                                     <p>@item.TacGia</p>
-                                    <form action="#" method="post">
-                                        <input type="hidden" name="cmd" value="_cart">
-                                        <input type="hidden" name="add" value="1">
-                                        <input type="hidden" name="chr_item" value="Book1">
-                                        <input type="hidden" name="amount" value="100.00">
-                                        <button type="submit" class="chr-cart pchr-cart">
-                                            Mượn sách
-                                            <i class="fa fa-cart-plus" aria-hidden="true"></i>
-                                        </button>
-                                        <a href="#" data-toggle="modal" data-target="#myModal1"></a>
-                                    </form>
                                 </div>
                             </div>
                         </div>
                     }
                     <div class="clearfix"></div>
                 </div>
-
                 <!-- //product-sec1 -->
                 <div class="clearfix"></div>
             </div>
-
             <div class="text-center">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
@@ -190,14 +178,21 @@
 
 @section Scripts{
     <script src="~/assets/client/plugin/select2/js/select2.full.min.js"></script>
+    <script src="~/assets/client/plugin/datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/assets/client/plugin/datepicker/locales/bootstrap-datepicker.vi.min.js" charset="UTF-8"></script>
     <script>
         $('.select2').select2({
         });
+        $(".datepicker").datepicker({
+            format: 'dd-mm-yyyy',
+            language: 'vi'
+        });
         function Search() {
             var search = $('#txtsearch').val();
-            var pl = $('input[name=r1]:checked').val();
-            var tg = $('#ddlTG').val();
-            location.href = '/Book/Index?search=' + search + '&IDTG=' + tg + '&IDPL=' + pl;
+            var fromDate = $('#fromDate').val();
+            var toDate = $('#toDate').val();
+            var tg = $('#ddlNXB').val();
+            location.href = '/Magazine/Index?search=' + search + '&fromdate=' + fromDate + '&todate=' + toDate + '&IDNXB=' + tg;
         }
     </script>
 }

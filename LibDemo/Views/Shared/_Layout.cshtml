@@ -19,9 +19,11 @@
     <link href="~/assets/client/css/bootstrap.css" rel="stylesheet" />
     <!-- shop css -->
     <link href="~/assets/client/css/shop.css" rel="stylesheet" />
+    <link href="~/assets/client/css/checkout.css" type="text/css" rel="stylesheet" media="all">
     <link href="~/assets/client/css/style.css" rel="stylesheet" />
     <!-- font-awesome icons -->
     <link href="~/assets/client/css/font-awesome.css" rel="stylesheet" />
+    <link href="~/Content/toastr.min.css" rel="stylesheet" />
     <!-- //Custom Theme files -->
     <!-- online-fonts -->
     <!-- logo -->
@@ -82,14 +84,27 @@
                             <li>
                                 <a href="/LibraryList/Index">Danh sách đơn vị</a>
                             </li>
-                            @*<li>
-                                <a href="contact.html">Góp ý</a>
-                            </li>*@
-                            <li>
-                                <a href="/User/Login" title="SignIn & SignUp">
-                                    <span class="fa fa-user nav-icon" aria-hidden="true"></span>
-                                </a>
-                            </li>
+                            @if (Session["IDuser"] == null)
+                            {
+                                <li>
+                                    <a href="/User/Login" title="SignIn & SignUp">
+                                        <span class="fa fa-user nav-icon" aria-hidden="true"></span>
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    <a href="/User/ListPM" title="Danh sách phiếu mượn">
+                                        Xin chào: @Session["TenUser"]
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" onclick="Logout()" title="Đăng xuất">
+                                        <span class="fa fa-sign-out nav-turn" aria-hidden="true"></span>
+                                    </a>
+                                </li>
+                            }
                         </ul>
                         <!-- search-bar -->
                         <div class="search-bar-agileits">
@@ -111,7 +126,7 @@
                         </div>
                         <!-- //search-bar ends here -->
                         <!-- shopping cart -->
-                        <div class="cart-mainf">
+                        @*<div class="cart-mainf">
                             <div class="chrcart chrcart2 cart cart box_1">
                                 <form action="#" method="post" class="last">
                                     <input type="hidden" name="cmd" value="_cart">
@@ -121,7 +136,7 @@
                                     </button>
                                 </form>
                             </div>
-                        </div>
+                        </div>*@
                         <!-- //shopping cart ends here -->
                     </div>
                     <!-- /.navbar-collapse -->
@@ -209,6 +224,10 @@
     <!-- //home -->
     <!-- js -->
     <script src="~/assets/client/js/jquery-2.2.3.min.js"></script>
+    @*<script src="~/assets/admin/plugins/jQuery/jQuery-2.1.4.min.js"></script>*@
+    <!-- jQuery UI 1.11.4 -->
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+    <script src="~/assets/admin/bootstrap/js/bootstrap.min.js"></script>
     <!-- //js -->
     <!--search jQuery-->
     <script src="~/assets/client/js/main.js"></script>
@@ -231,6 +250,8 @@
     <!-- //cart-js -->
     <!-- Scrolling Nav JavaScript -->
     <script src="~/assets/client/js/scrolling-nav.js"></script>
+    <script src="~/assets/admin/dist/js/demo.js"></script>
+    <script src="~/Scripts/toastr.min.js"></script>
     <!-- //fixed-scroll-nav-js -->
     <!-- dropdown nav -->
     <script>
@@ -245,6 +266,7 @@
                     $(this).toggleClass('open');
                 }
             );
+            
         });
     </script>
     <!-- //dropdown nav -->
@@ -290,6 +312,23 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="~/assets/client/js/bootstrap.js"></script>
+    <script>
+        function Logout() {
+            $.ajax({
+                url: '/User/LogOut',
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.status == true) {
+                        window.location = '/Home/Index';
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+    </script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

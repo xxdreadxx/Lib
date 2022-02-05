@@ -1,0 +1,149 @@
+﻿@using Models.ModelsView;
+@{
+    ViewBag.Title = "ListPM";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<cPhieuMuonView> lst = ViewBag.lstPM;
+}
+
+<div class="banner-bg-inner">
+    <!-- banner-text -->
+    <div class="banner-text-inner">
+        <div class="container">
+            <h2 class="title-inner">
+                world of reading
+            </h2>
+        </div>
+    </div>
+    <!-- //banner-text -->
+</div>
+<!-- //banner -->
+<!-- breadcrumbs -->
+<div class="crumbs text-center">
+    <div class="container">
+        <div class="row">
+            <ul class="btn-group btn-breadcrumb bc-list">
+                <li class="btn btn1">
+                    <a href="index.html">
+                        <i class="glyphicon glyphicon-home"></i>
+                    </a>
+                </li>
+                <li class="btn btn2">
+                    <a href="#">Cá nhân</a>
+                </li>
+                <li class="btn btn3">
+                    <a href="#">Danh sách phiếu mượn</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="innerf-pages section">
+    <div class="container">
+        <div class="privacy about">
+            <div class="checkout-right">
+                <table class="timetable_sub table-responsive">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Nhan đề ấn phẩm</th>
+                            <th>Đơn vị mượn ấn phẩm</th>
+                            <th>Ngày mượn</th>
+                            <th>Ngày hẹn trả</th>
+                            <th>Tình trạng</th>
+                            <th>Chức năng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int i = 0;
+                            foreach (var item in lst)
+                            {
+                                i++;
+                                <tr class="rem1">
+                                    <td class="invert">@i</td>
+                                    <td class="invert">
+                                        @item.NhanDe
+                                    </td>
+                                    <td class="invert">
+                                        @item.DonVi
+                                    </td>
+                                    <td class="invert">
+                                        @item.NgayMuon.GetValueOrDefault().ToString("dd/MM/yyyy")
+                                    </td>
+                                    <td class="invert">
+                                        @item.NgayHenTra.GetValueOrDefault().ToString("dd/MM/yyyy")
+                                    </td>
+                                    @if (item.TrangThai == 1)
+                                    {
+                                        <td class="invert">
+                                            Kết thúc
+                                        </td>
+                                    }
+                                    else if (item.TrangThai == 2)
+                                    {
+                                        <td class="invert">
+                                            Khởi tạo
+                                        </td>
+                                    }
+                                    else if (item.TrangThai == 3)
+                                    {
+                                        <td class="invert">
+                                            Đang mượn
+                                        </td>
+                                    }
+                                    else if (item.TrangThai == 4)
+                                    {
+                                        <td class="invert">
+                                            Quá hạn chưa trả
+                                        </td>
+                                    }
+                                    @if (item.TrangThai == 2)
+                                    {
+                                        <td class="invert">
+                                            <a href="#" onclick="HuyPM(@item.ID)"><i class="fa fa-recycle" title="Hủy phiếu mượn"></i></a>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td class="invert">
+                                        </td>
+                                    }
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        function HuyPM(id) {
+            $.ajax({
+                url: '/User/HuyPM',
+                data: {
+                    id: id
+                },
+                cache: false,
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.status == true) {
+                        toastr.success('Hủy phiếu thành công', '', { timeOut: 2000 });
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1000);
+                    }
+                    else {
+                        toastr.error('Có lỗi xảy ra', '', { timeOut: 2000 });
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+    </script>
+}

@@ -17,6 +17,35 @@ namespace Models.Dao.DaoAdmin
             return db.cBanDocs.FirstOrDefault(x => x.ID == ID);
         }
 
+        public long getDataByUsername(string username, string password, int IDDonVi)
+        {
+            sNhanVien item = new sNhanVien();
+            item = db.sNhanViens.FirstOrDefault(x => x.Username == username && x.IDDonVi == IDDonVi && x.TrangThai != 10);
+            if (item == null)
+            {
+                return -1;
+            }
+            else
+            {
+                item = db.sNhanViens.FirstOrDefault(x => x.Username == username && x.Password == password && x.IDDonVi == IDDonVi && x.TrangThai != 10);
+                if (item == null)
+                {
+                    return -2;
+                }
+                else
+                {
+                    if (item.TrangThai != 1)
+                    {
+                        return -3;
+                    }
+                    else
+                    {
+                        return item.ID;
+                    }
+                }
+            }
+        }
+
         public cBanDocView getDataViewByID(long ID)
         {
             cBanDocView item = new cBanDocView();

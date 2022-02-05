@@ -148,7 +148,10 @@ namespace Models.Dao.DaoAdmin
             {
                 sNhanVien item = db.sNhanViens.FirstOrDefault(x => x.ID == nv.ID);
                 item.HoTen = nv.HoTen;
-                item.AnhDaiDien = nv.AnhDaiDien;
+                if (nv.AnhDaiDien != null)
+                {
+                    item.AnhDaiDien = nv.AnhDaiDien;
+                }
                 item.CMTND = nv.CMTND;
                 item.DiaChi = nv.DiaChi;
                 item.Email = nv.Email;

@@ -82,6 +82,28 @@ namespace Models.Dao.DaoAdmin
             return item;
         }
 
+        public List<cMCBView> getAllDataViewClient(long IDAP)
+        {
+            List<cMCBView> item = new List<cMCBView>();
+            item = (from ds in db.cMCBs
+                    join ap in db.cAnPhams on ds.IDAnPam equals ap.ID
+                    join dv in db.sDonVis on ds.IDDonVi equals dv.ID
+                    join dvht in db.sDonVis on ds.IDDonVi_HienTai equals dvht.ID
+                    where (ds.TrangThai == 1) && ap.ID == IDAP
+                    select new cMCBView
+                    {
+                        ID = ds.ID,
+                        DonVi = dv.TenDonVi,
+                        DonViHienTai = dvht.TenDonVi,
+                        NhanDe = ap.NhanDe,
+                        IDAnPam = ds.IDAnPam,
+                        IDDonVi = ds.IDDonVi,
+                        IDDonVi_HienTai = ds.IDDonVi_HienTai,
+                        MCB = ds.MCB
+                    }).ToList();
+            return item;
+        }
+
         public bool Insert(long IDAP, long IDNV, int IDDonVi, int SL)
         {
             try

@@ -48,5 +48,6 @@ namespace Models.ModelsView
         public string MCB { get; set; }
         public string BanDoc { get; set; }
         public string DonVi { get; set; }
+        public string NhanDe { get; set; }
     }
 }

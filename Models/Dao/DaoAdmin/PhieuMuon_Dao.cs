@@ -46,6 +46,7 @@ namespace Models.Dao.DaoAdmin
                     join bd in db.cBanDocs on ds.IDBanDoc equals bd.ID
                     join mcb in db.cMCBs on ds.IDMCB equals mcb.ID
                     join dv in db.sDonVis on ds.IDDonVi equals dv.ID
+                    join ap in db.cAnPhams on mcb.IDAnPam equals ap.ID
                     where ds.IDBanDoc == ID && ds.TrangThai != 10
                     select new cPhieuMuonView
                     {
@@ -58,6 +59,7 @@ namespace Models.Dao.DaoAdmin
                         NgayMuon = ds.NgayMuon,
                         NgayTra = ds.NgayTra,
                         DonVi = dv.TenDonVi,
+                        NhanDe = ap.NhanDe,
                         TrangThai = ds.TrangThai
                     }).ToList();
             return item;
@@ -68,7 +70,7 @@ namespace Models.Dao.DaoAdmin
             var itemall = db.cPhieuMuons.Where(x => x.NgayHenTra < DateTime.Now && x.TrangThai != 1 && x.TrangThai != 10).ToList();
             foreach (var it in itemall)
             {
-                it.TrangThai = 3;
+                it.TrangThai = 4;
             }
             db.SaveChanges();
 
@@ -152,6 +154,10 @@ namespace Models.Dao.DaoAdmin
             {
                 cPhieuMuon item = db.cPhieuMuons.FirstOrDefault(x => x.ID == ID);
                 item.TrangThai = tt;
+                if (tt == 4)
+                {
+                    item.NgayTra = DateTime.Now;
+                }
                 item.NgaySua = DateTime.Now;
                 item.NguoiSua = IDNV;
                 db.SaveChanges();
@@ -174,9 +180,9 @@ namespace Models.Dao.DaoAdmin
             {
                 var item = db.cPhieuMuons.FirstOrDefault(x => x.ID == ID);
                 DateTime tghethan = item.NgayHenTra.GetValueOrDefault();
-                if (item.TrangThai == 3)
+                if (item.TrangThai == 4)
                 {
-                    item.TrangThai = 2;
+                    item.TrangThai = 3;
                 }
                 item.NgayHenTra = tghethan.AddDays(5);
                 item.NgaySua = DateTime.Now;

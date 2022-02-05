@@ -16,11 +16,19 @@ namespace LibDemo.Controllers
         DonViDao dv = new DonViDao();
         NXBDao nxb = new NXBDao();
         // GET: Magazine
-        public ActionResult Index(string search, string fromdate, string todate, int IDNXB, int page = 1)
+        public ActionResult Index(string search, string fromdate, string todate, int IDNXB = 0, int page = 1)
         {
             if (search == null)
             {
                 search = "";
+            }
+            if (fromdate == null)
+            {
+                fromdate = "";
+            }
+            if (todate == null)
+            {
+                todate = "";
             }
             var lsrAP = ap.getAll1(2, IDNXB, search, fromdate, todate).ToList();
             int slAP = lsrAP.Count();

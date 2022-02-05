@@ -59,3 +59,34 @@ function AddDate(id) {
         }
     });
 }
+
+function Duyet(id, type) {
+    $.ajax({
+        url: '/Admin/Coupon/Confirm',
+        data: {
+            id: id,
+            type: type
+        },
+        type: 'GET',
+        dataType: 'json',
+        success: function (response) {
+            if (response.status == true) {
+                if (type == 3) {
+                    toastr.success('Cho mượn thành công', '', { timeOut: 1000 });
+                }
+                else {
+                    toastr.success('Trả ấn phẩm thành công', '', { timeOut: 1000 });
+                }
+                setTimeout(function () {
+                    location.reload();
+                }, 1000);
+            }
+            else {
+                toastr.error('Có lỗi xảy ra', '', { timeOut: 2000 });
+            }
+        },
+        error: function (err) {
+            console.log(err);
+        }
+    });
+}

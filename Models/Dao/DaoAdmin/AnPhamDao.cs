@@ -174,21 +174,21 @@ namespace Models.Dao.DaoAdmin
             {
                 string sqlA = "";
                 if (fromdate != "") {
-                    sqlA += "and ap.NgayXuatBan >= " + fromdate + " ";
+                    sqlA += "and ap.NgayXuatBan >= '" + fromdate + "' ";
                         }
                 if (todate != "")
                 {
-                    sqlA += "and ap.NgayXuatBan <= " + todate + " ";
+                    sqlA += "and ap.NgayXuatBan <= '" + todate + "' ";
                 }
                 _conn.Open();
                 try
                 {
-                    var _sqlStr = "select ap.ID, ap.NhanDe, ap.HinhAnh, ap.MaAnPham, nxb.TenNXB, pl.TenPhanLoaiAP, tg.HoTen from cAnPham ap " +
+                    var _sqlStr = "select ap.ID, ap.NhanDe, ap.HinhAnh, ap.MaAnPham, nxb.TenNXB from cAnPham ap " +
                         "join aNXB nxb on ap.IDNXB = nxb.ID " +
                         "where ap.LKieuAP = " + type + " and (nxb.ID = " + NXB + " or " + NXB + " = 0) " +
                         "" + sqlA + "" +
                         "and (ap.NhanDe like N'%" + search + "%') " +
-                        "group by ap.ID, ap.NhanDe, ap.HinhAnh, ap.MaAnPham, nxb.TenNXB, pl.TenPhanLoaiAP, tg.HoTen";
+                        "group by ap.ID, ap.NhanDe, ap.HinhAnh, ap.MaAnPham, nxb.TenNXB";
                     _result = _conn.Query<cAnPhamView>(_sqlStr, null, commandType: CommandType.Text).ToList<cAnPhamView>();
                     return _result;
                 }

@@ -41,5 +41,14 @@ namespace LibDemo.Areas.Admin.Controllers
                 status = kt
             }, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult Confirm(long id, byte type)
+        {
+            long IDNV = long.Parse(Session["IDNV"].ToString());
+            bool kt = pm.ChangeStatus(id, type, IDNV);
+            return Json(new
+            {
+                status = kt
+            }, JsonRequestBehavior.AllowGet);
+        }
     }
 }

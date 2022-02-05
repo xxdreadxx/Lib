@@ -84,17 +84,26 @@
                                         }
                                         else if (item.TrangThai == 2)
                                         {
-                                            <td><span class="text-yellow">Đang mượn</span></td>
+                                            <td><span class="text-green">Chờ duyệt</span></td>
                                         }
                                         else if (item.TrangThai == 3)
+                                        {
+                                            <td><span class="text-yellow">Đang mượn</span></td>
+                                        }
+                                        else if (item.TrangThai == 4)
                                         {
                                             <td><span class="text-red">Quá hạn chưa trả</span></td>
                                         }
                                         <td>
-                                            <a onclick="Edit(@item.ID)" style="padding-right:5px" title="Sửa"><i class="fa fa-pencil"></i></a>
-                                            @if (item.TrangThai == 2 || item.TrangThai == 3)
+                                            @*<a onclick="Edit(@item.ID)" style="padding-right:5px" title="Sửa"><i class="fa fa-pencil"></i></a>*@
+                                            @if (item.TrangThai == 2)
                                             {
-                                                <a onclick="AddDate(@item.ID)" style="padding-right:5px" title="Gia hạn"><i class="fa fa-alarm"></i></a>
+                                                <a onclick="Duyet(@item.ID, 3)" style="padding-right:5px" title="Duyệt cho mượn"><i class="fa fa-check"></i></a>
+                                            }
+                                            @if (item.TrangThai == 4 || item.TrangThai == 3)
+                                            {
+                                                <a onclick="AddDate(@item.ID)" style="padding-right:5px" title="Gia hạn"><i class="fa fa-clock-o"></i></a>
+                                                <a onclick="Duyet(@item.ID, 1)" style="padding-right:5px" title="Trả ấn phẩm"><i class="fa fa-check"></i></a>
                                             }
                                             @if (item.TrangThai == 1)
                                             {
@@ -134,7 +143,7 @@
     </div>
 </div>
 @section scripts{
-    <script src="~/assets/admin/js/author.js"></script>
+    <script src="~/assets/admin/js/coupon.js"></script>
     <script>
         $(document).ready(function () {
             $('.treeview').removeClass('active');
