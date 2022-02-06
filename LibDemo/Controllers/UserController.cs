@@ -129,6 +129,14 @@ namespace LibDemo.Controllers
                         }, JsonRequestBehavior.AllowGet);
                     }
                 }
+                else
+                {
+                    return Json(new
+                    {
+                        status = false,
+                        message = "Xảy ra lỗi khi duyệt đơn vị, đăng nhập thất bại!"
+                    }, JsonRequestBehavior.AllowGet);
+                }
             }
             else
             {
