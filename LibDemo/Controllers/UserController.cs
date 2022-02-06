@@ -93,6 +93,51 @@ namespace LibDemo.Controllers
             }
         }
 
+        public JsonResult Register(string username, string pass, string hoten)
+        {
+            string host = System.Web.HttpContext.Current.Request.Url.Host;
+            if (host != null)
+            {
+                var donvi = dv.getDataByHost(host);
+                if (donvi != null)
+                {
+                    Session["IDDonVi"] = donvi.ID;
+                    cBanDoc item = new cBanDoc();
+                    item.HoTen = hoten;
+                    item.IDDonVi = donvi.ID;
+                    item.IDDonVi = donvi.ID;
+                    item.NgayHetHan = DateTime.Now.AddYears(1);
+                    item.NgayTao = DateTime.Now;
+                    item.Password = pass;
+                    item.Username = username;
+                    item.TrangThai = 1;
+                    var kt = nv.Insert(item);
+                    if (kt == 0)
+                    {
+                        return Json(new
+                        {
+                            status = false,
+                            message = "Xảy ra lỗi, đăng ký tài khoản không thành công!"
+                        }, JsonRequestBehavior.AllowGet);
+                    }
+                    else {
+                        return Json(new
+                        {
+                            status = false,
+                            message = "Đăng ký thành công!"
+                        }, JsonRequestBehavior.AllowGet);
+                    }
+                }
+            }
+            else
+            {
+                return Json(new
+                {
+                    status = false,
+                    message = "Xảy ra lỗi khi duyệt đơn vị, đăng nhập thất bại!"
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
         public JsonResult LogOut()
         {
             Session["IDUser"] = null;

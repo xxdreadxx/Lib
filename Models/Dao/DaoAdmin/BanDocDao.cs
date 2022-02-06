@@ -130,17 +130,17 @@ namespace Models.Dao.DaoAdmin
             return item;
         }
 
-        public bool Insert(cBanDoc result)
+        public long Insert(cBanDoc result)
         {
             try
             {
                 db.cBanDocs.Add(result);
                 db.SaveChanges();
-                return true;
+                return result.ID;
             }
             catch
             {
-                return false;
+                return 0;
             }
         }
 

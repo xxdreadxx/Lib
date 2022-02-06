@@ -109,44 +109,44 @@
                             <span></span>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-3 col-sm-3 col-xs-3 control-label">Email</label>
+                            <label class="col-md-3 col-sm-3 col-xs-3 control-label">Tên đăng nhập</label>
                             <div class="col-md-9 col-sm-9 col-xs-9">
-                                <input type="text" class="form-control" name="email" placeholder="Email Address" required="">
+                                <input type="text" class="form-control" id="txtUssernameDK" name="email" placeholder="Email Address" required="">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-3 col-sm-3 col-xs-3 control-label">First Name</label>
+                            <label class="col-md-3 col-sm-3 col-xs-3 control-label">Họ tên</label>
                             <div class="col-md-9 col-sm-9 col-xs-9">
-                                <input type="text" class="form-control" name="firstname" placeholder="First Name" required="">
+                                <input type="text" class="form-control" id="txtHoTenDK" name="firstname" placeholder="First Name" required="">
                             </div>
                         </div>
-                        <div class="form-group">
+                        @*<div class="form-group">
                             <label class="col-md-3 col-sm-3 col-xs-3 control-label">Last Name</label>
                             <div class="col-md-9 col-sm-9 col-xs-9">
                                 <input type="text" class="form-control" name="lastname" placeholder="Last Name" required="">
                             </div>
-                        </div>
+                        </div>*@
                         <div class="form-group">
-                            <label class="col-md-3 col-sm-3 col-xs-3 control-label">Password</label>
+                            <label class="col-md-3 col-sm-3 col-xs-3 control-label">Mật khẩu</label>
                             <div class="col-md-9 col-sm-9 col-xs-9">
-                                <input type="password" class="form-control" name="passwd" placeholder="Password" required="">
+                                <input type="password" class="form-control" id="txtPasswordMK" name="passwd" placeholder="Password" required="">
                             </div>
                         </div>
                         <div class="form-group">
                             <!-- Button -->
                             <div class="signup-btn">
-                                <button id="btn-signup" type="button" class="btn btn-info">
+                                <button id="btn-signup" type="button" onclick="btnDangKy()" class="btn btn-info">
                                     <i class="icon-hand-right"></i> &nbsp; Đăng ký
                                 </button>
                             </div>
                         </div>
                         <div style="border-top: 1px solid #999; padding-top:20px" class="form-group">
 
-                            <div class="f-btn">
+                            @*<div class="f-btn">
                                 <button id="btn-fbsignup" type="button" class="btn btn-primary">
                                     <i class="icon-facebook"></i>   Đăng ký với Facebook
                                 </button>
-                            </div>
+                            </div>*@
                         </div>
                     </form>
                 </div>
@@ -166,6 +166,36 @@
                 data: {
                     username: username,
                     pass: pass,
+                },
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.status == true) {
+                        toastr.success(response.message, '', { timeOut: 2000 });
+                        setTimeout(function () {
+                            window.location = '/Home/Index';
+                        }, 1000);
+                    }
+                    else {
+                        toastr.error(response.message, '', { timeOut: 2000 });
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+
+        function btnDangKy() {
+            var username = $('#txtUssernameDK').val();
+            var hoten = $('#txtHoTenDK').val();
+            var pass = $('#txtPasswordMK').val();
+            $.ajax({
+                url: '/User/Register',
+                data: {
+                    username: username,
+                    pass: pass,
+                    ten: hoten,
                 },
                 type: 'GET',
                 dataType: 'json',
