@@ -121,6 +121,7 @@ namespace LibDemo.Controllers
                         }, JsonRequestBehavior.AllowGet);
                     }
                     else {
+                        Session["IDUser"] = kt;
                         return Json(new
                         {
                             status = false,
