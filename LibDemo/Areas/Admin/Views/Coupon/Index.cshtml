@@ -84,7 +84,7 @@
                                         }
                                         else if (item.TrangThai == 2)
                                         {
-                                            <td><span class="text-green">Chờ duyệt</span></td>
+                                            <td><span class="text-green">Chờ duyệt mượn</span></td>
                                         }
                                         else if (item.TrangThai == 3)
                                         {
@@ -94,16 +94,26 @@
                                         {
                                             <td><span class="text-red">Quá hạn chưa trả</span></td>
                                         }
+                                        else if (item.TrangThai == 5)
+                                        {
+                                            <td><span class="text-red">Chờ duyệt gia hạn</span></td>
+                                        }
+                                        else if (item.TrangThai == 6)
+                                        {
+                                            <td><span class="text-red">Chờ duyệt trả</span></td>
+                                        }
                                         <td>
-                                            @*<a onclick="Edit(@item.ID)" style="padding-right:5px" title="Sửa"><i class="fa fa-pencil"></i></a>*@
                                             @if (item.TrangThai == 2)
                                             {
                                                 <a onclick="Duyet(@item.ID, 3)" style="padding-right:5px" title="Duyệt cho mượn"><i class="fa fa-check"></i></a>
                                             }
-                                            @if (item.TrangThai == 4 || item.TrangThai == 3)
+                                            @if (item.TrangThai == 4 || item.TrangThai == 3 || item.TrangThai == 5)
                                             {
-                                                <a onclick="AddDate(@item.ID)" style="padding-right:5px" title="Gia hạn"><i class="fa fa-clock-o"></i></a>
-                                                <a onclick="Duyet(@item.ID, 1)" style="padding-right:5px" title="Trả ấn phẩm"><i class="fa fa-check"></i></a>
+                                                <a onclick="AddDate(@item.ID)" style="padding-right:5px" title="Duyệt gia hạn"><i class="fa fa-clock-o"></i></a>
+                                            }
+                                            @if (item.TrangThai == 4 || item.TrangThai == 3 || item.TrangThai == 6)
+                                            {
+                                                <a onclick="Duyet(@item.ID, 1)" style="padding-right:5px" title="Duyệt trả ấn phẩm"><i class="fa fa-check"></i></a>
                                             }
                                             @if (item.TrangThai == 1)
                                             {

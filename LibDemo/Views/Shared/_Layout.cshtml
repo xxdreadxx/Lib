@@ -95,15 +95,27 @@
                             else
                             {
                                 <li>
-                                    <a href="/User/ListPM" title="Danh sách phiếu mượn">
+                                    <div class="cart-mainf">
+                                        <div class="chrcart chrcart2 cart cart box_1">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <a href="/User/ListPM"> Danh sách phiếu mượn</a>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <a href="/User/Info"> Thông tin</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @*<a href="/User/ListPM" title="Danh sách phiếu mượn">
                                         Xin chào: @Session["TenUser"]
-                                    </a>
+                                    </a>*@
                                 </li>
-                                <li>
+                                @*<li>
                                     <a href="#" onclick="Logout()" title="Đăng xuất">
                                         <span class="fa fa-sign-out nav-turn" aria-hidden="true"></span>
                                     </a>
-                                </li>
+                                </li>*@
                             }
                         </ul>
                         <!-- search-bar -->
@@ -127,16 +139,16 @@
                         <!-- //search-bar ends here -->
                         <!-- shopping cart -->
                         @*<div class="cart-mainf">
-                            <div class="chrcart chrcart2 cart cart box_1">
-                                <form action="#" method="post" class="last">
-                                    <input type="hidden" name="cmd" value="_cart">
-                                    <input type="hidden" name="display" value="1">
-                                    <button class="top_chr_cart" type="submit" name="submit" value="">
-                                        <i class="fa fa-cart-arrow-down" aria-hidden="true"></i>
-                                    </button>
-                                </form>
-                            </div>
-                        </div>*@
+                                <div class="chrcart chrcart2 cart cart box_1">
+                                    <form action="#" method="post" class="last">
+                                        <input type="hidden" name="cmd" value="_cart">
+                                        <input type="hidden" name="display" value="1">
+                                        <button class="top_chr_cart" type="submit" name="submit" value="">
+                                            <i class="fa fa-cart-arrow-down" aria-hidden="true"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>*@
                         <!-- //shopping cart ends here -->
                     </div>
                     <!-- /.navbar-collapse -->
@@ -266,7 +278,7 @@
                     $(this).toggleClass('open');
                 }
             );
-            
+
         });
     </script>
     <!-- //dropdown nav -->

@@ -89,7 +89,7 @@ namespace Models.Dao.DaoAdmin
                     join ap in db.cAnPhams on ds.IDAnPam equals ap.ID
                     join dv in db.sDonVis on ds.IDDonVi equals dv.ID
                     join dvht in db.sDonVis on ds.IDDonVi_HienTai equals dvht.ID
-                    where (ds.TrangThai == 1) && ap.ID == IDAP
+                    where (ds.TrangThai == 1 || ds.TrangThai == 2) && ap.ID == IDAP
                     select new cMCBView
                     {
                         ID = ds.ID,
@@ -99,6 +99,7 @@ namespace Models.Dao.DaoAdmin
                         IDAnPam = ds.IDAnPam,
                         IDDonVi = ds.IDDonVi,
                         IDDonVi_HienTai = ds.IDDonVi_HienTai,
+                        TrangThai = ds.TrangThai,
                         MCB = ds.MCB
                     }).ToList();
             return item;

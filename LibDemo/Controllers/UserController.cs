@@ -93,7 +93,7 @@ namespace LibDemo.Controllers
             }
         }
 
-        public JsonResult Register(string username, string pass, string hoten)
+        public JsonResult Register(string username, string pass, string ten)
         {
             string host = System.Web.HttpContext.Current.Request.Url.Host;
             if (host != null)
@@ -103,7 +103,7 @@ namespace LibDemo.Controllers
                 {
                     Session["IDDonVi"] = donvi.ID;
                     cBanDoc item = new cBanDoc();
-                    item.HoTen = hoten;
+                    item.HoTen = ten;
                     item.IDDonVi = donvi.ID;
                     item.IDDonVi = donvi.ID;
                     item.NgayHetHan = DateTime.Now.AddYears(1);
@@ -124,7 +124,7 @@ namespace LibDemo.Controllers
                         Session["IDUser"] = kt;
                         return Json(new
                         {
-                            status = false,
+                            status = true,
                             message = "Đăng ký thành công!"
                         }, JsonRequestBehavior.AllowGet);
                     }
@@ -185,6 +185,15 @@ namespace LibDemo.Controllers
         public JsonResult HuyPM(long id)
         {
             bool kt = pm.Delete(id, 0);
+            return Json(new
+            {
+                status = kt
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult ChangeStatusPM(long id, byte type)
+        {
+            bool kt = pm.ChangeStatus(id, type, 0);
             return Json(new
             {
                 status = kt

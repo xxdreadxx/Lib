@@ -154,13 +154,25 @@ namespace Models.Dao.DaoAdmin
             {
                 cPhieuMuon item = db.cPhieuMuons.FirstOrDefault(x => x.ID == ID);
                 item.TrangThai = tt;
-                if (tt == 4)
+                if (tt == 1)
                 {
                     item.NgayTra = DateTime.Now;
                 }
                 item.NgaySua = DateTime.Now;
                 item.NguoiSua = IDNV;
                 db.SaveChanges();
+                if (tt == 1)
+                {
+                    var mcb = db.cMCBs.FirstOrDefault(x => x.ID == item.IDMCB);
+                    mcb.TrangThai = 1;
+                    db.SaveChanges();
+                }
+                if (tt == 3)
+                {
+                    var mcb = db.cMCBs.FirstOrDefault(x => x.ID == item.IDMCB);
+                    mcb.TrangThai = 2;
+                    db.SaveChanges();
+                }
                 return true;
             }
             catch
@@ -180,7 +192,7 @@ namespace Models.Dao.DaoAdmin
             {
                 var item = db.cPhieuMuons.FirstOrDefault(x => x.ID == ID);
                 DateTime tghethan = item.NgayHenTra.GetValueOrDefault();
-                if (item.TrangThai == 4)
+                if (item.TrangThai == 4 || item.TrangThai == 5)
                 {
                     item.TrangThai = 3;
                 }
