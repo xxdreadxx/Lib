@@ -19,15 +19,15 @@ namespace Models.Dao.DaoAdmin
 
         public long getDataByUsername(string username, string password, int IDDonVi)
         {
-            sNhanVien item = new sNhanVien();
-            item = db.sNhanViens.FirstOrDefault(x => x.Username == username && x.IDDonVi == IDDonVi && x.TrangThai != 10);
+            cBanDoc item = new cBanDoc();
+            item = db.cBanDocs.FirstOrDefault(x => x.Username == username && x.IDDonVi == IDDonVi && x.TrangThai != 10);
             if (item == null)
             {
                 return -1;
             }
             else
             {
-                item = db.sNhanViens.FirstOrDefault(x => x.Username == username && x.Password == password && x.IDDonVi == IDDonVi && x.TrangThai != 10);
+                item = db.cBanDocs.FirstOrDefault(x => x.Username == username && x.Password == password && x.IDDonVi == IDDonVi && x.TrangThai != 10);
                 if (item == null)
                 {
                     return -2;

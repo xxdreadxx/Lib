@@ -71,13 +71,9 @@
                                             @item.DiaChi
                                         </td>
                                         <td>(+84) @item.SDT</td>
-                                        @if (item.Quyen == 0)
+                                        @if (item.Quyen == 1)
                                         {
-                                            <td><span class="label label-danger">Quản trị viên</span></td>
-                                        }
-                                        else if (item.Quyen == 1)
-                                        {
-                                            <td><span class="label label-success">Thủ thư cao cấp</span></td>
+                                            <td><span class="label label-success">Quản trị viên</span></td>
                                         }
                                         else
                                         {

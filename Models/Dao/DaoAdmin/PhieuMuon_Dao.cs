@@ -45,7 +45,7 @@ namespace Models.Dao.DaoAdmin
             item = (from ds in db.cPhieuMuons
                     join bd in db.cBanDocs on ds.IDBanDoc equals bd.ID
                     join mcb in db.cMCBs on ds.IDMCB equals mcb.ID
-                    join dv in db.sDonVis on ds.IDDonVi equals dv.ID
+                    join dv in db.sDonVis on mcb.IDDonVi equals dv.ID
                     join ap in db.cAnPhams on mcb.IDAnPam equals ap.ID
                     where ds.IDBanDoc == ID && ds.TrangThai != 10
                     select new cPhieuMuonView
@@ -165,12 +165,14 @@ namespace Models.Dao.DaoAdmin
                 {
                     var mcb = db.cMCBs.FirstOrDefault(x => x.ID == item.IDMCB);
                     mcb.TrangThai = 1;
+                    mcb.IDDonVi_HienTai = item.IDDonVi;
                     db.SaveChanges();
                 }
                 if (tt == 3)
                 {
                     var mcb = db.cMCBs.FirstOrDefault(x => x.ID == item.IDMCB);
                     mcb.TrangThai = 2;
+                    mcb.IDDonVi_HienTai = item.IDDonVi;
                     db.SaveChanges();
                 }
                 return true;
