@@ -147,10 +147,24 @@ else
                                         <div class="caption">
                                             <h4 style="padding:0px">@item.MCB</h4>
                                             <p>@item.DonVi</p>
-                                            <a class="btn btn-success" onclick="MuonAP(@item.ID)">
-                                                Đăng kí mượn
-                                                <i class="fa fa-cart-plus" aria-hidden="true"></i>
-                                            </a>
+                                            @if (item.TrangThai == 1)
+                                            {
+                                                <p style="color:blue">Sẵn sàng</p>
+                                            }
+                                            else
+                                            {
+                                                <p style="color:red">Đang được mượn</p>
+                                            }
+                                            @if (item.TrangThai == 1)
+                                            {
+                                                <a class="btn btn-success" onclick="MuonAP(@item.ID)">
+                                                    Đăng kí mượn
+                                                    <i class="fa fa-cart-plus" aria-hidden="true"></i>
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -180,10 +194,24 @@ else
                                 <div class="caption">
                                     <h4 style="padding:0px">@item.MCB</h4>
                                     <p>@item.DonVi</p>
-                                    <a class="btn btn-success" onclick="Muon(@item.ID)">
-                                        Đăng kí mượn
-                                        <i class="fa fa-cart-plus" aria-hidden="true"></i>
-                                    </a>
+                                    @if (item.TrangThai == 1)
+                                    {
+                                        <p style="color:blue">Sẵn sàng</p>
+                                    }
+                                    else
+                                    {
+                                        <p style="color:red">Đang được mượn</p>
+                                    }
+                                    @if (item.TrangThai == 1)
+                                    {
+                                        <a class="btn btn-success" onclick="MuonAP(@item.ID)">
+                                            Đăng kí mượn
+                                            <i class="fa fa-cart-plus" aria-hidden="true"></i>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                    }
                                 </div>
                             </div>
                         </div>

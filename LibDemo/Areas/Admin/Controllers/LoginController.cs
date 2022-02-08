@@ -67,7 +67,7 @@ namespace LibDemo.Areas.Admin.Controllers
                         return Json(new
                         {
                             status = false,
-                            message = "Đăng nhập thất công!"
+                            message = "Đăng nhập thất bại!"
                         }, JsonRequestBehavior.AllowGet);
                     }
                 }

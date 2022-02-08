@@ -49,6 +49,7 @@
                             <th>Đơn vị mượn ấn phẩm</th>
                             <th>Ngày mượn</th>
                             <th>Ngày hẹn trả</th>
+                            <th>Ngày trả</th>
                             <th>Tình trạng</th>
                             <th>Chức năng</th>
                         </tr>
@@ -73,16 +74,27 @@
                                     <td class="invert">
                                         @item.NgayHenTra.GetValueOrDefault().ToString("dd/MM/yyyy")
                                     </td>
+                                    @if (item.NgayTra != null)
+                                    {
+                                        <td class="invert">
+                                            @item.NgayTra.GetValueOrDefault().ToString("dd/MM/yyyy")
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td class="invert">
+                                        </td>
+                                    }
                                     @if (item.TrangThai == 1)
                                     {
                                         <td class="invert">
-                                            Kết thúc
+                                            Đã trả
                                         </td>
                                     }
                                     else if (item.TrangThai == 2)
                                     {
                                         <td class="invert">
-                                            Khởi tạo
+                                            Đăng ký mượn
                                         </td>
                                     }
                                     else if (item.TrangThai == 3)
@@ -97,10 +109,35 @@
                                             Quá hạn chưa trả
                                         </td>
                                     }
+                                    else if (item.TrangThai == 5)
+                                    {
+                                        <td class="invert">
+                                            Đăng kí gia hạn
+                                        </td>
+                                    }
+                                    else if (item.TrangThai == 6)
+                                    {
+                                        <td class="invert">
+                                            Đăng kí trả
+                                        </td>
+                                    }
                                     @if (item.TrangThai == 2)
                                     {
                                         <td class="invert">
                                             <a href="#" onclick="HuyPM(@item.ID)"><i class="fa fa-recycle" title="Hủy phiếu mượn"></i></a>
+                                        </td>
+                                    }
+                                    else if (item.TrangThai == 3 || item.TrangThai == 4)
+                                    {
+                                        <td class="invert">
+                                            <a href="#" onclick="changeStatus(@item.ID, 5)" style="margin-right:10px"><i class="fa fa-clock-o" title="Đăng kí gia hạn thêm 5 ngày"></i></a>
+                                            <a href="#" onclick="changeStatus(@item.ID, 6)"><i class="fa fa-check-square-o" title="Đăng kí trả ấn phẩm"></i></a>
+                                        </td>
+                                    }
+                                    else if (item.TrangThai == 5)
+                                    {
+                                        <td class="invert">
+                                            <a href="#" onclick="changeStatus(@item.ID, 6)"><i class="fa fa-check-square-o" title="Đăng kí trả ấn phẩm"></i></a>
                                         </td>
                                     }
                                     else
@@ -132,6 +169,37 @@
                 success: function (response) {
                     if (response.status == true) {
                         toastr.success('Hủy phiếu thành công', '', { timeOut: 2000 });
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1000);
+                    }
+                    else {
+                        toastr.error('Có lỗi xảy ra', '', { timeOut: 2000 });
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+        function changeStatus(id, type) {
+            $.ajax({
+                url: '/User/ChangeStatusPM',
+                data: {
+                    id: id,
+                    type: type
+                },
+                cache: false,
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.status == true) {
+                        if (type == 5) {
+                            toastr.success('Đăng kí gia hạn thành công', '', { timeOut: 2000 });
+                        }
+                        else if (type == 6) {
+                            toastr.success('Đăng kí trả thành công', '', { timeOut: 2000 });
+                        }
                         setTimeout(function () {
                             location.reload();
                         }, 1000);

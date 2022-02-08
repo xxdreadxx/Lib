@@ -52,11 +52,13 @@ namespace LibDemo.Areas.Admin.Controllers
                 }
             }
             bool kt = nv.Update(item, item.ID);
+            var nhanvien = nv.getDataByID(item.ID);
             if (kt == true)
             {
                 return Json(new
                 {
-                    status = true
+                    status = true,
+                    ava = nhanvien.AnhDaiDien
                 }, JsonRequestBehavior.AllowGet);
             }
             else
