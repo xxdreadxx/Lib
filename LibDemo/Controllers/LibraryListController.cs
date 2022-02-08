@@ -17,7 +17,7 @@ namespace LibDemo.Controllers
         // GET: LibraryList
         public ActionResult Index()
         {
-            ViewBag.lstLib = dv.getAllDataView("");
+            ViewBag.lstLib = dv.getAllDataView1("");
             return View();
         }
 

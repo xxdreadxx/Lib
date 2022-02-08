@@ -259,5 +259,14 @@ namespace LibDemo.Controllers
                 }, JsonRequestBehavior.AllowGet);
             }
         }
+
+        public JsonResult ChangeStatusPM(long id, byte type)
+        {
+            bool kt = pm.ChangeStatus(id, type, 0);
+            return Json(new
+            {
+                status = kt
+            }, JsonRequestBehavior.AllowGet);
+        }
     }
 }

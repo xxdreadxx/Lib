@@ -36,6 +36,21 @@ namespace Models.Dao.DaoAdmin
             return lst;
         }
 
+        public List<sDonVi> getAllDataView1(string search)
+        {
+            List<sDonVi> lst = new List<sDonVi>();
+            //lst = db.sDonVis.Where(x => x.TrangThai != 10).ToList();
+            if (search == "")
+            {
+                lst = db.sDonVis.Where(x => x.TrangThai == 1).ToList();
+            }
+            else
+            {
+                lst = db.sDonVis.Where(x => x.TrangThai == 1 && x.TenDonVi.Contains(search)).ToList();
+            }
+            return lst;
+        }
+
         public bool InsertDonVi(sDonVi result)
         {
             try
