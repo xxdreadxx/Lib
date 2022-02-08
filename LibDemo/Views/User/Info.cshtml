@@ -1,0 +1,330 @@
+﻿@using Models.EF;
+@{
+    ViewBag.Title = "Info";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    cBanDoc user = ViewBag.Info;
+}
+
+<div class="banner-bg-inner">
+    <!-- banner-text -->
+    <div class="banner-text-inner">
+        <div class="container">
+            <h2 class="title-inner">
+                world of reading
+            </h2>
+        </div>
+    </div>
+    <!-- //banner-text -->
+</div>
+<!-- //banner -->
+<!-- breadcrumbs -->
+<div class="crumbs text-center">
+    <div class="container">
+        <div class="row">
+            <ul class="btn-group btn-breadcrumb bc-list">
+                <li class="btn btn1">
+                    <a href="index.html">
+                        <i class="glyphicon glyphicon-home"></i>
+                    </a>
+                </li>
+                <li class="btn btn2">
+                    <a href="#">Cá nhân</a>
+                </li>
+                <li class="btn btn3">
+                    <a href="#">Thông tin cá nhân</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="innerf-pages section">
+    <div class="container">
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#activity" data-toggle="tab">Thông tin chung</a></li>
+                <li><a href="#timeline" data-toggle="tab">Đổi mật khẩu</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="active tab-pane" id="activity">
+                    <div class="row">
+                        <input type="hidden" id="hdIDNV" value="@Session["IDUser"]" />
+                        <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                            <div class="row">
+                                <div class="col-md-3" style="padding-top:5px">
+                                    Họ tên:*
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="text" id="txtHoTen" class="form-control" value="@user.HoTen" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                            <div class="row">
+                                <div class="col-md-3" style="padding-top:5px">
+                                    Ngày sinh:*
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="text" id="txtNgaySinh" class="form-control" value="@user.NgaySinh" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-top:10px; margin-left:20px; margin-right:20px">
+                            <div class="row">
+                                <div class="col-md-3" style="padding-top:5px">
+                                    Ảnh đại diện:
+                                </div>
+                                <div class="col-md-9">
+                                    @if (user.AnhDaiDien == null || user.AnhDaiDien.Trim() == "")
+                                    {
+                                        <img id="imgAvatar" src="~/assets/admin/images/no-image.jpg" width="200" height="150" />
+                                    }
+                                    else
+                                    {
+                                        <img id="imgAvatar" src="@user.AnhDaiDien" width="200" height="150" />
+                                    }
+                                    <label for="fImage" class="a_hover">
+                                        <i class="fa fa-camera" for="imageUpload" style="position:relative; top:-50px; right:40px; font-size:30px; color:#12111175"></i>
+                                    </label>
+                                    <input type="file" id="fImage" onchange="changeIMG()" name="fImage" accept="*/image" style="display:none" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                            <div class="row">
+                                <div class="col-md-3" style="padding-top:5px">
+                                    Số CMTND:
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="number" id="txtCMT" class="form-control" value="@user.CMTND" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                            <div class="row">
+                                <div class="col-md-3" style="padding-top:5px">
+                                    Địa chỉ:
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="text" id="txtDiaChi" class="form-control" value="@user.DiaChi" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                            <div class="row">
+                                <div class="col-md-3" style="padding-top:5px">
+                                    Số điện thoại:* (+84)
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="number" id="txtSDT" class="form-control" value="@user.SDT" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                            <div class="row">
+                                <div class="col-md-3" style="padding-top:5px">
+                                    Email:
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="text" id="txtEmail" class="form-control" value="@user.Email" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                            <div class="row">
+                                <div class="col-md-9"></div>
+                                <div class="col-md-3" style="text-align:right">
+                                    <a onclick="UpdateInfo()" class="btn btn-primary btn-block"><b>Cập nhật</b></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="timeline">
+                    <div class="row">
+                        <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                            <div class="row">
+                                <div class="col-md-3" style="padding-top:5px">
+                                    Mật khẩu cũ:*
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="password" id="txtOldPass" disabled value="@user.Password" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                            <div class="row">
+                                <div class="col-md-3" style="padding-top:5px">
+                                    Mật khẩu mới:*
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="password" id="txtNewPass" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                            <div class="row">
+                                <div class="col-md-3" style="padding-top:5px">
+                                    Nhập lại mật khẩu:*
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="password" id="txtPassConfirm" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                            <div class="row">
+                                <div class="col-md-9"></div>
+                                <div class="col-md-3" style="text-align:right">
+                                    <a class="btn btn-primary btn-block" onclick="updatePass()"><b>Cập nhật</b></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        function updatePass() {
+            var kt = true;
+            var IDNV = $('#hdIDNV').val();
+            var PassOld = $('#txtOldPass').val();
+            var NewPass = $('#txtNewPass').val();
+            var PassConfirm = $('#txtPassConfirm').val();
+            if (PassOld.trim() == '') {
+                toastr.warning('Chưa nhập mật khẩu!', '', { timeOut: 1000 });
+                $('#txtOldPass').focus();
+                kt = false;
+            }
+            else {
+                if (NewPass.trim() == '') {
+                    toastr.warning('Chưa nhập mật khẩu mới!', '', { timeOut: 1000 });
+                    $('#txtOldPass').focus();
+                    kt = false;
+                }
+                else if (NewPass.trim().length < 6 || NewPass.trim().length > 20) {
+                    toastr.warning('Mật khẩu phải từ 6 đến 20 kí tự!', '', { timeOut: 1000 });
+                    $('#txtNewPass').focus();
+                    kt = false;
+                }
+                else if (PassConfirm.trim() == '') {
+                    toastr.warning('Chưa nhập lại mật khẩu mới!', '', { timeOut: 1000 });
+                    $('#txtPassConfirm').focus();
+                    kt = false;
+                }
+                else if (NewPass != PassConfirm) {
+                    toastr.warning('Mật khẩu nhập lại không khớp!', '', { timeOut: 1000 });
+                    kt = false;
+                }
+            }
+            if (kt == true) {
+                var formData = new FormData();
+                formData.append("ID", IDNV);
+                formData.append("NewPass", NewPass);
+                $.ajax({
+                    url: '/User/UpdatePass',
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response.status == true) {
+                            toastr.success('Cập nhật thành công', '', { timeOut: 1000 });
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1000);
+                        }
+                        else {
+                            if (response.type == 2) {
+                                toastr.error('Có lỗi xảy ra, cập nhật không thành công', '', { timeOut: 2000 });
+                            }
+                            else {
+                                toastr.error('Mật khẩu mới trùng với mật khẩu cũ', '', { timeOut: 2000 });
+                            }
+                        }
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+            }
+        }
+
+        function changeIMG() {
+            var f = document.getElementById("fImage").files;
+            if (f.length > 0) {
+                var fileToLoad = f[0];
+                var fileReader = new FileReader();
+                fileReader.onload = function (fileLoadedEvent) {
+                    var srcData = fileLoadedEvent.target.result; // <--- data: base64
+                    document.getElementById("imgAvatar").src = srcData;
+                }
+                fileReader.readAsDataURL(fileToLoad);
+            }
+        };
+
+        function UpdateInfo() {
+            var kt = true;
+            var IDNV = $('#hdIDNV').val();
+            var HoTen = $('#txtHoTen').val();
+            var NgaySinh = $('#txtNgaySinh').val();
+            var CMT = $('#txtCMT').val();
+            var DiaChi = $('#txtDiaChi').val();
+            var SDT = $('#txtSDT').val();
+            var Email = $('#txtEmail').val();
+            var Image = document.getElementById("fImage").files[0];
+            if (HoTen.trim() == '') {
+                toastr.warning('Chưa nhập Họ tên!', '', { timeOut: 1000 });
+                $('#txtHoTen').focus();
+                kt = false;
+            }
+            else {
+                if (NgaySinh.trim() == '') {
+                    toastr.warning('Chưa nhập Họ tên!', '', { timeOut: 1000 });
+                    $('#txtNgaySinh').focus();
+                    kt = false;
+                }
+            }
+            if (kt == true) {
+                var formData = new FormData();
+                formData.append("ID", IDNV);
+                formData.append("HoTen", HoTen);
+                formData.append("NgaySinh", NgaySinh);
+                formData.append("CMT", CMT);
+                formData.append("DiaChi", DiaChi);
+                formData.append("SDT", SDT);
+                formData.append("Email", Email);
+                formData.append("Image", Image);
+                $.ajax({
+                    url: '/User/UpdateInfo',
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response.status == true) {
+                            toastr.success('Cập nhật thành công', '', { timeOut: 1000 });
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1000);
+                        }
+                        else {
+                            toastr.error('Có lỗi xảy ra, cập nhật không thành công', '', { timeOut: 2000 });
+                        }
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+            }
+        }
+    </script>
+}

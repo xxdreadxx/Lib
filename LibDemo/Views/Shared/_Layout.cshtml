@@ -94,15 +94,28 @@
                             }
                             else
                             {
-                                <li>
-                                    <a href="/User/ListPM" title="Danh sách phiếu mượn">
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle effect-3" data-toggle="dropdown">
                                         Xin chào: @Session["TenUser"]
+                                        <b class="caret"></b>
                                     </a>
-                                </li>
-                                <li>
-                                    <a href="#" onclick="Logout()" title="Đăng xuất">
-                                        <span class="fa fa-sign-out nav-turn" aria-hidden="true"></span>
-                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="/User/Info/@Session["IDUser"]" title="Chỉnh sửa thông tin cá nhân">
+                                                <span class="fa fa-user" aria-hidden="true"> Chỉnh sửa thông tin cá nhân</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/User/ListPM" title="Danh sách ấn phẩm mượn">
+                                                <span class="fa fa-file" aria-hidden="true"> Danh sách ấn phẩm mượn</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#" onclick="Logout()" title="Đăng xuất">
+                                            <span class="fa fa-sign-out" aria-hidden="true"> Đăng xuất</span>
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </li>
                             }
                         </ul>

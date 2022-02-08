@@ -56,7 +56,10 @@ namespace Models.Dao.DaoAdmin
                 item.NgayMat = result.NgayMat;
                 item.NgaySinh = result.NgaySinh;
                 item.MaTG = result.MaTG;
-                item.AnhDaiDien = result.AnhDaiDien;
+                if(item.AnhDaiDien != null)
+                {
+                    item.AnhDaiDien = result.AnhDaiDien;
+                }
                 item.GoiThieu = result.GoiThieu;
                 item.NgaySua = DateTime.Now;
                 item.NguoiSua = IDNV;

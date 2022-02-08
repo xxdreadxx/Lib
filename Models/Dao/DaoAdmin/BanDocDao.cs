@@ -150,7 +150,10 @@ namespace Models.Dao.DaoAdmin
             {
                 cBanDoc item = db.cBanDocs.FirstOrDefault(x => x.ID == result.ID);
                 item.HoTen = result.HoTen;
-                item.AnhDaiDien = result.AnhDaiDien;
+                if (result.AnhDaiDien != null)
+                {
+                    item.AnhDaiDien = result.AnhDaiDien;
+                }
                 item.CMTND = result.CMTND;
                 item.DiaChi = result.DiaChi;
                 item.Email = result.Email;
@@ -164,6 +167,30 @@ namespace Models.Dao.DaoAdmin
             catch
             {
                 return false;
+            }
+        }
+
+        public byte UpdatePass(string pass, long IDNV)
+        {
+            try
+            {
+                cBanDoc item = db.cBanDocs.FirstOrDefault(x => x.ID == IDNV);
+                if (item.Password == pass)
+                {
+                    return 1;
+                }
+                else
+                {
+                    item.Password = pass;
+                    item.NgaySua = DateTime.Now;
+                    item.NguoiSua = 0;
+                    db.SaveChanges();
+                    return 0;
+                }
+            }
+            catch
+            {
+                return 2;
             }
         }
 
