@@ -81,7 +81,7 @@
                                             <td><span class="text-red">Hết hạn</span></td>
                                         }
                                         <td>
-                                            <a onclick="Edit(@item.ID)" style="padding-right:5px" title="Sửa"><i class="fa fa-pencil"></i></a>
+                                            @*<a onclick="Edit(@item.ID)" style="padding-right:5px" title="Sửa"><i class="fa fa-pencil"></i></a>*@
                                             @if (item.TrangThai == 1)
                                             {
                                                 <a onclick="Change(@item.ID, @item.TrangThai)" style="padding-right:5px" title="Khóa sử dụng"><i class="fa fa-lock"></i></a>

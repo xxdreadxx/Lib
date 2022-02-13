@@ -4,6 +4,9 @@
     ViewBag.Title = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     List<cAnPhamView> lst = ViewBag.lsttData;
+    List<cAnPhamView> lstS = lst.Where(x => x.LKieuAP == 1).ToList();
+    List<cAnPhamView> lstB = lst.Where(x => x.LKieuAP == 2).ToList();
+    List<cAnPhamView> lstTC = lst.Where(x => x.LKieuAP == 3).ToList();
     List<aTacGia> lstTG = ViewBag.lstTG;
     List<aPhanLoaiAP> lstPLAP = ViewBag.lstPLAP;
     List<aNXB> lstNXB = ViewBag.lstNXB;
@@ -29,78 +32,209 @@
 <section class="content">
     <div class="row">
         <div class="col-xs-12">
-            <div class="box">
-                <div class="box-header">
-                    <div class="row" style="padding-right:10px; padding-left:10px">
-                        <div class="col-md-3">
-                            <a onclick="AddData()" class="btn btn-primary btn-flat">Thêm mới</a>
-                        </div>
-                        <div class="col-md-4">
-                        </div>
-                        <div class="col-md-5">
-                            <div class="input-group">
-                                <input type="text" id="txtSearch" placeholder="Nhập nội dung tìm kiếm ..." class="form-control" value="@ViewBag.Search" />
-                                <span class="input-group-btn">
-                                    <a class="btn btn-primary btn-flat" onclick="Search()">Tìm kiếm</a>
-                                </span>
-                            </div>
+            <div class="box-header">
+                <div class="row" style="padding-right:10px; padding-left:10px">
+                    <div class="col-md-3">
+                        <a onclick="AddData()" class="btn btn-primary btn-flat">Thêm mới</a>
+                    </div>
+                    <div class="col-md-4">
+                    </div>
+                    <div class="col-md-5">
+                        <div class="input-group">
+                            <input type="text" id="txtSearch" placeholder="Nhập nội dung tìm kiếm ..." class="form-control" value="@ViewBag.Search" />
+                            <span class="input-group-btn">
+                                <a class="btn btn-primary btn-flat" onclick="Search()">Tìm kiếm</a>
+                            </span>
                         </div>
                     </div>
                 </div>
-                <div class="box-body">
-                    <table id="example1" class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th>STT</th>
-                                <th>Nhan đề</th>
-                                <th>Tác giả</th>
-                                <th>Nhà xuất bản</th>
-                                <th>Loại ấn phẩm</th>
-                                <th>Trạng thái</th>
-                                <th>Chức năng</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @{
-                                int stt = 0;
-                                if (lst.Count > 0)
-                                {
-                                    foreach (var item in lst)
-                                    {
-                                        stt++;
-                                        <tr>
-                                            <td>@stt</td>
-                                            <td>@item.NhanDe</td>
-                                            <td>@item.TacGia</td>
-                                            <td>@item.NXB</td>
-                                            <td>@item.PhanLoai</td>
-                                            @if (item.TrangThai == 1)
-                                            {
-                                                <td><span class="text-aqua">Đang sử dụng</span></td>
-                                            }
-                                            else if (item.TrangThai == 2)
-                                            {
-                                                <td><span class="text-yellow">Khóa</span></td>
-                                            }
-                                        <td>
-                                            <a onclick="Edit(@item.ID)" style="padding-right:5px" title="Sửa"><i class="fa fa-pencil"></i></a>
-                                            <a onclick="MCB(@item.ID)" style="padding-right:5px" title="Danh sách MCB"><i class="fa fa-cubes"></i></a>
-                                            @if (item.TrangThai == 1)
-                                            {
-                                                <a onclick="Change(@item.ID, @item.TrangThai)" style="padding-right:5px" title="Khóa sử dụng"><i class="fa fa-lock"></i></a>
-                                            }
-                                            else
-                                            {
-                                                <a onclick="Change(@item.ID, @item.TrangThai)" style="padding-right:5px" title="Mở khóa sử dụng"><i class="fa fa-key"></i></a>
-                                            }
-                                            <a onclick="DelData(@item.ID)" style="padding-right:5px" title="Xóa"><i class="fa fa-recycle"></i></a>
-                                        </td>
-                                        </tr>
-                                    }
-                                }
+            </div>
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#Sach" data-toggle="tab">Sách</a></li>
+                    <li><a href="#Bao" data-toggle="tab">Báo</a></li>
+                    <li><a href="#TapChi" data-toggle="tab">Tạp chí</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="active tab-pane" id="Sach">
+                        <div class="row" style="margin-left:0px; margin-right:0px">
+                            <div class="box">
+                                <div class="box-body">
+                                    <table id="example1" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>STT</th>
+                                                <th>Nhan đề</th>
+                                                <th>Tác giả</th>
+                                                <th>Nhà xuất bản</th>
+                                                <th>Loại ấn phẩm</th>
+                                                <th>Trạng thái</th>
+                                                <th>Chức năng</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                int stt = 0;
+                                                if (lst.Count > 0)
+                                                {
+                                                    foreach (var item in lstS)
+                                                    {
+                                                        stt++;
+                                                        <tr>
+                                                            <td>@stt</td>
+                                                            <td>@item.NhanDe</td>
+                                                            <td>@item.TacGia</td>
+                                                            <td>@item.NXB</td>
+                                                            <td>@item.PhanLoai</td>
+                                                            @if (item.TrangThai == 1)
+                                                            {
+                                                                <td><span class="text-aqua">Đang sử dụng</span></td>
+                                                            }
+                                                            else if (item.TrangThai == 2)
+                                                            {
+                                                                <td><span class="text-yellow">Khóa</span></td>
+                                                            }
+                                                            <td>
+                                                                <a onclick="Edit(@item.ID)" style="padding-right:5px" title="Sửa"><i class="fa fa-pencil"></i></a>
+                                                                <a onclick="MCB(@item.ID)" style="padding-right:5px" title="Danh sách MCB"><i class="fa fa-cubes"></i></a>
+                                                                @if (item.TrangThai == 1)
+                                                                {
+                                                                    <a onclick="Change(@item.ID, @item.TrangThai)" style="padding-right:5px" title="Khóa sử dụng"><i class="fa fa-lock"></i></a>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <a onclick="Change(@item.ID, @item.TrangThai)" style="padding-right:5px" title="Mở khóa sử dụng"><i class="fa fa-key"></i></a>
+                                                                }
+                                                                <a onclick="DelData(@item.ID)" style="padding-right:5px" title="Xóa"><i class="fa fa-recycle"></i></a>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
 
-                            }
-                    </table>
+                                            }
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="Bao">
+                        <div class="row" style="margin-left:0px; margin-right:0px">
+                            <div class="box">
+                                <div class="box-body">
+                                    <table id="example1" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>STT</th>
+                                                <th>Nhan đề</th>
+                                                <th>Nhà xuất bản</th>
+                                                <th>Số</th>
+                                                <th>Trạng thái</th>
+                                                <th>Chức năng</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                stt = 0;
+                                                if (lst.Count > 0)
+                                                {
+                                                    foreach (var item in lstB)
+                                                    {
+                                                        stt++;
+                                                        <tr>
+                                                            <td>@stt</td>
+                                                            <td>@item.NhanDe</td>
+                                                            <td>@item.NXB</td>
+                                                            <td>@item.So</td>
+                                                            @if (item.TrangThai == 1)
+                                                            {
+                                                                <td><span class="text-aqua">Đang sử dụng</span></td>
+                                                            }
+                                                            else if (item.TrangThai == 2)
+                                                            {
+                                                                <td><span class="text-yellow">Khóa</span></td>
+                                                            }
+                                                            <td>
+                                                                <a onclick="Edit(@item.ID)" style="padding-right:5px" title="Sửa"><i class="fa fa-pencil"></i></a>
+                                                                <a onclick="MCB(@item.ID)" style="padding-right:5px" title="Danh sách MCB"><i class="fa fa-cubes"></i></a>
+                                                                @if (item.TrangThai == 1)
+                                                                {
+                                                                    <a onclick="Change(@item.ID, @item.TrangThai)" style="padding-right:5px" title="Khóa sử dụng"><i class="fa fa-lock"></i></a>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <a onclick="Change(@item.ID, @item.TrangThai)" style="padding-right:5px" title="Mở khóa sử dụng"><i class="fa fa-key"></i></a>
+                                                                }
+                                                                <a onclick="DelData(@item.ID)" style="padding-right:5px" title="Xóa"><i class="fa fa-recycle"></i></a>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+
+                                            }
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="TapChi">
+                        <div class="row" style="margin-left:0px; margin-right:0px">
+                            <div class="box">
+                                <div class="box-body">
+                                    <table id="example1" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>STT</th>
+                                                <th>Nhan đề</th>
+                                                <th>Nhà xuất bản</th>
+                                                <th>Số</th>
+                                                <th>Trạng thái</th>
+                                                <th>Chức năng</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                stt = 0;
+                                                if (lst.Count > 0)
+                                                {
+                                                    foreach (var item in lstTC)
+                                                    {
+                                                        stt++;
+                                                        <tr>
+                                                            <td>@stt</td>
+                                                            <td>@item.NhanDe</td>
+                                                            <td>@item.NXB</td>
+                                                            <td>@item.So</td>
+                                                            @if (item.TrangThai == 1)
+                                                            {
+                                                                <td><span class="text-aqua">Đang sử dụng</span></td>
+                                                            }
+                                                            else if (item.TrangThai == 2)
+                                                            {
+                                                                <td><span class="text-yellow">Khóa</span></td>
+                                                            }
+                                                            <td>
+                                                                <a onclick="Edit(@item.ID)" style="padding-right:5px" title="Sửa"><i class="fa fa-pencil"></i></a>
+                                                                <a onclick="MCB(@item.ID)" style="padding-right:5px" title="Danh sách MCB"><i class="fa fa-cubes"></i></a>
+                                                                @if (item.TrangThai == 1)
+                                                                {
+                                                                    <a onclick="Change(@item.ID, @item.TrangThai)" style="padding-right:5px" title="Khóa sử dụng"><i class="fa fa-lock"></i></a>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <a onclick="Change(@item.ID, @item.TrangThai)" style="padding-right:5px" title="Mở khóa sử dụng"><i class="fa fa-key"></i></a>
+                                                                }
+                                                                <a onclick="DelData(@item.ID)" style="padding-right:5px" title="Xóa"><i class="fa fa-recycle"></i></a>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+
+                                            }
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -227,7 +361,7 @@
                                 Ngày xuất bản:
                             </div>
                             <div class="col-md-9">
-                                <input type="text" id="txtNgayXuatBan" class="form-control" value="" />
+                                <input type="text" id="txtNgayXuatBan" class="form-control" value="" placeholder="dd/MM/yyyy" />
                             </div>
                         </div>
                     </div>

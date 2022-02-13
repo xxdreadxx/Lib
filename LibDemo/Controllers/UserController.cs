@@ -179,6 +179,7 @@ namespace LibDemo.Controllers
         public ActionResult ListPM()
         {
             long IDUser = long.Parse(Session["IDUser"].ToString());
+            ViewBag.lstLib = dv.getAllDataView("");
             ViewBag.lstPM = pm.getListDataViewByIDBanDoc(IDUser);
             return View();
         }
@@ -263,6 +264,15 @@ namespace LibDemo.Controllers
         public JsonResult ChangeStatusPM(long id, byte type)
         {
             bool kt = pm.ChangeStatus(id, type, 0);
+            return Json(new
+            {
+                status = kt
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult ChangeStatusPM1(long id, int idDV)
+        {
+            bool kt = pm.ChangeStatus1(id, idDV);
             return Json(new
             {
                 status = kt

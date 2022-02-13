@@ -46,6 +46,7 @@ namespace Models.Dao.DaoAdmin
                     join bd in db.cBanDocs on ds.IDBanDoc equals bd.ID
                     join mcb in db.cMCBs on ds.IDMCB equals mcb.ID
                     join dv in db.sDonVis on mcb.IDDonVi equals dv.ID
+                    join dv1 in db.sDonVis on mcb.IDDonVi_HienTai equals dv1.ID
                     join ap in db.cAnPhams on mcb.IDAnPam equals ap.ID
                     where ds.IDBanDoc == ID && ds.TrangThai != 10
                     select new cPhieuMuonView
@@ -58,7 +59,8 @@ namespace Models.Dao.DaoAdmin
                         NgayHenTra = ds.NgayHenTra,
                         NgayMuon = ds.NgayMuon,
                         NgayTra = ds.NgayTra,
-                        DonVi = dv.TenDonVi,
+                        DonViM = dv.TenDonVi,
+                        DonViT = dv1.TenDonVi,
                         NhanDe = ap.NhanDe,
                         TrangThai = ds.TrangThai
                     }).ToList();
@@ -90,7 +92,7 @@ namespace Models.Dao.DaoAdmin
                         NgayHenTra = ds.NgayHenTra,
                         NgayMuon = ds.NgayMuon,
                         NgayTra = ds.NgayTra,
-                        DonVi = dv.TenDonVi,
+                        DonViM = dv.TenDonVi,
                         TrangThai = ds.TrangThai
                     }).ToList();
             return item;
@@ -165,7 +167,7 @@ namespace Models.Dao.DaoAdmin
                 {
                     var mcb = db.cMCBs.FirstOrDefault(x => x.ID == item.IDMCB);
                     mcb.TrangThai = 1;
-                    mcb.IDDonVi_HienTai = item.IDDonVi;
+                    //mcb.IDDonVi_HienTai = item.IDDonVi;
                     db.SaveChanges();
                 }
                 if (tt == 3)
@@ -175,6 +177,31 @@ namespace Models.Dao.DaoAdmin
                     mcb.IDDonVi_HienTai = item.IDDonVi;
                     db.SaveChanges();
                 }
+                if (tt == 2)
+                {
+                    var mcb = db.cMCBs.FirstOrDefault(x => x.ID == item.IDMCB);
+                    mcb.IDDonVi_HienTai = item.IDDonVi;
+                    db.SaveChanges();
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool ChangeStatus1(long ID, int idDV)
+        {
+            try
+            {
+                cPhieuMuon item = db.cPhieuMuons.FirstOrDefault(x => x.ID == ID);
+                item.TrangThai = 6;
+                item.NgaySua = DateTime.Now;
+                db.SaveChanges();
+                var mcb = db.cMCBs.FirstOrDefault(x => x.ID == item.IDMCB);
+                mcb.IDDonVi_HienTai = idDV;
+                db.SaveChanges();
                 return true;
             }
             catch

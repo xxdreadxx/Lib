@@ -53,62 +53,88 @@ namespace Models.Dao.DaoAdmin
         public List<cAnPhamView> getAllDataView(string search)
         {
             List<cAnPhamView> item = new List<cAnPhamView>();
-            if (search == "")
+
+            using (SqlConnection _conn = new SqlConnection(ConectionLib.ConnectString))
             {
-                item = (from ds in db.cAnPhams
-                        join tg in db.aTacGias on ds.IDTacGia equals tg.ID
-                        join nxb in db.aNXBs on ds.IDNXB equals nxb.ID
-                        join pl in db.aPhanLoaiAPs on ds.IDPLAP equals pl.ID
-                        where ds.TrangThai!=10
-                        select new cAnPhamView
-                        {
-                            ID = ds.ID,
-                            DongTacGia = ds.DongTacGia,
-                            GioiThieu = ds.GioiThieu,
-                            HinhAnh = ds.HinhAnh,
-                            IDNXB = ds.IDNXB,
-                            IDPLAP = ds.IDPLAP,
-                            IDTacGia = ds.IDTacGia,
-                            LKieuAP = ds.LKieuAP,
-                            MaAnPham = ds.MaAnPham,
-                            KieuAP = ds.LKieuAP == 1 ? "Sách" : ds.LKieuAP == 2 ? "Báo" : "Tạp chí",
-                            So = ds.So,
-                            TacGia = tg.HoTen,
-                            NgayXuatBan = ds.NgayXuatBan,
-                            NhanDe = ds.NhanDe,
-                            NXB = nxb.TenNXB,
-                            PhanLoai = pl.TenPhanLoaiAP,
-                            TrangThai = ds.TrangThai
-                        }).ToList();
+                string sqlA = "";
+                if (search != "")
+                {
+                    sqlA += "(ap.NhanDe like N'%" + search + "%') ";
+                }
+                _conn.Open();
+                try
+                {
+                    var _sqlStr = "select ap.*, tg.HoTen as TacGia, pl.TenPhanLoaiAP as PhanLoai, nxb.TenNXB as NXB from cAnPham ap " +
+                        "left join aNXB nxb on ap.IDNXB = nxb.ID " +
+                        "left join aPhanLoaiAP pl on ap.IDPLAP = pl.ID " +
+                        "left join aTacGia tg on ap.IDTacGia = tg.ID " +
+                        "where ap.TrangThai <> 10 " +
+                        "" + sqlA + "";
+                    item = _conn.Query<cAnPhamView>(_sqlStr, null, commandType: CommandType.Text).ToList<cAnPhamView>();
+                    return item;
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
             }
-            else
-            {
-                item = (from ds in db.cAnPhams
-                        join tg in db.aTacGias on ds.IDTacGia equals tg.ID
-                        join nxb in db.aNXBs on ds.IDNXB equals nxb.ID
-                        join pl in db.aPhanLoaiAPs on ds.IDPLAP equals pl.ID
-                        where ds.TrangThai!=10 && ds.NhanDe.Contains(search)
-                        select new cAnPhamView
-                        {
-                            ID = ds.ID,
-                            DongTacGia = ds.DongTacGia,
-                            GioiThieu = ds.GioiThieu,
-                            HinhAnh = ds.HinhAnh,
-                            IDNXB = ds.IDNXB,
-                            IDPLAP = ds.IDPLAP,
-                            IDTacGia = ds.IDTacGia,
-                            LKieuAP = ds.LKieuAP,
-                            MaAnPham = ds.MaAnPham,
-                            KieuAP = ds.LKieuAP == 1 ? "Sách" : ds.LKieuAP == 2 ? "Báo" : "Tạp chí",
-                            So = ds.So,
-                            TacGia = tg.HoTen,
-                            NgayXuatBan = ds.NgayXuatBan,
-                            NhanDe = ds.NhanDe,
-                            NXB = nxb.TenNXB,
-                            PhanLoai = pl.TenPhanLoaiAP,
-                            TrangThai = ds.TrangThai
-                        }).ToList();
-            }
+
+            //if (search == "")
+            //{
+            //    item = (from ds in db.cAnPhams
+            //            join tg in db.aTacGias on ds.IDTacGia equals tg.ID
+            //            join nxb in db.aNXBs on ds.IDNXB equals nxb.ID
+            //            join pl in db.aPhanLoaiAPs on ds.IDPLAP equals pl.ID
+            //            where ds.TrangThai!=10
+            //            select new cAnPhamView
+            //            {
+            //                ID = ds.ID,
+            //                DongTacGia = ds.DongTacGia,
+            //                GioiThieu = ds.GioiThieu,
+            //                HinhAnh = ds.HinhAnh,
+            //                IDNXB = ds.IDNXB,
+            //                IDPLAP = ds.IDPLAP,
+            //                IDTacGia = ds.IDTacGia,
+            //                LKieuAP = ds.LKieuAP,
+            //                MaAnPham = ds.MaAnPham,
+            //                KieuAP = ds.LKieuAP == 1 ? "Sách" : ds.LKieuAP == 2 ? "Báo" : "Tạp chí",
+            //                So = ds.So,
+            //                TacGia = tg.HoTen,
+            //                NgayXuatBan = ds.NgayXuatBan,
+            //                NhanDe = ds.NhanDe,
+            //                NXB = nxb.TenNXB,
+            //                PhanLoai = pl.TenPhanLoaiAP,
+            //                TrangThai = ds.TrangThai
+            //            }).ToList();
+            //}
+            //else
+            //{
+            //    item = (from ds in db.cAnPhams
+            //            join tg in db.aTacGias on ds.IDTacGia equals tg.ID
+            //            join nxb in db.aNXBs on ds.IDNXB equals nxb.ID
+            //            join pl in db.aPhanLoaiAPs on ds.IDPLAP equals pl.ID
+            //            where ds.TrangThai!=10 && ds.NhanDe.Contains(search)
+            //            select new cAnPhamView
+            //            {
+            //                ID = ds.ID,
+            //                DongTacGia = ds.DongTacGia,
+            //                GioiThieu = ds.GioiThieu,
+            //                HinhAnh = ds.HinhAnh,
+            //                IDNXB = ds.IDNXB,
+            //                IDPLAP = ds.IDPLAP,
+            //                IDTacGia = ds.IDTacGia,
+            //                LKieuAP = ds.LKieuAP,
+            //                MaAnPham = ds.MaAnPham,
+            //                KieuAP = ds.LKieuAP == 1 ? "Sách" : ds.LKieuAP == 2 ? "Báo" : "Tạp chí",
+            //                So = ds.So,
+            //                TacGia = tg.HoTen,
+            //                NgayXuatBan = ds.NgayXuatBan,
+            //                NhanDe = ds.NhanDe,
+            //                NXB = nxb.TenNXB,
+            //                PhanLoai = pl.TenPhanLoaiAP,
+            //                TrangThai = ds.TrangThai
+            //            }).ToList();
+            //}
             return item;
         }
 

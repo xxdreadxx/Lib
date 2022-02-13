@@ -1,8 +1,11 @@
 ﻿@using Models.ModelsView;
+@using Models.EF;
 @{
     ViewBag.Title = "ListPM";
     Layout = "~/Views/Shared/_Layout.cshtml";
     List<cPhieuMuonView> lst = ViewBag.lstPM;
+    List<sDonVi> lstDonVI = ViewBag.lstLib;
+    int idDonVi = int.Parse(Session["IDDonVi"].ToString());
 }
 
 <div class="banner-bg-inner">
@@ -50,7 +53,7 @@
                             <th>Ngày mượn</th>
                             <th>Ngày hẹn trả</th>
                             <th>Ngày trả</th>
-                            <th>Đơn vị mượn</th>
+                            <th>Đơn vị trả</th>
                             <th>Tình trạng</th>
                             <th>Chức năng</th>
                         </tr>
@@ -61,95 +64,95 @@
                             foreach (var item in lst)
                             {
                                 i++;
-                                                <tr class="rem1">
-                                                    <td class="invert">@i</td>
-                                                    <td class="invert">
-                                                        @item.NhanDe
-                                                    </td>
-                                                    <td class="invert">
-                                                        @item.DonVi
-                                                    </td>
-                                                    <td class="invert">
-                                                        @item.NgayMuon.GetValueOrDefault().ToString("dd/MM/yyyy")
-                                                    </td>
-                                                    <td class="invert">
-                                                        @item.NgayHenTra.GetValueOrDefault().ToString("dd/MM/yyyy")
-                                                    </td>
-                                                    @if (item.NgayTra != null)
-                                                    {
-                                                        <td class="invert">
-                                                            @item.NgayTra.GetValueOrDefault().ToString("dd/MM/yyyy")
-                                                        </td>
-                                                    }
-                                                    else
-                                                    {
-                                                        <td class="invert">
-                                                        </td>
-                                                    }
-                                                    <td class="invert">
-                                                        @item.DonVi
-                                                    </td>
-                                                    @if (item.TrangThai == 1)
-                                                    {
-                                                        <td class="invert">
-                                                            Đã trả
-                                                        </td>
-                                                    }
-                                                    else if (item.TrangThai == 2)
-                                                    {
-                                                        <td class="invert">
-                                                            Đăng ký mượn
-                                                        </td>
-                                                    }
-                                                    else if (item.TrangThai == 3)
-                                                    {
-                                                        <td class="invert">
-                                                            Đang mượn
-                                                        </td>
-                                                    }
-                                                    else if (item.TrangThai == 4)
-                                                    {
-                                                        <td class="invert">
-                                                            Quá hạn chưa trả
-                                                        </td>
-                                                    }
-                                                    else if (item.TrangThai == 5)
-                                                    {
-                                                        <td class="invert">
-                                                            Đăng kí gia hạn
-                                                        </td>
-                                                    }
-                                                    else if (item.TrangThai == 6)
-                                                    {
-                                                        <td class="invert">
-                                                            Đăng kí trả
-                                                        </td>
-                                                    }
-                                                    @if (item.TrangThai == 2)
-                                                    {
-                                                        <td class="invert">
-                                                            <a href="#" onclick="HuyPM(@item.ID)"><i class="fa fa-recycle" title="Hủy phiếu mượn"></i></a>
-                                                        </td>
-                                                    }
-                                                    else if (item.TrangThai == 3 || item.TrangThai == 4)
-                                                    {
-                                                        <td class="invert">
-                                                            <a href="#" onclick="changeStatus(@item.ID, 5)" style="margin-right:10px"><i class="fa fa-clock-o" title="Đăng kí gia hạn thêm 5 ngày"></i></a>
-                                                            <a href="#" onclick="changeStatus(@item.ID, 6)"><i class="fa fa-check-square-o" title="Đăng kí trả ấn phẩm"></i></a>
-                                                        </td>
-                                                    }
-                                                    else if (item.TrangThai == 5)
-                                                    {
-                                                        <td class="invert">
-                                                            <a href="#" onclick="changeStatus(@item.ID, 6)"><i class="fa fa-check-square-o" title="Đăng kí trả ấn phẩm"></i></a>
-                                                        </td>
-                                                    }
-                                                    else
-                                                    {
-                                                        <td class="invert">
-                                                        </td>
-                                                    }
-                                                </tr>
+                                <tr class="rem1">
+                                    <td class="invert">@i</td>
+                                    <td class="invert">
+                                        @item.NhanDe
+                                    </td>
+                                    <td class="invert">
+                                        @item.DonViM
+                                    </td>
+                                    <td class="invert">
+                                        @item.NgayMuon.GetValueOrDefault().ToString("dd/MM/yyyy")
+                                    </td>
+                                    <td class="invert">
+                                        @item.NgayHenTra.GetValueOrDefault().ToString("dd/MM/yyyy")
+                                    </td>
+                                    @if (item.NgayTra != null)
+                                    {
+                                        <td class="invert">
+                                            @item.NgayTra.GetValueOrDefault().ToString("dd/MM/yyyy")
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td class="invert">
+                                        </td>
+                                    }
+                                    <td class="invert">
+                                        @item.DonViT
+                                    </td>
+                                    @if (item.TrangThai == 1)
+                                    {
+                                        <td class="invert">
+                                            Đã trả
+                                        </td>
+                                    }
+                                    else if (item.TrangThai == 2)
+                                    {
+                                        <td class="invert">
+                                            Đăng ký mượn
+                                        </td>
+                                    }
+                                    else if (item.TrangThai == 3)
+                                    {
+                                        <td class="invert">
+                                            Đang mượn
+                                        </td>
+                                    }
+                                    else if (item.TrangThai == 4)
+                                    {
+                                        <td class="invert">
+                                            Quá hạn chưa trả
+                                        </td>
+                                    }
+                                    else if (item.TrangThai == 5)
+                                    {
+                                        <td class="invert">
+                                            Đăng kí gia hạn
+                                        </td>
+                                    }
+                                    else if (item.TrangThai == 6)
+                                    {
+                                        <td class="invert">
+                                            Đăng kí trả
+                                        </td>
+                                    }
+                                    @if (item.TrangThai == 2)
+                                    {
+                                        <td class="invert">
+                                            <a href="#" onclick="HuyPM(@item.ID)"><i class="fa fa-recycle" title="Hủy phiếu mượn"></i></a>
+                                        </td>
+                                    }
+                                    else if (item.TrangThai == 3 || item.TrangThai == 4)
+                                    {
+                                        <td class="invert">
+                                            <a href="#" onclick="changeStatus(@item.ID, 5)" style="margin-right:10px"><i class="fa fa-clock-o" title="Đăng kí gia hạn thêm 5 ngày"></i></a>
+                                            <a href="#" onclick="chang6(@item.ID)"><i class="fa fa-check-square-o" title="Đăng kí trả ấn phẩm"></i></a>
+                                        </td>
+                                    }
+                                    else if (item.TrangThai == 5)
+                                    {
+                                        <td class="invert">
+                                            <a href="#" onclick="chang6(@item.ID)"><i class="fa fa-check-square-o" title="Đăng kí trả ấn phẩm"></i></a>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td class="invert">
+                                        </td>
+                                    }
+                                </tr>
                             }
                         }
                     </tbody>
@@ -159,8 +162,52 @@
     </div>
 </div>
 
+<div class="modal fade" id="mdDV" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Đăng kí trả ấn phẩm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="padding-left:15px">
+                    <input type="hidden" id="hdID" value="0" />
+                    <div class="col-md-3" style="padding-top:5px">
+                        Chọn đơn vị trả ấn phẩm:*
+                    </div>
+                    <div class="col-md-9">
+                        <select id="ddlDV" class="form-control">
+                            @foreach (var item in lstDonVI)
+                            {
+                                if (item.ID == idDonVi)
+                                {
+                                    <option value="@item.ID" selected> @item.TenDonVi</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.ID"> @item.TenDonVi</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" onclick="changeStatus1()" class="btn btn-primary">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section scripts{
     <script>
+        function chang6(id) {
+            $('#hdID').val(id);
+            $('#mdDV').modal("show");
+        }
         function HuyPM(id) {
             $.ajax({
                 url: '/User/HuyPM',
@@ -204,6 +251,35 @@
                         else if (type == 6) {
                             toastr.success('Đăng kí trả thành công', '', { timeOut: 2000 });
                         }
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1000);
+                    }
+                    else {
+                        toastr.error('Có lỗi xảy ra', '', { timeOut: 2000 });
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+        function changeStatus1() {
+            var id = $('#hdID').val();
+            var idDV = $('#ddlDV').val();
+            $.ajax({
+                url: '/User/ChangeStatusPM1',
+                data: {
+                    id: id,
+                    type: 6,
+                    idDV: idDV
+                },
+                cache: false,
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.status == true) {
+                        toastr.success('Đăng kí trả thành công', '', { timeOut: 2000 });
                         setTimeout(function () {
                             location.reload();
                         }, 1000);

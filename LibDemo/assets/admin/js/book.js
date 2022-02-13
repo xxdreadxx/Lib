@@ -47,7 +47,9 @@ function Edit(id) {
                 $('#txtDongTG').val(response.data.DongTacGia);
                 $('#ddlKieuAP').val(response.data.LKieuAP);
                 $('#txtSo').val(response.data.So);
-                $('#txtNgayXuatBan').val(response.data.NgayXuatBan);
+                if (response.dataNXB != '01/01/0001') {
+                    $('#txtNgayXuatBan').val(response.dataNXB);
+                }
                 $('#ddlTG').val(response.data.IDTacGia);
                 $('#ddlNXB').val(response.data.IDNXB);
                 $('#ddlPLAP').val(response.data.IDPLAP);

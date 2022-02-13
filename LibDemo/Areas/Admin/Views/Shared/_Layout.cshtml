@@ -149,7 +149,7 @@
                             <li><a href="/Admin/Coupon/Index"><i class="fa fa-circle-o"></i> Quản lý phiếu mượn</a></li>
                         </ul>
                     </li>
-                    <li><a href="~/assets/admin/documentation/index.html"><i class="fa fa-book"></i> <span>Tài liệu</span></a></li>
+                    @*<li><a href="~/assets/admin/documentation/index.html"><i class="fa fa-book"></i> <span>Tài liệu</span></a></li>*@
                 </ul>
             </section>
         </aside>
@@ -202,6 +202,23 @@
     <!-- AdminLTE for demo purposes -->
     <script src="~/assets/admin/dist/js/demo.js"></script>
     <script src="~/Scripts/toastr.min.js"></script>
+    <script>
+        function LogOut() {
+            $.ajax({
+                url: '/Login/LogOut',
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.status == true) {
+                        window.location = '/Admin/Login/Index';
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+    </script>
     @RenderSection("scripts", required: false)
 </body>
 </html>

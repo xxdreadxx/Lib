@@ -6,8 +6,8 @@
     cAnPhamView ap = ViewBag.Item;
     List<cMCBView> lstMCB = ViewBag.LstMCB;
     int IDDonVi = int.Parse(Session["IDDonVi"].ToString());
-    List<cMCBView> lstDVHT = lstMCB.Where(x => x.IDDonVi == IDDonVi || x.IDDonVi_HienTai == IDDonVi).ToList();
-    List<cMCBView> lstDVK = lstMCB.Where(x => x.IDDonVi != IDDonVi && x.IDDonVi_HienTai != IDDonVi).ToList();
+    List<cMCBView> lstDVHT = lstMCB.Where(x => x.IDDonVi_HienTai == IDDonVi).ToList();
+    List<cMCBView> lstDVK = lstMCB.Where(x => x.IDDonVi_HienTai != IDDonVi).ToList();
 }
 
 <div class="banner-bg-inner">

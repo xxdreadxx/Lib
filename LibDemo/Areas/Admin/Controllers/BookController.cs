@@ -85,10 +85,12 @@ namespace LibDemo.Areas.Admin.Controllers
         public JsonResult GetData(int id)
         {
             cAnPham item = ap.getDataByID(id);
+            var dataNXB = item.NgayXuatBan.GetValueOrDefault().ToString("dd/MM/yyyy");
             return Json(new
             {
                 status = true,
-                data = item
+                data = item,
+                dataNXB =dataNXB
             }, JsonRequestBehavior.AllowGet);
         }
 
