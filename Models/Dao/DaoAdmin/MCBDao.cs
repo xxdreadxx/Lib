@@ -139,6 +139,7 @@ namespace Models.Dao.DaoAdmin
                         result.IDDonVi_HienTai = IDDonVi;
                         result.KieuAP = 1;
                         result.MCB = mcb;
+                        result.MCBIndex = i + 1;
                         result.TrangThai = 1;
                         result.NguoiTao = IDNV;
                         result.NgayTao = DateTime.Now;
@@ -149,7 +150,7 @@ namespace Models.Dao.DaoAdmin
                 else
                 {
                     maxMCB = maxMCB.OrderByDescending(x => x.MCBIndex).ToList();
-                    for (int i = maxMCB[0].MCBIndex + 1; i < maxMCB[0].MCBIndex + SL; i++)
+                    for (int i = maxMCB[0].MCBIndex; i < maxMCB[0].MCBIndex + SL; i++)
                     {
                         string mcb = "";
                         if (i + 1 < 10)
@@ -174,6 +175,7 @@ namespace Models.Dao.DaoAdmin
                         result.IDDonVi_HienTai = IDDonVi;
                         result.KieuAP = 1;
                         result.MCB = mcb;
+                        result.MCBIndex = i + 1;
                         result.TrangThai = 1;
                         result.NguoiTao = IDNV;
                         result.NgayTao = DateTime.Now;

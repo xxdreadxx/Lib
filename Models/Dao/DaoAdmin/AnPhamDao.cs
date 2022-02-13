@@ -50,6 +50,32 @@ namespace Models.Dao.DaoAdmin
             return item;
         }
 
+        public cAnPhamView getDataViewByID1(long ID)
+        {
+            cAnPhamView item = new cAnPhamView();
+            item = (from ds in db.cAnPhams
+                    join nxb in db.aNXBs on ds.IDNXB equals nxb.ID
+                    where ds.ID == ID
+                    select new cAnPhamView
+                    {
+                        ID = ds.ID,
+                        DongTacGia = ds.DongTacGia,
+                        GioiThieu = ds.GioiThieu,
+                        HinhAnh = ds.HinhAnh,
+                        IDNXB = ds.IDNXB,
+                        IDPLAP = ds.IDPLAP,
+                        IDTacGia = ds.IDTacGia,
+                        LKieuAP = ds.LKieuAP,
+                        MaAnPham = ds.MaAnPham,
+                        KieuAP = ds.LKieuAP == 1 ? "Sách" : ds.LKieuAP == 2 ? "Báo" : "Tạp chí",
+                        So = ds.So,
+                        NgayXuatBan = ds.NgayXuatBan,
+                        NhanDe = ds.NhanDe,
+                        NXB = nxb.TenNXB,
+                    }).FirstOrDefault();
+            return item;
+        }
+
         public List<cAnPhamView> getAllDataView(string search)
         {
             List<cAnPhamView> item = new List<cAnPhamView>();

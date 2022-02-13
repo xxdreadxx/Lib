@@ -15,6 +15,7 @@ namespace LibDemo.Controllers
         AnPhamDao ap = new AnPhamDao();
         DonViDao dv = new DonViDao();
         NXBDao nxb = new NXBDao();
+        MCBDao mcb = new MCBDao();
         // GET: Magazine
         public ActionResult Index(string search, string fromdate, string todate, int IDNXB = 0, int page = 1)
         {
@@ -30,7 +31,7 @@ namespace LibDemo.Controllers
             {
                 todate = "";
             }
-            var lsrAP = ap.getAll1(2, IDNXB, search, fromdate, todate).ToList();
+            var lsrAP = ap.getAll1(3, IDNXB, search, fromdate, todate).ToList();
             int slAP = lsrAP.Count();
             int pageCount = slAP % 12 == 0 ? slAP / 12 : (slAP / 12) + 1;
             ViewBag.lstAP = lsrAP.Skip(12 * (page - 1)).Take(12).ToList();
@@ -41,6 +42,13 @@ namespace LibDemo.Controllers
             Session["IDNXB"] = IDNXB;
             Session["page"] = page;
             Session["pageCount"] = pageCount;
+            return View();
+        }
+
+        public ActionResult Detail(long id)
+        {
+            ViewBag.Item = ap.getDataViewByID1(id);
+            ViewBag.LstMCB = mcb.getAllDataViewClient(id).OrderByDescending(x => x.DonVi).ToList();
             return View();
         }
     }

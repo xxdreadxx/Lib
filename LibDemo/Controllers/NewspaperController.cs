@@ -15,6 +15,7 @@ namespace LibDemo.Controllers
         AnPhamDao ap = new AnPhamDao();
         DonViDao dv = new DonViDao();
         NXBDao nxb = new NXBDao();
+        MCBDao mcb = new MCBDao();
         // GET: Newspaper
         public ActionResult Index(string search, string fromdate, string todate, int IDNXB = 0, int page = 1)
         {
@@ -41,6 +42,13 @@ namespace LibDemo.Controllers
             Session["IDNXB"] = IDNXB;
             Session["page"] = page;
             Session["pageCount"] = pageCount;
+            return View();
+        }
+
+        public ActionResult Detail(long id)
+        {
+            ViewBag.Item = ap.getDataViewByID1(id);
+            ViewBag.LstMCB = mcb.getAllDataViewClient(id).OrderByDescending(x => x.DonVi).ToList();
             return View();
         }
     }

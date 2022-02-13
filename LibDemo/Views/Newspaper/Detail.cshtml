@@ -1,0 +1,261 @@
+﻿@using Models.EF;
+@using Models.ModelsView;
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    cAnPhamView ap = ViewBag.Item;
+    List<cMCBView> lstMCB = ViewBag.LstMCB;
+    int IDDonVi = int.Parse(Session["IDDonVi"].ToString());
+    List<cMCBView> lstDVHT = lstMCB.Where(x => x.IDDonVi_HienTai == IDDonVi).ToList();
+    List<cMCBView> lstDVK = lstMCB.Where(x => x.IDDonVi_HienTai != IDDonVi).ToList();
+}
+
+<div class="banner-bg-inner">
+    <!-- banner-text -->
+    <div class="banner-text-inner">
+        <div class="container">
+            <h2 class="title-inner">
+                world of reading
+            </h2>
+        </div>
+    </div>
+    <!-- //banner-text -->
+</div>
+<!-- //banner -->
+<!-- breadcrumbs -->
+<div class="crumbs text-center">
+    <div class="container">
+        <div class="row">
+            <ul class="btn-group btn-breadcrumb bc-list">
+                <li class="btn btn1">
+                    <a href="index.html">
+                        <i class="glyphicon glyphicon-home"></i>
+                    </a>
+                </li>
+                <li class="btn btn2">
+                    <a href="shop.html">Ấn phẩm</a>
+                </li>
+                <li class="btn btn3">
+                    <a href="single_product.html">@ap.NhanDe</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!--//breadcrumbs ends here-->
+<!-- Single -->
+@if (Session["IDuser"] != null)
+{
+    <input type="hidden" id="idIDUser" value="@Session["IDUser"]" />
+}
+else
+{
+    <input type="hidden" id="idIDUser" value="0" />
+}
+
+<div class="innerf-pages section">
+    <div class="container">
+        <div class="col-md-4 single-right-left ">
+            <div class="grid images_3_of_2">
+                <div class="flexslider1">
+                    <ul class="slides">
+                        <li data-thumb="images/s1.jpg">
+                            <div class="thumb-image">
+                                <img src="@ap.HinhAnh" data-imagezoom="true" alt=" " class="img-responsive">
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 single-right-left simpleCart_shelfItem">
+            <h3>
+                @ap.NhanDe
+            </h3>
+            <p>
+                Tác giả:
+                <a href="#">@ap.TacGia</a>
+            </p>
+            <div class="caption">
+                <ul class="rating-single">
+                    <li>
+                        <a href="#">
+                            <span class="fa fa-star yellow-star" aria-hidden="true"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="fa fa-star yellow-star" aria-hidden="true"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="fa fa-star yellow-star" aria-hidden="true"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="fa fa-star yellow-star" aria-hidden="true"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="fa fa-star yellow-star" aria-hidden="true"></span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="clearfix"> </div>
+            </div>
+            <div class="desc_single">
+                <h5>Giới thiệu: </h5>
+                <p>
+                    @ap.GioiThieu
+                </p>
+            </div>
+            <div class="occasional">
+                <h5>Thông tin: </h5>
+                <ul class="single_specific">
+                    <li>
+                        <span>Số ấn phẩm :</span> @ap.So
+                    </li>
+                    <li>
+                        <span>Nhà xuất bản :</span> @ap.NXB
+                    </li>
+                    <li>
+                        <span>Ngày xuất bản :</span> @ap.NgayXuatBan.GetValueOrDefault().ToString("dd/MM/yyyy");
+                    </li>
+                </ul>
+            </div>
+            <div class="clearfix"></div>
+            <div class="occasion-cart">
+                @if (lstDVHT.Count == 0)
+                {
+                    <p>Thư viện hiện không có ấn phẩm trên hoặc đã được mượn, vui lòng chọn ấn phẩm khác hoặc đăng kí mượn tại đơn vị thư viện khác trong hệ thống!</p>
+                }
+                else
+                {
+                    <div class="col-md-12">
+                        <div class="row">
+                            @foreach (var item in lstDVHT)
+                            {
+                                <div class="col-md-3 product-men">
+                                    <div class="product-chr-info chr">
+                                        <div class="thumbnail">
+                                            <a href="single_product.html">
+                                                <img src="@ap.HinhAnh" alt="">
+                                            </a>
+                                        </div>
+                                        <div class="caption">
+                                            <h4 style="padding:0px">@item.MCB</h4>
+                                            <p>@item.DonVi</p>
+                                            @if (item.TrangThai == 1)
+                                            {
+                                                <p style="color:blue">Sẵn sàng</p>
+                                            }
+                                            else
+                                            {
+                                                <p style="color:red">Đang được mượn</p>
+                                            }
+                                            @if (item.TrangThai == 1)
+                                            {
+                                                <a class="btn btn-success" onclick="MuonAP(@item.ID)">
+                                                    Đăng kí mượn
+                                                    <i class="fa fa-cart-plus" aria-hidden="true"></i>
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="clearfix"> </div>
+        <div class="section singlep_btm">
+            <div class="container">
+                <div class="new_arrivals">
+                    <h4 class="rad-txt">
+                        <span class="abtxt1">Ấn phẩm</span>
+                        <span class="abtext"> Tại đơn vị khác</span>
+                    </h4>
+                    @foreach (var item in lstDVK)
+                    {
+                        <div class="col-md-2 product-men">
+                            <div class="product-chr-info chr">
+                                <div class="thumbnail">
+                                    <a href="single_product.html">
+                                        <img src="@ap.HinhAnh" alt="">
+                                    </a>
+                                </div>
+                                <div class="caption">
+                                    <h4 style="padding:0px">@item.MCB</h4>
+                                    <p>@item.DonVi</p>
+                                    @if (item.TrangThai == 1)
+                                    {
+                                        <p style="color:blue">Sẵn sàng</p>
+                                    }
+                                    else
+                                    {
+                                        <p style="color:red">Đang được mượn</p>
+                                    }
+                                    @if (item.TrangThai == 1)
+                                    {
+                                        <a class="btn btn-success" onclick="MuonAP(@item.ID)">
+                                            Đăng kí mượn
+                                            <i class="fa fa-cart-plus" aria-hidden="true"></i>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        function MuonAP(id) {
+            if ($('#idIDUser').val() == 0) {
+                toastr.error('Bạn cần đăng nhập để mượn ấn phẩm', '', { timeOut: 1000 });
+            }
+            else {
+                $.ajax({
+                    url: '/User/TaoPhieu',
+                    data: {
+                        id: id
+                    },
+                    cache: false,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response.status == true) {
+                            toastr.success('Đăng kí mượn thành công, chờ thử thư xác nhận và nhận ấn phẩm', '', { timeOut: 2000 });
+                            setTimeout(function () {
+                                location.reload();
+                            }, 1000);
+                        }
+                        else {
+                            toastr.error('Có lỗi xảy ra', '', { timeOut: 2000 });
+                        }
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+            }
+        }
+    </script>
+}
