@@ -279,7 +279,7 @@
                                 Kiểu ấn phẩm:*
                             </div>
                             <div class="col-md-9">
-                                <select id="ddlKieuAP" class="form-control">
+                                <select id="ddlKieuAP" class="form-control" onchange="changeKieuAP()">
                                     <option value="1"> Sách</option>
                                     <option value="2"> Báo</option>
                                     <option value="3"> Tạp chí</option>
@@ -287,7 +287,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px" id="divTG">
                         <div class="row">
                             <div class="col-md-3" style="padding-top:5px">
                                 Tác giả:
@@ -303,7 +303,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px" id="divDTG">
                         <div class="row">
                             <div class="col-md-3" style="padding-top:5px">
                                 Đồng tác giả:
@@ -313,7 +313,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px" id="divPL">
                         <div class="row">
                             <div class="col-md-3" style="padding-top:5px">
                                 Phân loại ấn phẩm:
@@ -345,7 +345,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px" id="divSo">
                         <div class="row">
                             <div class="col-md-3" style="padding-top:5px">
                                 Số:
@@ -355,7 +355,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px" id="divNgayXB">
                         <div class="row">
                             <div class="col-md-3" style="padding-top:5px">
                                 Ngày xuất bản:
@@ -365,7 +365,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px">
+                    <div class="form-group" style="margin-top: 10px; margin-left: 20px; margin-right: 20px" id="divGT">
                         <div class="row">
                             <div class="col-md-3" style="padding-top:5px">
                                 Giới  thiệu:

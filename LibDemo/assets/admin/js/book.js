@@ -15,6 +15,7 @@
     document.getElementById("imgAvatar").src = "/assets/admin/images/no-image.jpg";
     $("input[name=r2]").prop("checked", false);
     $("input[name=r2][value=1]").prop("checked", true);
+    formSach();
 }
 
 function changeIMG() {
@@ -50,6 +51,9 @@ function Edit(id) {
                 if (response.dataNXB != '01/01/0001') {
                     $('#txtNgayXuatBan').val(response.dataNXB);
                 }
+                else{
+                    $('#txtNgayXuatBan').val('');
+                }
                 $('#ddlTG').val(response.data.IDTacGia);
                 $('#ddlNXB').val(response.data.IDNXB);
                 $('#ddlPLAP').val(response.data.IDPLAP);
@@ -59,6 +63,12 @@ function Edit(id) {
                 }
                 $("input[name=r2]").prop("checked", false);
                 $("input[name=r2][value='" + response.data.TrangThai + "']").prop("checked", true);
+                if (response.data.LKieuAP == 1) {
+                    formSach();
+                }
+                else {
+                    formBTC();
+                }
             }
             else {
                 toastr.error('Có lỗi xảy ra', '', { timeOut: 2000 });
@@ -258,6 +268,7 @@ function MCB(id) {
 
 function AddMCB() {
     $('#mdAddMCB').modal("show");
+    $('#txtSLMCB').val('');
 }
 
 function SaveDataSLMCB() {
@@ -288,4 +299,30 @@ function SaveDataSLMCB() {
             console.log(err);
         }
     });
+}
+
+function changeKieuAP() {
+    var dllID = $('#ddlKieuAP').val();
+    if (dllID == 1) {
+        formSach();
+    }
+    else {
+        formBTC();
+    }
+}
+
+function formSach() {
+    $('#divTG').css('display', 'block');
+    $('#divDTG').css('display', 'block');
+    $('#divPL').css('display', 'block');
+    $('#divSo').css('display', 'none');
+    $('#divNgayXB').css('display', 'none');
+}
+
+function formBTC() {
+    $('#divTG').css('display', 'none');
+    $('#divDTG').css('display', 'none');
+    $('#divPL').css('display', 'none');
+    $('#divSo').css('display', 'block');
+    $('#divNgayXB').css('display', 'block');
 }
